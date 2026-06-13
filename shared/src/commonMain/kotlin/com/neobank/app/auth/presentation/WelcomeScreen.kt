@@ -3,6 +3,7 @@ package com.neobank.app.auth.presentation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material3.Icon
+import androidx.compose.ui.input.pointer.pointerInput
 import com.neobank.app.auth.presentation.components.GlassCard
 import neobankui.shared.generated.resources.Res
 import neobankui.shared.generated.resources.bg_neobank
@@ -32,7 +34,7 @@ import neobankui.shared.generated.resources.ic_fingerprint
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(onNavigateToHome: () -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(Res.drawable.bg_neobank),
@@ -211,7 +213,14 @@ fun WelcomeScreen() {
                                 colors = listOf(Color(0xFF40B143), Color(0xFF493B94))
                             ),
                             shape = androidx.compose.foundation.shape.CircleShape
-                        ),
+                        )
+                        .pointerInput(Unit) {
+                            detectTapGestures(
+                                onLongPress = {
+                                    onNavigateToHome()
+                                }
+                            )
+                        },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
