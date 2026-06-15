@@ -25,6 +25,9 @@ import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.GridView
 import androidx.compose.material.icons.filled.InsertChart
 import androidx.compose.material.icons.filled.SwapHoriz
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.AccountBalanceWallet
+import androidx.compose.material.icons.filled.Person
 
 @Composable
 fun HomeScreen() {
@@ -40,27 +43,23 @@ fun HomeScreen() {
         // 2. EL CONTENIDO PRINCIPAL
         Column(modifier = Modifier.fillMaxSize()) {
 
-            // --- MITAD SUPERIOR (Ahora toma más espacio: weight 1.3f) ---
+            // --- MITAD SUPERIOR ---
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1.3f)
             ) {
                 Spacer(modifier = Modifier.height(48.dp))
-
                 TopBarSection(modifier = Modifier.padding(horizontal = 24.dp))
                 Spacer(modifier = Modifier.height(40.dp))
-
                 BalanceSection()
                 Spacer(modifier = Modifier.height(40.dp))
-
                 QuickActionsSection(modifier = Modifier.padding(horizontal = 24.dp))
                 Spacer(modifier = Modifier.height(32.dp))
-
                 PromoCardsSection()
             }
 
-            // --- MITAD INFERIOR (La Bandeja, ahora más pequeña: weight 1f) ---
+            // --- MITAD INFERIOR ---
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -68,9 +67,13 @@ fun HomeScreen() {
                 color = Color(0xFFF8F9FA),
                 shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
             ) {
-                // La lista de transacciones real
-                TransactionsSection()
+                TransactionsSection(bottomPadding = 90.dp)
             }
+        }
+
+        // 3. LA BARRA DE NAVEGACIÓN INFERIOR (Flotando por encima)
+        Box(modifier = Modifier.align(Alignment.BottomCenter)) {
+            BottomNavigationBar()
         }
     }
 }
@@ -198,24 +201,29 @@ private fun PromoCardsSection() {
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
-        items(3) { // Generamos 3 tarjetas de prueba
+        items(3) {
             Box(
                 modifier = Modifier
                     .width(260.dp)
                     .height(110.dp)
                     .clip(RoundedCornerShape(24.dp))
-                    .background(Color.White.copy(alpha = 0.8f)) // Color grisáceo/blanco del diseño
+                    .background(Color.White.copy(alpha = 0.8f))
             )
         }
     }
 }
 
 @Composable
-private fun TransactionsSection() {
+private fun TransactionsSection(bottomPadding: androidx.compose.ui.unit.Dp = 0.dp) {
+
     androidx.compose.foundation.lazy.LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 24.dp, vertical = 24.dp)
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(
+            start = 24.dp,
+            end = 24.dp,
+            top = 24.dp,
+            bottom = bottomPadding
+        )
     ) {
         item {
             Text(
@@ -235,7 +243,6 @@ private fun TransactionsSection() {
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        // Elementos reales de tu diseño
         item { TransactionItem("W", "Webflow", "Outcoming transfer", "- $45", Color(0xFF2F80ED)) }
         item { TransactionItem("S", "Sketch", "Annual withdrawal of funds", "- $79", Color(0xFFF2C94C)) }
         item { TransactionItem("Y", "Youtube", "Annual withdrawal of funds", "- $15", Color(0xFFEB5757)) }
@@ -298,5 +305,63 @@ private fun TransactionItem(
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold
         )
+    }
+}
+
+@Composable
+private fun BottomNavigationBar() {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = Color.White,
+        shadowElevation = 16.dp
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .navigationBarsPadding()
+                .padding(vertical = 16.dp, horizontal = 32.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // 1. Icono Casa (Activo - Color Morado)
+            Icon(
+                imageVector = Icons.Default.Home,
+                contentDescription = "Home",
+                tint = Color(0xFF493B94),
+                modifier = Modifier.size(28.dp)
+            )
+
+            // 2. Icono Transferir (Inactivo - Gris)
+            Icon(
+                imageVector = Icons.Default.SwapHoriz,
+                contentDescription = "Transfer",
+                tint = Color.Gray.copy(alpha = 0.5f),
+                modifier = Modifier.size(28.dp)
+            )
+
+            // 3. Icono Billetera/Cards (Inactivo - Gris)
+            Icon(
+                imageVector = Icons.Default.AccountBalanceWallet,
+                contentDescription = "Cards",
+                tint = Color.Gray.copy(alpha = 0.5f),
+                modifier = Modifier.size(28.dp)
+            )
+
+            // 4. Icono Perfil (Simulación de Avatar con fondo azul)
+            Box(
+                modifier = Modifier
+                    .size(32.dp)
+                    .clip(CircleShape)
+                    .background(Color(0xFF2F80ED)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "Profile",
+                    tint = Color.White,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
     }
 }
