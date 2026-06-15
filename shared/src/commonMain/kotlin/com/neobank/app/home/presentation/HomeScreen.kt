@@ -21,6 +21,11 @@ import org.jetbrains.compose.resources.painterResource
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
+import androidx.compose.material.icons.filled.CreditCard
+import androidx.compose.material.icons.filled.GridView
+import androidx.compose.material.icons.filled.InsertChart
+import androidx.compose.material.icons.filled.SwapHoriz
+
 @Composable
 fun HomeScreen() {
     Box(modifier = Modifier.fillMaxSize()) {
@@ -55,8 +60,8 @@ fun HomeScreen() {
 
                 Spacer(modifier = Modifier.height(40.dp))
 
-                // Acciones Rápidas (Aquí irán los botones de Transfer, Cards, etc.)
-                // (Lo construiremos en el siguiente paso para mantener el código limpio)
+                // Acciones Rápidas
+                QuickActionsSection()
             }
 
             // --- MITAD INFERIOR (La Hoja Blanca de Transacciones) ---
@@ -148,6 +153,59 @@ private fun BalanceSection() {
             color = Color.White.copy(alpha = 0.7f),
             fontSize = 16.sp,
             modifier = Modifier.padding(top = 8.dp)
+        )
+    }
+}
+
+@Composable
+private fun QuickActionsSection() {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        // Usamos íconos nativos de Material Design como placeholders temporales
+        ActionItem(icon = Icons.Default.SwapHoriz, label = "Transfer\nmoney")
+        ActionItem(icon = Icons.Default.CreditCard, label = "Cards")
+        ActionItem(icon = Icons.Default.InsertChart, label = "My bonuses")
+        ActionItem(icon = Icons.Default.GridView, label = "More")
+    }
+}
+
+@Composable
+private fun ActionItem(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    label: String
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.width(76.dp)
+    ) {
+        // La caja de cristal (Glassmorphism)
+        Box(
+            modifier = Modifier
+                .size(64.dp)
+                .clip(RoundedCornerShape(20.dp))
+                .background(Color.White.copy(alpha = 0.1f)),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = label,
+                tint = Color.White,
+                modifier = Modifier.size(28.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // El texto descriptivo
+        Text(
+            text = label,
+            color = Color.White,
+            fontSize = 12.sp,
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+            lineHeight = 16.sp,
+            fontWeight = FontWeight.Medium
         )
     }
 }
