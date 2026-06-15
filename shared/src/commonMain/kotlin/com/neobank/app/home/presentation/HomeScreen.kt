@@ -29,7 +29,7 @@ import androidx.compose.material.icons.filled.SwapHoriz
 @Composable
 fun HomeScreen() {
     Box(modifier = Modifier.fillMaxSize()) {
-        // 1. EL FONDO (El mismo de la pantalla de bienvenida)
+        // 1. EL FONDO
         Image(
             painter = painterResource(Res.drawable.bg_neobank),
             contentDescription = "Fondo",
@@ -37,69 +37,50 @@ fun HomeScreen() {
             modifier = Modifier.fillMaxSize()
         )
 
-        // 2. EL CONTENIDO PRINCIPAL (Dividido en dos mitades)
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            // --- MITAD SUPERIOR (Cabecera, Saldo y Botones) ---
+        // 2. EL CONTENIDO PRINCIPAL
+        Column(modifier = Modifier.fillMaxSize()) {
+
+            // --- MITAD SUPERIOR (Ahora toma más espacio: weight 1.3f) ---
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
-                    .padding(horizontal = 24.dp)
+                    .weight(1.3f)
             ) {
                 Spacer(modifier = Modifier.height(48.dp))
 
-                // Cabecera: Saludos y Notificaciones
-                TopBarSection()
-
+                TopBarSection(modifier = Modifier.padding(horizontal = 24.dp))
                 Spacer(modifier = Modifier.height(40.dp))
 
-                // Saldo Total
                 BalanceSection()
-
                 Spacer(modifier = Modifier.height(40.dp))
 
-                // Acciones Rápidas
-                QuickActionsSection()
+                QuickActionsSection(modifier = Modifier.padding(horizontal = 24.dp))
+                Spacer(modifier = Modifier.height(32.dp))
+
+                PromoCardsSection()
             }
 
-            // --- MITAD INFERIOR (La Hoja Blanca de Transacciones) ---
+            // --- MITAD INFERIOR (La Bandeja, ahora más pequeña: weight 1f) ---
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.55f),
+                    .weight(1f),
                 color = Color(0xFFF8F9FA),
                 shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(24.dp)
-                ) {
-                    Text(
-                        text = "TRANSACTIONS",
-                        color = Color(0xFF2E3A59),
-                        fontSize = 14.sp,
-                        fontFamily = androidx.compose.ui.text.font.FontFamily.Serif,
-                        letterSpacing = 2.sp
-                    )
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    // Aquí irá la lista de transacciones (Webflow, Sketch, etc.)
-                }
+                // La lista de transacciones real
+                TransactionsSection()
             }
         }
     }
 }
 
-// --- SUB-COMPONENTES PARA MANTENER EL CÓDIGO LIMPIO ---
 
+// --- SUB-COMPONENTES PARA MANTENER EL CÓDIGO LIMPIO ---
 @Composable
-private fun TopBarSection() {
+private fun TopBarSection(modifier: Modifier = Modifier) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -158,9 +139,9 @@ private fun BalanceSection() {
 }
 
 @Composable
-private fun QuickActionsSection() {
+private fun QuickActionsSection(modifier: Modifier = Modifier) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         // Usamos íconos nativos de Material Design como placeholders temporales
@@ -206,6 +187,116 @@ private fun ActionItem(
             textAlign = androidx.compose.ui.text.style.TextAlign.Center,
             lineHeight = 16.sp,
             fontWeight = FontWeight.Medium
+        )
+    }
+}
+
+@Composable
+private fun PromoCardsSection() {
+    androidx.compose.foundation.lazy.LazyRow(
+        contentPadding = PaddingValues(horizontal = 24.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        items(3) { // Generamos 3 tarjetas de prueba
+            Box(
+                modifier = Modifier
+                    .width(260.dp)
+                    .height(110.dp)
+                    .clip(RoundedCornerShape(24.dp))
+                    .background(Color.White.copy(alpha = 0.8f)) // Color grisáceo/blanco del diseño
+            )
+        }
+    }
+}
+
+@Composable
+private fun TransactionsSection() {
+    androidx.compose.foundation.lazy.LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 24.dp, vertical = 24.dp)
+    ) {
+        item {
+            Text(
+                text = "TRANSACTIONS",
+                color = Color(0xFF2E3A59),
+                fontSize = 14.sp,
+                fontFamily = androidx.compose.ui.text.font.FontFamily.Serif,
+                letterSpacing = 2.sp
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+            Text(
+                text = "October 24, 2023",
+                color = Color(0xFF1A1A1A),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        // Elementos reales de tu diseño
+        item { TransactionItem("W", "Webflow", "Outcoming transfer", "- $45", Color(0xFF2F80ED)) }
+        item { TransactionItem("S", "Sketch", "Annual withdrawal of funds", "- $79", Color(0xFFF2C94C)) }
+        item { TransactionItem("Y", "Youtube", "Annual withdrawal of funds", "- $15", Color(0xFFEB5757)) }
+        item { TransactionItem("U", "Unsplash", "Outcoming transfer", "- $9", Color(0xFF333333)) }
+    }
+}
+
+@Composable
+private fun TransactionItem(
+    initial: String,
+    title: String,
+    subtitle: String,
+    amount: String,
+    iconBgColor: Color
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // Ícono circular simulando los logos de Webflow, Sketch, etc.
+        Box(
+            modifier = Modifier
+                .size(48.dp)
+                .clip(CircleShape)
+                .background(iconBgColor),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = initial,
+                color = Color.White,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        // Textos del centro
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                color = Color(0xFF1A1A1A),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = subtitle,
+                color = Color.Gray,
+                fontSize = 13.sp
+            )
+        }
+
+        // Monto a la derecha
+        Text(
+            text = amount,
+            color = Color(0xFF1A1A1A),
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold
         )
     }
 }
