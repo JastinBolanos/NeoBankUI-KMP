@@ -1,0 +1,23 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="33dp"
+    android:height="33dp"
+    android:viewportWidth="33"
+    android:viewportHeight="33">
+
+    <!-- Primer cuadro (Relleno inferior izquierdo) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M4.034,16.136 h9.413 c0.743,0 1.345,0.602 1.345,1.345 v10.757 c0,0.743 -0.602,1.345 -1.345,1.345 h-9.413 c-0.743,0 -1.345,-0.602 -1.345,-1.345 v-10.757 c0,-0.743 0.602,-1.345 1.345,-1.345 z" />
+
+    <!-- Segundo cuadro (Borde superior izquierdo) -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.68936"
+        android:pathData="M5.379,6.723 h6.723 c0.743,0 1.345,0.602 1.345,1.345 v2.689 c0,0.743 -0.602,1.345 -1.345,1.345 h-6.723 c-0.743,0 -1.345,-0.602 -1.345,-1.345 v-2.689 c0,-0.743 0.602,-1.345 1.345,-1.345 z" />
+
+    <!-- Tercer cuadro (Borde vertical derecho) -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.68936"
+        android:pathData="M20.17,4.034 h6.723 c0.743,0 1.345,0.602 1.345,1.345 v21.515 c0,0.743 -0.602,1.345 -1.345,1.345 h-6.723 c-0.743,0 -1.345,-0.602 -1.345,-1.345 v-21.515 c0,-0.743 0.602,-1.345 1.345,-1.345 z" />
+</vector>

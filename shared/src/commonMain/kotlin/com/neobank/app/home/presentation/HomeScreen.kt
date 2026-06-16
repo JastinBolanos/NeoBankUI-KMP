@@ -17,16 +17,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import neobankui.shared.generated.resources.Res
 import neobankui.shared.generated.resources.bg_neobank
+import neobankui.shared.generated.resources.ic_more
+import neobankui.shared.generated.resources.ic_bonuses
+import neobankui.shared.generated.resources.ic_cards
+import neobankui.shared.generated.resources.ic_transfer
+import neobankui.shared.generated.resources.ic_bell
+import neobankui.shared.generated.resources.ic_nav_home
+import neobankui.shared.generated.resources.ic_google
+import neobankui.shared.generated.resources.ic_youtube
+import neobankui.shared.generated.resources.ic_facebook
+import neobankui.shared.generated.resources.ic_visa
+import neobankui.shared.generated.resources.ic_claro
 import org.jetbrains.compose.resources.painterResource
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
-import androidx.compose.material.icons.filled.CreditCard
-import androidx.compose.material.icons.filled.GridView
-import androidx.compose.material.icons.filled.InsertChart
-import androidx.compose.material.icons.filled.SwapHoriz
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.Person
 
 @Composable
@@ -47,15 +51,22 @@ fun HomeScreen() {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1.3f)
+                    .weight(1.45f)
             ) {
-                Spacer(modifier = Modifier.height(48.dp))
+                Spacer(modifier = Modifier.height(64.dp))
+
                 TopBarSection(modifier = Modifier.padding(horizontal = 24.dp))
+
                 Spacer(modifier = Modifier.height(40.dp))
+
                 BalanceSection()
+
                 Spacer(modifier = Modifier.height(40.dp))
+
                 QuickActionsSection(modifier = Modifier.padding(horizontal = 24.dp))
+
                 Spacer(modifier = Modifier.height(32.dp))
+
                 PromoCardsSection()
             }
 
@@ -101,16 +112,16 @@ private fun TopBarSection(modifier: Modifier = Modifier) {
             )
         }
 
-        // Botón de Notificaciones Glassmorphism
+        // Botón de Notificaciones (Fondo de cristal + Tu campana personalizada)
         Box(
             modifier = Modifier
-                .size(48.dp)
+                .size(44.dp)
                 .clip(CircleShape)
-                .background(Color.White.copy(alpha = 0.15f)),
+                .background(Color.White.copy(alpha = 0.2f)),
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = Icons.Default.Notifications,
+                painter = painterResource(Res.drawable.ic_bell),
                 contentDescription = "Notifications",
                 tint = Color.White,
                 modifier = Modifier.size(24.dp)
@@ -147,24 +158,37 @@ private fun QuickActionsSection(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        // Usamos íconos nativos de Material Design como placeholders temporales
-        ActionItem(icon = Icons.Default.SwapHoriz, label = "Transfer\nmoney")
-        ActionItem(icon = Icons.Default.CreditCard, label = "Cards")
-        ActionItem(icon = Icons.Default.InsertChart, label = "My bonuses")
-        ActionItem(icon = Icons.Default.GridView, label = "More")
+        ActionItemPainter(
+            painter = painterResource(Res.drawable.ic_transfer),
+            label = "Transfer\nmoney"
+        )
+
+        ActionItemPainter(
+            painter = painterResource(Res.drawable.ic_cards),
+            label = "Cards"
+        )
+
+        ActionItemPainter(
+            painter = painterResource(Res.drawable.ic_bonuses),
+            label = "My bonuses"
+        )
+
+        ActionItemPainter(
+            painter = painterResource(Res.drawable.ic_more),
+            label = "More"
+        )
     }
 }
 
 @Composable
-private fun ActionItem(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+private fun ActionItemPainter(
+    painter: androidx.compose.ui.graphics.painter.Painter,
     label: String
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.width(76.dp)
     ) {
-        // La caja de cristal (Glassmorphism)
         Box(
             modifier = Modifier
                 .size(64.dp)
@@ -173,16 +197,15 @@ private fun ActionItem(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = icon,
+                painter = painter,
                 contentDescription = label,
                 tint = Color.White,
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier.size(26.dp)
             )
         }
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // El texto descriptivo
         Text(
             text = label,
             color = Color.White,
@@ -215,7 +238,6 @@ private fun PromoCardsSection() {
 
 @Composable
 private fun TransactionsSection(bottomPadding: androidx.compose.ui.unit.Dp = 0.dp) {
-
     androidx.compose.foundation.lazy.LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(
@@ -243,20 +265,55 @@ private fun TransactionsSection(bottomPadding: androidx.compose.ui.unit.Dp = 0.d
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        item { TransactionItem("W", "Webflow", "Outcoming transfer", "- $45", Color(0xFF2F80ED)) }
-        item { TransactionItem("S", "Sketch", "Annual withdrawal of funds", "- $79", Color(0xFFF2C94C)) }
-        item { TransactionItem("Y", "Youtube", "Annual withdrawal of funds", "- $15", Color(0xFFEB5757)) }
-        item { TransactionItem("U", "Unsplash", "Outcoming transfer", "- $9", Color(0xFF333333)) }
+        item {
+            TransactionItem(
+                painter = painterResource(Res.drawable.ic_google),
+                title = "Google",
+                subtitle = "Google Workspace Subscription",
+                amount = "- $12.00"
+            )
+        }
+        item {
+            TransactionItem(
+                painter = painterResource(Res.drawable.ic_youtube),
+                title = "YouTube",
+                subtitle = "YouTube Premium Family",
+                amount = "- $11.99"
+            )
+        }
+        item {
+            TransactionItem(
+                painter = painterResource(Res.drawable.ic_facebook),
+                title = "Facebook",
+                subtitle = "Ads Campaign Billing",
+                amount = "- $50.00"
+            )
+        }
+        item {
+            TransactionItem(
+                painter = painterResource(Res.drawable.ic_visa),
+                title = "Visa",
+                subtitle = "Credit Card Payment",
+                amount = "- $150.00"
+            )
+        }
+        item {
+            TransactionItem(
+                painter = painterResource(Res.drawable.ic_claro),
+                title = "Claro",
+                subtitle = "Monthly Internet Bill",
+                amount = "- $35.00"
+            )
+        }
     }
 }
 
 @Composable
 private fun TransactionItem(
-    initial: String,
+    painter: androidx.compose.ui.graphics.painter.Painter,
     title: String,
     subtitle: String,
-    amount: String,
-    iconBgColor: Color
+    amount: String
 ) {
     Row(
         modifier = Modifier
@@ -264,19 +321,20 @@ private fun TransactionItem(
             .padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Ícono circular simulando los logos de Webflow, Sketch, etc.
+        // 1. EL CONTENEDOR
         Box(
             modifier = Modifier
                 .size(48.dp)
                 .clip(CircleShape)
-                .background(iconBgColor),
+                .background(Color.White),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = initial,
-                color = Color.White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
+            // 2. EL LOGO
+            Image(
+                painter = painter,
+                contentDescription = title,
+                modifier = Modifier.fillMaxSize(0.65f),
+                contentScale = ContentScale.Fit
             )
         }
 
@@ -294,7 +352,9 @@ private fun TransactionItem(
             Text(
                 text = subtitle,
                 color = Color.Gray,
-                fontSize = 13.sp
+                fontSize = 13.sp,
+                maxLines = 1,
+                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
             )
         }
 
@@ -323,27 +383,27 @@ private fun BottomNavigationBar() {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // 1. Icono Casa (Activo - Color Morado)
+            // 1. Icono Casa Personalizado
             Icon(
-                imageVector = Icons.Default.Home,
+                painter = painterResource(Res.drawable.ic_nav_home),
                 contentDescription = "Home",
-                tint = Color(0xFF493B94),
-                modifier = Modifier.size(28.dp)
+                tint = Color.Unspecified,
+                modifier = Modifier.size(26.dp)
             )
 
-            // 2. Icono Transferir (Inactivo - Gris)
+            // 2. Icono Transferir (Reutilizado y teñido de gris)
             Icon(
-                imageVector = Icons.Default.SwapHoriz,
+                painter = painterResource(Res.drawable.ic_transfer),
                 contentDescription = "Transfer",
-                tint = Color.Gray.copy(alpha = 0.5f),
-                modifier = Modifier.size(28.dp)
+                tint = Color(0xFFA8A8A8),
+                modifier = Modifier.size(33.dp)
             )
 
-            // 3. Icono Billetera/Cards (Inactivo - Gris)
+            // 3. Icono Billetera/Cards (Reutilizado y teñido de gris)
             Icon(
-                imageVector = Icons.Default.AccountBalanceWallet,
+                painter = painterResource(Res.drawable.ic_cards),
                 contentDescription = "Cards",
-                tint = Color.Gray.copy(alpha = 0.5f),
+                tint = Color(0xFFA2A2A2),
                 modifier = Modifier.size(28.dp)
             )
 
