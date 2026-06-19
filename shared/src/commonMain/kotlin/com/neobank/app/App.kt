@@ -7,12 +7,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.neobank.app.auth.presentation.WelcomeScreen
+import com.neobank.app.cards.presentation.CardsScreen
 import com.neobank.app.home.presentation.HomeScreen
 
 enum class Screen {
     Welcome,
-    Home
+    Home,
+    Cards
 }
+
 
 @Composable
 fun App() {
@@ -28,7 +31,18 @@ fun App() {
                 )
             }
             Screen.Home -> {
-                HomeScreen()
+                HomeScreen(
+                    onNavigateToCards = {
+                        currentScreen = Screen.Cards
+                    }
+                )
+            }
+            Screen.Cards -> {
+                CardsScreen(
+                    onNavigateToHome = {
+                        currentScreen = Screen.Home
+                    }
+                )
             }
         }
     }

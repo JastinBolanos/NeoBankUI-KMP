@@ -2,6 +2,7 @@ package com.neobank.app.home.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,19 +23,20 @@ import neobankui.shared.generated.resources.ic_bonuses
 import neobankui.shared.generated.resources.ic_cards
 import neobankui.shared.generated.resources.ic_transfer
 import neobankui.shared.generated.resources.ic_bell
-import neobankui.shared.generated.resources.ic_nav_home
 import neobankui.shared.generated.resources.ic_google
 import neobankui.shared.generated.resources.ic_youtube
 import neobankui.shared.generated.resources.ic_facebook
 import neobankui.shared.generated.resources.ic_visa
 import neobankui.shared.generated.resources.ic_claro
 import org.jetbrains.compose.resources.painterResource
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
-import androidx.compose.material.icons.filled.Person
+import com.neobank.app.core.navigation.NavTab
+import com.neobank.app.core.navigation.NeoBottomNavigationBar
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onNavigateToCards: () -> Unit
+) {
     Box(modifier = Modifier.fillMaxSize()) {
         // 1. EL FONDO
         Image(
@@ -63,7 +65,10 @@ fun HomeScreen() {
 
                 Spacer(modifier = Modifier.height(40.dp))
 
-                QuickActionsSection(modifier = Modifier.padding(horizontal = 24.dp))
+                QuickActionsSection(
+                    modifier = Modifier.padding(horizontal = 24.dp),
+                    onCardsClick = onNavigateToCards
+                )
 
                 Spacer(modifier = Modifier.height(32.dp))
 
@@ -84,13 +89,22 @@ fun HomeScreen() {
 
         // 3. LA BARRA DE NAVEGACIÓN INFERIOR (Flotando por encima)
         Box(modifier = Modifier.align(Alignment.BottomCenter)) {
-            BottomNavigationBar()
+            NeoBottomNavigationBar(
+                selectedTab = NavTab.Home,
+                onTabSelected = { tab ->
+                    when (tab) {
+                        NavTab.Cards -> onNavigateToCards()
+                        NavTab.Home -> { /* Ya estamos aquí, no hacemos nada */ }
+                        else -> { /* Lógica futura */ }
+                    }
+                }
+            )
         }
     }
 }
 
 
-// --- SUB-COMPONENTES PARA MANTENER EL CÓDIGO LIMPIO ---
+// --- SUB-COMPONENTES ---
 @Composable
 private fun TopBarSection(modifier: Modifier = Modifier) {
     Row(
@@ -112,7 +126,7 @@ private fun TopBarSection(modifier: Modifier = Modifier) {
             )
         }
 
-        // Botón de Notificaciones (Fondo de cristal + Tu campana personalizada)
+        // Botón de Notificaciones (Fondo de cristal + Campana personalizada)
         Box(
             modifier = Modifier
                 .size(44.dp)
@@ -153,29 +167,36 @@ private fun BalanceSection() {
 }
 
 @Composable
-private fun QuickActionsSection(modifier: Modifier = Modifier) {
+private fun QuickActionsSection(
+    modifier: Modifier = Modifier,
+    onCardsClick: () -> Unit
+) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         ActionItemPainter(
             painter = painterResource(Res.drawable.ic_transfer),
-            label = "Transfer\nmoney"
+            label = "Transfer\nmoney",
+            onClick = { /* Lógica futura para transferencias */ }
         )
 
         ActionItemPainter(
             painter = painterResource(Res.drawable.ic_cards),
-            label = "Cards"
+            label = "Cards",
+            onClick = onCardsClick
         )
 
         ActionItemPainter(
             painter = painterResource(Res.drawable.ic_bonuses),
-            label = "My bonuses"
+            label = "My bonuses",
+            onClick = { /* Lógica futura */ }
         )
 
         ActionItemPainter(
             painter = painterResource(Res.drawable.ic_more),
-            label = "More"
+            label = "More",
+            onClick = { /* Lógica futura */ }
         )
     }
 }
@@ -183,17 +204,20 @@ private fun QuickActionsSection(modifier: Modifier = Modifier) {
 @Composable
 private fun ActionItemPainter(
     painter: androidx.compose.ui.graphics.painter.Painter,
-    label: String
+    label: String,
+    onClick: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.width(76.dp)
+        modifier = Modifier
+            .width(76.dp)
     ) {
         Box(
             modifier = Modifier
                 .size(64.dp)
-                .clip(RoundedCornerShape(20.dp))
-                .background(Color.White.copy(alpha = 0.1f)),
+                .clip(CircleShape)
+                .background(Color.White.copy(alpha = 0.1f))
+                .clickable { onClick() },
             contentAlignment = Alignment.Center
         ) {
             Icon(
@@ -365,63 +389,5 @@ private fun TransactionItem(
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold
         )
-    }
-}
-
-@Composable
-private fun BottomNavigationBar() {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        color = Color.White,
-        shadowElevation = 16.dp
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .navigationBarsPadding()
-                .padding(vertical = 16.dp, horizontal = 32.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // 1. Icono Casa Personalizado
-            Icon(
-                painter = painterResource(Res.drawable.ic_nav_home),
-                contentDescription = "Home",
-                tint = Color.Unspecified,
-                modifier = Modifier.size(26.dp)
-            )
-
-            // 2. Icono Transferir (Reutilizado y teñido de gris)
-            Icon(
-                painter = painterResource(Res.drawable.ic_transfer),
-                contentDescription = "Transfer",
-                tint = Color(0xFFA8A8A8),
-                modifier = Modifier.size(33.dp)
-            )
-
-            // 3. Icono Billetera/Cards (Reutilizado y teñido de gris)
-            Icon(
-                painter = painterResource(Res.drawable.ic_cards),
-                contentDescription = "Cards",
-                tint = Color(0xFFA2A2A2),
-                modifier = Modifier.size(28.dp)
-            )
-
-            // 4. Icono Perfil (Simulación de Avatar con fondo azul)
-            Box(
-                modifier = Modifier
-                    .size(32.dp)
-                    .clip(CircleShape)
-                    .background(Color(0xFF2F80ED)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = "Profile",
-                    tint = Color.White,
-                    modifier = Modifier.size(20.dp)
-                )
-            }
-        }
     }
 }
