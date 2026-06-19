@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +25,7 @@ import com.neobank.app.core.navigation.NavTab
 import com.neobank.app.core.navigation.NeoBottomNavigationBar
 import neobankui.shared.generated.resources.Res
 import neobankui.shared.generated.resources.bg_neobank
+import neobankui.shared.generated.resources.ic_bell
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -41,18 +43,43 @@ fun CardsScreen(
 
         // 2. CONTENIDO PRINCIPAL
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 64.dp)
+            modifier = Modifier.fillMaxSize()
         ) {
-            // --- TÍTULO "Cards" ---
-            Text(
-                text = "Cards",
-                color = Color.White,
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 24.dp, bottom = 32.dp)
-            )
+            // --- CABECERA: TÍTULO "Cards" + CAMPANITA ---
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+                    .padding(top = 64.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Cards",
+                    color = Color.White,
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f)
+                )
+
+                // La campanita, idéntica a la del Home
+                Box(
+                    modifier = Modifier
+                        .size(44.dp)
+                        .clip(CircleShape)
+                        .background(Color.White.copy(alpha = 0.2f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_bell),
+                        contentDescription = "Notifications",
+                        tint = Color.White,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+            }
+
+            // Espacio entre el título y el carrusel
+            Spacer(modifier = Modifier.height(32.dp))
 
             // --- CARRUSEL DE TARJETAS ---
             val cards = listOf(
@@ -75,14 +102,13 @@ fun CardsScreen(
                 }
             }
 
-            // --- INDICADORES DE PAGINACIÓN (Puntos) ---
+            // --- INDICADORES DE PAGINACIÓN ---
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 20.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                // Punto activo (blanco sólido)
                 Box(
                     modifier = Modifier
                         .size(8.dp)
@@ -90,7 +116,6 @@ fun CardsScreen(
                         .background(Color.White)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                // Punto inactivo (blanco semitransparente)
                 Box(
                     modifier = Modifier
                         .size(8.dp)
@@ -100,7 +125,7 @@ fun CardsScreen(
             }
         }
 
-        // 3. PANEL INFERIOR
+        // 3. PANEL INFERIOR (CARD DETAILS)
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
@@ -124,14 +149,14 @@ fun CardsScreen(
             }
         }
 
-        // 4. LA BARRA DE NAVEGACIÓN INFERIOR
+        // 4. BARRA DE NAVEGACIÓN INFERIOR
         Box(modifier = Modifier.align(Alignment.BottomCenter)) {
             NeoBottomNavigationBar(
                 selectedTab = NavTab.Cards,
                 onTabSelected = { tab ->
                     when (tab) {
                         NavTab.Home -> onNavigateToHome()
-                        NavTab.Cards -> { /* Ya estamos aquí, no hacemos nada */ }
+                        NavTab.Cards -> { /* Ya estamos aquí */ }
                         else -> { /* Lógica futura */ }
                     }
                 }
