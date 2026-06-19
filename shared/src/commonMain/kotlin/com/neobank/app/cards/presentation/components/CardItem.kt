@@ -1,15 +1,19 @@
 package com.neobank.app.cards.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -19,17 +23,18 @@ fun CardItem(
     balance: String,
     cardNumber: String,
     expiryDate: String,
-    isSelected: Boolean
+    modifier: Modifier = Modifier
 ) {
-    // Efecto Glassmorphism: Fondo blanco con transparencia
     Box(
-        modifier = Modifier
-            .width(300.dp)
-            .height(170.dp)
+        modifier = modifier
+            .fillMaxWidth()
+            .aspectRatio(1.58f)
             .clip(RoundedCornerShape(24.dp))
             .background(Color.White.copy(alpha = 0.12f))
-            .then(
-                if (isSelected) Modifier else Modifier.scale(0.95f)
+            .border(
+                width = 0.5.dp,
+                color = Color.White.copy(alpha = 0.2f),
+                shape = RoundedCornerShape(24.dp)
             )
     ) {
         Column(
@@ -38,69 +43,97 @@ fun CardItem(
                 .padding(24.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            // 1. Label del saldo
-            Text(
-                text = "Current Balance",
-                color = Color.White.copy(alpha = 0.7f),
-                fontSize = 14.sp
-            )
 
-            // 2. Monto grande
-            Text(
-                text = balance,
-                color = Color.White,
-                fontSize = 26.sp,
-                fontWeight = FontWeight.Bold
-            )
-
-            // 3. Número de tarjeta y Fecha
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Bottom
-            ) {
+            // --- GRUPO 1 (TOP): Título y Balance ---
+            Column {
                 Text(
-                    text = cardNumber,
-                    color = Color.White.copy(alpha = 0.9f),
-                    fontSize = 16.sp,
-                    letterSpacing = 1.sp
+                    text = "Current Balance",
+                    color = Color.White.copy(alpha = 0.7f),
+                    fontSize = 14.sp,
+                    letterSpacing = 0.5.sp
                 )
 
-                // 4. Fecha de expiración
+                Spacer(modifier = Modifier.height(4.dp))
+
                 Text(
-                    text = expiryDate,
-                    color = Color.White.copy(alpha = 0.8f),
-                    fontSize = 14.sp
+                    text = balance,
+                    color = Color.White,
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Medium,
+                    style = TextStyle(
+                        shadow = Shadow(
+                            color = Color.Black.copy(alpha = 0.15f),
+                            offset = Offset(0f, 4f),
+                            blurRadius = 8f
+                        )
+                    )
                 )
             }
 
-            // 5. Logo de la tarjeta (Placeholder genérico estilo Mastercard)
+            // --- GRUPO 2 (MIDDLE): Número de Tarjeta ---
+            Text(
+                text = cardNumber.replace(" ", "  "),
+                color = Color.White,
+                fontSize = 18.sp,
+                letterSpacing = 2.sp,
+                style = TextStyle(
+                    shadow = Shadow(
+                        color = Color.Black.copy(alpha = 0.1f),
+                        offset = Offset(0f, 2f),
+                        blurRadius = 4f
+                    )
+                )
+            )
+
+            // --- GRUPO 3 (BOTTOM): Fecha y Logo ---
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(32.dp)
-                        .clip(RoundedCornerShape(50))
-                        .background(Color(0xFFFF0000))
+                // Fecha
+                Text(
+                    text = expiryDate,
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    letterSpacing = 2.sp
                 )
-                Box(
-                    modifier = Modifier
-                        .size(32.dp)
-                        .clip(RoundedCornerShape(50))
-                        .background(Color(0xFFFFA500))
-                        .offset(x = (-8).dp)
-                )
+
+                // Logo Mastercard
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .width(42.dp)
+                            .height(26.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(26.dp)
+                                .align(Alignment.CenterStart)
+                                .clip(CircleShape)
+                                .background(Color(0xFFEB001B))
+                        )
+                        Box(
+                            modifier = Modifier
+                                .size(26.dp)
+                                .align(Alignment.CenterEnd)
+                                .clip(CircleShape)
+                                .background(Color(0xFFF79E1B).copy(alpha = 0.9f))
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(2.dp))
+
+                    Text(
+                        text = "mastercard",
+                        color = Color.White,
+                        fontSize = 8.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
             }
         }
     }
 }
-
-// Función de extensión auxiliar para simular un efecto de escala si no está seleccionada
-private fun Modifier.scale(scale: Float): Modifier = this.then(
-    Modifier.graphicsLayer {
-        this.scaleX = scale
-        this.scaleY = scale
-    }
-)
