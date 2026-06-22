@@ -32,6 +32,7 @@ import org.jetbrains.compose.resources.painterResource
 import androidx.compose.material3.Icon
 import com.neobank.app.core.navigation.NavTab
 import com.neobank.app.core.navigation.NeoBottomNavigationBar
+import neobankui.shared.generated.resources.ic_scanner
 
 @Composable
 fun HomeScreen(
@@ -126,20 +127,41 @@ private fun TopBarSection(modifier: Modifier = Modifier) {
             )
         }
 
-        // Botón de Notificaciones (Fondo de cristal + Campana personalizada)
-        Box(
-            modifier = Modifier
-                .size(44.dp)
-                .clip(CircleShape)
-                .background(Color.White.copy(alpha = 0.2f)),
-            contentAlignment = Alignment.Center
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                painter = painterResource(Res.drawable.ic_bell),
-                contentDescription = "Notifications",
-                tint = Color.White,
-                modifier = Modifier.size(24.dp)
-            )
+            // Icono ESCÁNER
+            Box(
+                modifier = Modifier
+                    .size(44.dp)
+                    .clip(CircleShape)
+                    .background(Color.White.copy(alpha = 0.2f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(Res.drawable.ic_scanner),
+                    contentDescription = "Escanear código",
+                    tint = Color.White,
+                    modifier = Modifier.size(22.dp)
+                )
+            }
+
+            // Icono NOTIFICACIONES
+            Box(
+                modifier = Modifier
+                    .size(44.dp)
+                    .clip(CircleShape)
+                    .background(Color.White.copy(alpha = 0.2f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(Res.drawable.ic_bell),
+                    contentDescription = "Notifications",
+                    tint = Color.White,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
         }
     }
 }
