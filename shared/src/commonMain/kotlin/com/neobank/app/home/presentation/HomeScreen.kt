@@ -36,7 +36,8 @@ import neobankui.shared.generated.resources.ic_scanner
 
 @Composable
 fun HomeScreen(
-    onNavigateToCards: () -> Unit
+    onNavigateToCards: () -> Unit,
+    onNavigateToSendMoney: () -> Unit = {}
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         // 1. EL FONDO
@@ -68,7 +69,8 @@ fun HomeScreen(
 
                 QuickActionsSection(
                     modifier = Modifier.padding(horizontal = 24.dp),
-                    onCardsClick = onNavigateToCards
+                    onCardsClick = onNavigateToCards,
+                    onTransferClick = onNavigateToSendMoney // ✅ Pasamos la función
                 )
 
                 Spacer(modifier = Modifier.height(32.dp))
@@ -188,10 +190,12 @@ private fun BalanceSection() {
     }
 }
 
+// ✅ ACTUALIZADA: Agregamos parámetro para la transferencia
 @Composable
 private fun QuickActionsSection(
     modifier: Modifier = Modifier,
-    onCardsClick: () -> Unit
+    onCardsClick: () -> Unit,
+    onTransferClick: () -> Unit // Nuevo parámetro
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -200,7 +204,7 @@ private fun QuickActionsSection(
         ActionItemPainter(
             painter = painterResource(Res.drawable.ic_transfer),
             label = "Transfer\nmoney",
-            onClick = { /* Lógica futura para transferencias */ }
+            onClick = onTransferClick // ✅ Ahora lo usamos
         )
 
         ActionItemPainter(

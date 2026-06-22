@@ -9,13 +9,14 @@ import androidx.compose.runtime.setValue
 import com.neobank.app.auth.presentation.WelcomeScreen
 import com.neobank.app.cards.presentation.CardsScreen
 import com.neobank.app.home.presentation.HomeScreen
+import com.neobank.app.transfer.presentation.SendMoneyScreen // ← Nueva importación
 
 enum class Screen {
     Welcome,
     Home,
-    Cards
+    Cards,
+    SendMoney // ← Agregamos la nueva pantalla
 }
-
 
 @Composable
 fun App() {
@@ -30,18 +31,33 @@ fun App() {
                     }
                 )
             }
+
             Screen.Home -> {
                 HomeScreen(
                     onNavigateToCards = {
                         currentScreen = Screen.Cards
+                    },
+                    // ← Conectamos el botón de transferir con la nueva pantalla
+                    onNavigateToSendMoney = {
+                        currentScreen = Screen.SendMoney
                     }
                 )
             }
+
             Screen.Cards -> {
                 CardsScreen(
                     onNavigateToHome = {
                         currentScreen = Screen.Home
                     }
+                )
+            }
+
+            // ← Agregamos el caso para mostrar la pantalla de enviar dinero
+            Screen.SendMoney -> {
+                SendMoneyScreen(
+                    onBackClick = {
+                        currentScreen = Screen.Home // Al volver, regresa a la pantalla principal
+                    },
                 )
             }
         }
