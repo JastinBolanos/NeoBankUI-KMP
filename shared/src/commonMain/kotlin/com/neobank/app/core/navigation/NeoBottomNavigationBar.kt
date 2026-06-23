@@ -60,6 +60,7 @@ fun NeoBottomNavigationBar(
             }
 
             // 2. Icono Transferir
+            val transferColor = if (selectedTab == NavTab.Transfer) Color(0xFF3F1D6B) else Color(0xFFA8A8A8)
             Box(
                 modifier = Modifier
                     .size(44.dp)
@@ -70,7 +71,7 @@ fun NeoBottomNavigationBar(
                 Icon(
                     painter = painterResource(Res.drawable.ic_transfer),
                     contentDescription = "Transfer",
-                    tint = Color(0xFFA8A8A8),
+                    tint = transferColor,
                     modifier = Modifier.size(33.dp)
                 )
             }

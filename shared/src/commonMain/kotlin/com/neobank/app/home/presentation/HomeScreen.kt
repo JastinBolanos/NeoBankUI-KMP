@@ -70,7 +70,7 @@ fun HomeScreen(
                 QuickActionsSection(
                     modifier = Modifier.padding(horizontal = 24.dp),
                     onCardsClick = onNavigateToCards,
-                    onTransferClick = onNavigateToSendMoney // ✅ Pasamos la función
+                    onTransferClick = onNavigateToSendMoney
                 )
 
                 Spacer(modifier = Modifier.height(32.dp))
@@ -97,8 +97,9 @@ fun HomeScreen(
                 onTabSelected = { tab ->
                     when (tab) {
                         NavTab.Cards -> onNavigateToCards()
-                        NavTab.Home -> { /* Ya estamos aquí, no hacemos nada */ }
-                        else -> { /* Lógica futura */ }
+                        NavTab.Transfer -> onNavigateToSendMoney()
+                        NavTab.Home -> { /* Ya estamos aquí */ }
+                        NavTab.Profile -> { /* Lógica futura */ }
                     }
                 }
             )
@@ -190,12 +191,11 @@ private fun BalanceSection() {
     }
 }
 
-// ✅ ACTUALIZADA: Agregamos parámetro para la transferencia
 @Composable
 private fun QuickActionsSection(
     modifier: Modifier = Modifier,
     onCardsClick: () -> Unit,
-    onTransferClick: () -> Unit // Nuevo parámetro
+    onTransferClick: () -> Unit
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -204,7 +204,7 @@ private fun QuickActionsSection(
         ActionItemPainter(
             painter = painterResource(Res.drawable.ic_transfer),
             label = "Transfer\nmoney",
-            onClick = onTransferClick // ✅ Ahora lo usamos
+            onClick = onTransferClick
         )
 
         ActionItemPainter(
