@@ -37,7 +37,8 @@ import neobankui.shared.generated.resources.ic_scanner
 @Composable
 fun HomeScreen(
     onNavigateToCards: () -> Unit,
-    onNavigateToSendMoney: () -> Unit = {}
+    onNavigateToSendMoney: () -> Unit = {},
+    onNavigateToHistory: () -> Unit = {}
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         // 1. EL FONDO
@@ -97,9 +98,10 @@ fun HomeScreen(
                 onTabSelected = { tab ->
                     when (tab) {
                         NavTab.Cards -> onNavigateToCards()
-                        NavTab.Transfer -> onNavigateToSendMoney()
+                        NavTab.History -> onNavigateToHistory()
                         NavTab.Home -> { /* Ya estamos aquí */ }
                         NavTab.Profile -> { /* Lógica futura */ }
+                        NavTab.Transfer -> { /* Solo se usa desde el botón superior */ }
                     }
                 }
             )
@@ -203,7 +205,7 @@ private fun QuickActionsSection(
     ) {
         ActionItemPainter(
             painter = painterResource(Res.drawable.ic_transfer),
-            label = "Transfer\nmoney",
+            label = "Transfer",
             onClick = onTransferClick
         )
 
@@ -300,8 +302,8 @@ private fun TransactionsSection(bottomPadding: androidx.compose.ui.unit.Dp = 0.d
         item {
             Text(
                 text = "TRANSACTIONS",
-                color = Color(0xFF2E3A59),
-                fontSize = 14.sp,
+                color = Color(0xFF243355),
+                fontSize = 16.sp,
                 fontFamily = androidx.compose.ui.text.font.FontFamily.Serif,
                 letterSpacing = 2.sp
             )

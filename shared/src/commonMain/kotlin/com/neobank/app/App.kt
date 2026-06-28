@@ -9,11 +9,13 @@ import androidx.compose.runtime.setValue
 import com.neobank.app.auth.presentation.WelcomeScreen
 import com.neobank.app.cards.presentation.CardsScreen
 import com.neobank.app.home.presentation.HomeScreen
+import com.neobank.app.transactions.presentation.TransactionHistoryScreen
 import com.neobank.app.transfer.presentation.SendMoneyScreen
 
 enum class Screen {
     Welcome,
     Home,
+    History,
     Cards,
     SendMoney
 }
@@ -34,13 +36,17 @@ fun App() {
 
             Screen.Home -> {
                 HomeScreen(
-                    onNavigateToCards = {
-                        currentScreen = Screen.Cards
-                    },
-                    // ← Conexión completa para abrir la pantalla de transferir
-                    onNavigateToSendMoney = {
-                        currentScreen = Screen.SendMoney
-                    }
+                    onNavigateToCards = { currentScreen = Screen.Cards },
+                    onNavigateToSendMoney = { currentScreen = Screen.SendMoney },
+                    onNavigateToHistory = { currentScreen = Screen.History }
+                )
+            }
+
+            Screen.History -> {
+                TransactionHistoryScreen(
+                    onNavigateToHome = { currentScreen = Screen.Home },
+                    onNavigateToCards = { currentScreen = Screen.Cards },
+                    onNavigateToProfile = { currentScreen = Screen.Home }
                 )
             }
 
@@ -52,7 +58,6 @@ fun App() {
                 )
             }
 
-            // ← Pantalla SendMoney con la acción de volver correcta
             Screen.SendMoney -> {
                 SendMoneyScreen(
                     onBackClick = {

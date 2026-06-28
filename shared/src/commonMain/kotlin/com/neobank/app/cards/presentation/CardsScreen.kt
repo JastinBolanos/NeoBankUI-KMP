@@ -89,7 +89,7 @@ fun CardsScreen(
                 Text(
                     text = "Cards",
                     color = Color.White,
-                    fontSize = 36.sp,
+                    fontSize = 35.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f)
                 )

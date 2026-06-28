@@ -16,12 +16,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import neobankui.shared.generated.resources.Res
 import neobankui.shared.generated.resources.ic_nav_home
-import neobankui.shared.generated.resources.ic_transfer
 import neobankui.shared.generated.resources.ic_cards
+import neobankui.shared.generated.resources.ic_history
 import org.jetbrains.compose.resources.painterResource
 
 enum class NavTab {
-    Home, Transfer, Cards, Profile
+    Home,
+    History,
+    Transfer,
+    Cards,
+    Profile
 }
 
 @Composable
@@ -59,20 +63,17 @@ fun NeoBottomNavigationBar(
                 )
             }
 
-            // 2. Icono Transferir
-            val transferColor = if (selectedTab == NavTab.Transfer) Color(0xFF3F1D6B) else Color(0xFFA8A8A8)
+            // 2. Icono Historial
+            val historyColor = if(selectedTab == NavTab.History) Color(0xFF3F1D6B) else Color(0xFFA8A8A8)
             Box(
-                modifier = Modifier
-                    .size(44.dp)
-                    .clip(CircleShape)
-                    .clickable { onTabSelected(NavTab.Transfer) },
+                modifier = Modifier.size(44.dp).clip(CircleShape).clickable { onTabSelected(NavTab.History) },
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    painter = painterResource(Res.drawable.ic_transfer),
-                    contentDescription = "Transfer",
-                    tint = transferColor,
-                    modifier = Modifier.size(33.dp)
+                    painter = painterResource(Res.drawable.ic_history),
+                    contentDescription = "History",
+                    tint = historyColor,
+                    modifier = Modifier.size(26.dp)
                 )
             }
 
