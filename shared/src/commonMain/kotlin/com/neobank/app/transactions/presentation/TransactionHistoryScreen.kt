@@ -172,6 +172,7 @@ fun TransactionHistoryScreen(
             // TRANSACCIONES
             Surface(
                 modifier = Modifier
+                    .padding(horizontal = 16.dp)
                     .fillMaxWidth()
                     .weight(1f),
                 color = Color(0xFFE8E9EB),
@@ -189,7 +190,7 @@ fun TransactionHistoryScreen(
                             fontFamily = FontFamily.Serif,
                             letterSpacing = 2.sp
                         )
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(1.dp))
                     }
                     items(transactions) { TransactionRow(it) }
                 }
