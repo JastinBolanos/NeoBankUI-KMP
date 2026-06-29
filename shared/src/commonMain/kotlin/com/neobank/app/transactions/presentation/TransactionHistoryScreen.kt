@@ -74,7 +74,9 @@ private val transactions = listOf(
 fun TransactionHistoryScreen(
     onNavigateToHome: () -> Unit = {},
     onNavigateToCards: () -> Unit = {},
-    onNavigateToProfile: () -> Unit = {}
+    onNavigateToProfile: () -> Unit = {},
+    selectedTab: NavTab = NavTab.History,
+    onTabSelected: (NavTab) -> Unit = {}
 ) {
     val cardsData = remember {
         listOf(
@@ -101,7 +103,7 @@ fun TransactionHistoryScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
-                    .padding(top = 60.dp, bottom = 28.dp),
+                    .padding(top = 65.dp, bottom = 28.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(

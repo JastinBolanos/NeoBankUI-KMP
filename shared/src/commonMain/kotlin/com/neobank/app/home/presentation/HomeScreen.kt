@@ -36,9 +36,12 @@ import neobankui.shared.generated.resources.ic_scanner
 
 @Composable
 fun HomeScreen(
-    onNavigateToCards: () -> Unit,
+    onNavigateToCards: () -> Unit = {},
     onNavigateToSendMoney: () -> Unit = {},
-    onNavigateToHistory: () -> Unit = {}
+    onNavigateToHistory: () -> Unit = {},
+    onNavigateToProfile: () -> Unit = {},
+    selectedTab: NavTab = NavTab.Home,
+    onTabSelected: (NavTab) -> Unit = {}
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         // 1. EL FONDO

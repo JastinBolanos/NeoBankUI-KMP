@@ -2,7 +2,13 @@ package com.neobank.app.core.navigation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
@@ -15,9 +21,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import neobankui.shared.generated.resources.Res
-import neobankui.shared.generated.resources.ic_nav_home
 import neobankui.shared.generated.resources.ic_cards
 import neobankui.shared.generated.resources.ic_history
+import neobankui.shared.generated.resources.ic_nav_home
 import org.jetbrains.compose.resources.painterResource
 
 enum class NavTab {
@@ -99,7 +105,8 @@ fun NeoBottomNavigationBar(
                 modifier = Modifier
                     .size(32.dp)
                     .clip(CircleShape)
-                    .background(Color(0xFF2F80ED)),
+                    .background(if (selectedTab == NavTab.Profile) Color(0xFF3F1D6B) else Color(0xFF2F80ED))
+                    .clickable { onTabSelected(NavTab.Profile) },
                 contentAlignment = Alignment.Center
             ) {
                 Icon(

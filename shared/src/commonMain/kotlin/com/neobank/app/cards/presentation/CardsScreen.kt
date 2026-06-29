@@ -35,7 +35,11 @@ import kotlin.math.absoluteValue
 
 @Composable
 fun CardsScreen(
-    onNavigateToHome: () -> Unit = {}
+    onNavigateToHome: () -> Unit = {},
+    onNavigateToHistory: () -> Unit = {},
+    onNavigateToProfile: () -> Unit = {},
+    selectedTab: NavTab = NavTab.Cards,
+    onTabSelected: (NavTab) -> Unit = {}
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         // FONDO
@@ -339,12 +343,14 @@ fun CardsScreen(
         // --- NAVEGACIÓN INFERIOR ---
         Box(modifier = Modifier.align(Alignment.BottomCenter)) {
             NeoBottomNavigationBar(
-                selectedTab = NavTab.Cards,
+                selectedTab = selectedTab,
                 onTabSelected = { tab ->
                     when (tab) {
-                        NavTab.Home -> onNavigateToHome()
-                        NavTab.Cards -> {}
-                        else -> {}
+                        NavTab.Home     -> onNavigateToHome()
+                        NavTab.History  -> onNavigateToHistory()
+                        NavTab.Cards    -> { /* ya estamos aquí */ }
+                        NavTab.Profile  -> onNavigateToProfile()
+                        NavTab.Transfer -> { /* sin uso actualmente */ }
                     }
                 }
             )
