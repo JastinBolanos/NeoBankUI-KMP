@@ -205,111 +205,155 @@ fun CardsScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 32.dp, vertical = 32.dp)
+                    .padding(horizontal = 24.dp, vertical = 20.dp)
             ) {
                 Text(
                     text = "CARD DETAILS",
                     color = Color(0xFF1A1A1A),
-                    fontSize = 18.sp,
+                    fontSize = 17.sp,
                     fontFamily = FontFamily.Serif,
                     letterSpacing = 1.2.sp,
-                    modifier = Modifier.padding(bottom = 28.dp)
+                    modifier = Modifier.padding(bottom = 18.dp)
                 )
 
                 // Titular
                 Text(
                     text = "Cardholder Name",
                     color = Color(0xFF222222),
-                    fontSize = 16.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    modifier = Modifier.padding(bottom = 6.dp)
                 )
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(12.dp))
                         .background(Color(0xFFDCDDE0))
-                        .padding(horizontal = 16.dp, vertical = 16.dp)
+                        .padding(horizontal = 12.dp, vertical = 12.dp)
                 ) {
                     Text(
                         text = currentCard["holder"]!!,
                         color = Color(0xFF666666),
-                        fontSize = 17.sp
+                        fontSize = 15.sp
                     )
                 }
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 // Número de tarjeta
                 Text(
                     text = "Card Number",
                     color = Color(0xFF222222),
-                    fontSize = 16.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    modifier = Modifier.padding(bottom = 6.dp)
                 )
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(12.dp))
                         .background(Color(0xFFDCDDE0))
-                        .padding(horizontal = 16.dp, vertical = 16.dp)
+                        .padding(horizontal = 12.dp, vertical = 12.dp)
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Box(
-                            modifier = Modifier.width(36.dp).height(22.dp)
+                            modifier = Modifier.width(34.dp).height(20.dp)
                         ) {
                             Box(
                                 modifier = Modifier
-                                    .size(22.dp)
+                                    .size(20.dp)
                                     .align(Alignment.CenterStart)
                                     .clip(CircleShape)
                                     .background(Color(0xFFEB001B))
                             )
                             Box(
                                 modifier = Modifier
-                                    .size(22.dp)
+                                    .size(20.dp)
                                     .align(Alignment.CenterEnd)
                                     .clip(CircleShape)
                                     .background(Color(0xFFF79E1B).copy(alpha = 0.9f))
                             )
                         }
-                        Spacer(modifier = Modifier.width(12.dp))
+                        Spacer(modifier = Modifier.width(10.dp))
                         Text(
                             text = currentCard["number"]!!,
                             color = Color(0xFF666666),
-                            fontSize = 17.sp,
-                            letterSpacing = 0.5.sp
+                            fontSize = 15.sp,
+                            letterSpacing = 0.4.sp
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Número de Cuenta
+                Text(
+                    text = "Account Number",
+                    color = Color(0xFF222222),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(bottom = 6.dp)
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(Color(0xFFDCDDE0))
+                        .padding(horizontal = 12.dp, vertical = 12.dp)
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .width(40.dp)
+                                .height(20.dp)
+                                .clip(RoundedCornerShape(4.dp))
+                                .background(Color(0xFF1A1F71)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "VISA",
+                                color = Color.White,
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Black,
+                                letterSpacing = 0.6.sp
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = currentCard["account"] as? String ?: "0011-0815-0741312654",
+                            color = Color(0xFF666666),
+                            fontSize = 15.sp,
+                            letterSpacing = 0.2.sp
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
 
                 // Vencimiento + CVV
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = "Expire Date",
                             color = Color(0xFF222222),
-                            fontSize = 16.sp,
+                            fontSize = 14.sp,
                             fontWeight = FontWeight.Medium,
-                            modifier = Modifier.padding(bottom = 8.dp)
+                            modifier = Modifier.padding(bottom = 6.dp)
                         )
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(12.dp))
                                 .background(Color(0xFFDCDDE0))
-                                .padding(horizontal = 16.dp, vertical = 16.dp)
+                                .padding(horizontal = 12.dp, vertical = 12.dp)
                         ) {
                             Text(
                                 text = currentCard["expiry"]!!,
                                 color = Color(0xFF666666),
-                                fontSize = 17.sp
+                                fontSize = 15.sp
                             )
                         }
                     }
@@ -318,21 +362,21 @@ fun CardsScreen(
                         Text(
                             text = "CVV / CVC",
                             color = Color(0xFF222222),
-                            fontSize = 16.sp,
+                            fontSize = 14.sp,
                             fontWeight = FontWeight.Medium,
-                            modifier = Modifier.padding(bottom = 8.dp)
+                            modifier = Modifier.padding(bottom = 6.dp)
                         )
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(12.dp))
                                 .background(Color(0xFFDCDDE0))
-                                .padding(horizontal = 16.dp, vertical = 16.dp)
+                                .padding(horizontal = 12.dp, vertical = 12.dp)
                         ) {
                             Text(
                                 text = currentCard["cvv"]!!,
                                 color = Color(0xFF666666),
-                                fontSize = 17.sp
+                                fontSize = 15.sp
                             )
                         }
                     }
