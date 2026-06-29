@@ -168,7 +168,7 @@ fun CardsScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 24.dp),
+                    .padding(top = 22.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
                 repeat(cards.size) { index ->
@@ -189,8 +189,9 @@ fun CardsScreen(
         // --- DETALLES DE TARJETA ---
         Surface(
             modifier = Modifier
+                .padding(horizontal = 16.dp)
                 .fillMaxWidth()
-                .fillMaxHeight(0.55f)
+                .fillMaxHeight(0.58f)
                 .align(Alignment.BottomCenter),
             color = Color(0xFFE8E9EB),
             shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
