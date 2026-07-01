@@ -23,6 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import com.neobank.app.cards.presentation.components.CardItem
 import com.neobank.app.core.navigation.NavTab
 import com.neobank.app.core.navigation.NeoBottomNavigationBar
@@ -201,11 +203,14 @@ fun CardsScreen(
             shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
         ) {
             val currentCard = cards[pagerState.currentPage]
+            val scrollState = rememberScrollState()
 
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .verticalScroll(scrollState)
                     .padding(horizontal = 24.dp, vertical = 20.dp)
+                    .padding(bottom = 90.dp)
             ) {
                 Text(
                     text = "CARD DETAILS",
