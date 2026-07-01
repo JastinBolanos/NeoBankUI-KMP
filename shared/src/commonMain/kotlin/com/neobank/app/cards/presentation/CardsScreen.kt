@@ -32,6 +32,7 @@ import neobankui.shared.generated.resources.Res
 import neobankui.shared.generated.resources.bg_neobank
 import neobankui.shared.generated.resources.ic_bell
 import neobankui.shared.generated.resources.ic_scanner
+import neobankui.shared.generated.resources.ic_visa
 import org.jetbrains.compose.resources.painterResource
 import kotlin.math.absoluteValue
 
@@ -307,22 +308,16 @@ fun CardsScreen(
                         .padding(horizontal = 12.dp, vertical = 12.dp)
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Box(
+
+                        Image(
+                            painter = painterResource(Res.drawable.ic_visa),
+                            contentDescription = "Visa Logo",
+                            contentScale = ContentScale.Fit,
                             modifier = Modifier
                                 .width(40.dp)
-                                .height(20.dp)
-                                .clip(RoundedCornerShape(4.dp))
-                                .background(Color(0xFF1A1F71)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "VISA",
-                                color = Color.White,
-                                fontSize = 11.sp,
-                                fontWeight = FontWeight.Black,
-                                letterSpacing = 0.6.sp
-                            )
-                        }
+                                .height(21.dp)
+                        )
+
                         Spacer(modifier = Modifier.width(10.dp))
                         Text(
                             text = currentCard["account"] as? String ?: "0011-0815-0741312654",
