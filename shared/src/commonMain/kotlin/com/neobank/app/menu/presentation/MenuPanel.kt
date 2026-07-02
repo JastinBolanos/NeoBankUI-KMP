@@ -36,6 +36,7 @@ data class MenuOption(
 @Composable
 fun MenuPanel(
     onClose: () -> Unit,
+    onNavigateToProfile: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val menuOptions = listOf(
@@ -96,7 +97,10 @@ fun MenuPanel(
                     color = Color(0xFF79C3FF),
                     fontSize = 15.sp,
                     modifier = Modifier
-                        .clickable { /* Lógica ir al perfil */ }
+                        .clickable {
+                            onClose()
+                            onNavigateToProfile()
+                        }
                         .padding(vertical = 4.dp)
                 )
                 Spacer(modifier = Modifier.height(36.dp))

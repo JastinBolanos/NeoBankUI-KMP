@@ -1,16 +1,37 @@
 package com.neobank.app.profile.presentation
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.neobank.app.core.navigation.NavTab
 import com.neobank.app.core.navigation.NeoBottomNavigationBar
+import androidx.compose.foundation.Image
+import androidx.compose.ui.layout.ContentScale
+import neobankui.shared.generated.resources.Res
+import neobankui.shared.generated.resources.bg_profile
+import org.jetbrains.compose.resources.painterResource
+
+// --- COLORES BASE PARA EL ESTILO DARK MODE ---
+val DarkBackground = Color.Black // Como solicitaste, negro puro por ahora
+val CardBackground = Color(0xFF28282A) // Gris oscuro elegante para las tarjetas
+val TextGray = Color(0xFFA0A0A5) // Gris para subtítulos
 
 @Suppress("UNUSED_PARAMETER")
 @Composable
@@ -24,19 +45,303 @@ fun ProfileScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFE8E9EB))
+            .background(DarkBackground)
     ) {
-        Text(
-            text = "COMING SOON",
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.Center)
+        // --- 1. FONDO DEGRADADO ---
+        Image(
+            painter = painterResource(Res.drawable.bg_profile),
+            contentDescription = "Fondo de perfil",
+            contentScale = ContentScale.Crop, // Para que llene toda la pantalla
+            modifier = Modifier.fillMaxSize()
         )
 
+        // --- CONTENIDO DESLIZABLE ---
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .systemBarsPadding()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 100.dp) // Espacio para la barra de navegación inferior
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // 1. TOP BAR (Botón X y Botón Upgrade)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Botón Cerrar (X)
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Close",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .size(28.dp)
+                        .clickable { onNavigateToHome() }
+                )
+
+                // Botón Upgrade
+                Row(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(CardBackground)
+                        .clickable { /* Lógica Upgrade */ }
+                        .padding(horizontal = 12.dp, vertical = 6.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Star, // Ícono de diamante/estrella
+                        contentDescription = "Upgrade",
+                        tint = Color.White,
+                        modifier = Modifier.size(14.dp)
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = "Upgrade",
+                        color = Color.White,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // 2. SECCIÓN DE USUARIO (Foto, Nombre, Username)
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                // Foto de perfil circular (Placeholder gris por ahora)
+                Box(
+                    modifier = Modifier
+                        .size(80.dp)
+                        .clip(CircleShape)
+                        .background(Color.DarkGray),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = "Avatar",
+                        tint = Color.White,
+                        modifier = Modifier.size(40.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Nombre
+                Text(
+                    text = "Saurabh Kumar", // Mantenemos la consistencia de tu app
+                    color = Color.White,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                // Username y QR
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = "@ntan97",
+                        color = TextGray,
+                        fontSize = 15.sp
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Icon(
+                        imageVector = Icons.Default.Share, // Placeholder para el ícono de QR
+                        contentDescription = "QR Code",
+                        tint = TextGray,
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // 3. TARJETAS DE ACCIÓN (Premium y Referrals)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                // Tarjeta 1: Premium
+                ActionCard(
+                    modifier = Modifier.weight(1f),
+                    icon = Icons.Default.List,
+                    title = "Premium",
+                    subtitle = "Your plan"
+                )
+
+                // Tarjeta 2: Referrals
+                ActionCard(
+                    modifier = Modifier.weight(1f),
+                    icon = Icons.Default.Person,
+                    title = "Referrals",
+                    subtitle = "Invite & earn rewards"
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // 4. BLOQUE DE AJUSTES 1
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(CardBackground)
+            ) {
+                SettingsRow(icon = Icons.Default.Info, title = "Help")
+                SettingsRow(icon = Icons.Default.Person, title = "Account")
+                SettingsRow(icon = Icons.Default.List, title = "Documents & statements")
+                SettingsRow(icon = Icons.Default.Star, title = "Learn")
+                SettingsRow(icon = Icons.Default.Email, title = "Inbox")
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // 5. BLOQUE DE AJUSTES 2 (Completado)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(CardBackground)
+            ) {
+                SettingsRow(icon = Icons.Default.Lock, title = "Security")
+                SettingsRow(icon = Icons.Default.Notifications, title = "Notification settings")
+                // --- NUEVAS OPCIONES DE LA IMAGEN ---
+                SettingsRow(icon = Icons.Default.Brush, title = "Appearance") // Ícono nativo más cercano a diseño
+                SettingsRow(icon = Icons.Default.Star, title = "New features") // Ícono nativo para novedades
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // 6. BLOQUE DE AJUSTES 3 (About & Log out)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(CardBackground)
+            ) {
+                SettingsRow(icon = Icons.Default.Info, title = "About us")
+                SettingsRow(icon = Icons.Default.ExitToApp, title = "Log out")
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // 7. FOOTER DE VERSIÓN (Centrado al final)
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Version 10.67",
+                    color = TextGray,
+                    fontSize = 12.sp
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    // Cambié "Revolut" por "Neobank" para mantener la inmersión de tu portafolio
+                    text = "Neobank Technologies Peru SAC",
+                    color = TextGray,
+                    fontSize = 12.sp
+                )
+            }
+        }
+
+        // --- BARRA DE NAVEGACIÓN INFERIOR (No se toca, flota arriba del contenido) ---
         Box(modifier = Modifier.align(Alignment.BottomCenter)) {
             NeoBottomNavigationBar(
                 selectedTab = selectedTab,
                 onTabSelected = onTabSelected
             )
+        }
+    }
+}
+
+// --- COMPONENTES REUTILIZABLES PARA ESTA PANTALLA ---
+
+@Composable
+fun ActionCard(
+    modifier: Modifier = Modifier,
+    icon: ImageVector,
+    title: String,
+    subtitle: String
+) {
+    Column(
+        modifier = modifier
+            .clip(RoundedCornerShape(20.dp))
+            .background(CardBackground)
+            .clickable { /* Acción */ }
+            .padding(16.dp)
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = title,
+            tint = Color.White,
+            modifier = Modifier.size(24.dp)
+        )
+        Spacer(modifier = Modifier.height(32.dp))
+        Text(
+            text = title,
+            color = Color.White,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold
+        )
+        Spacer(modifier = Modifier.height(2.dp))
+        Text(
+            text = subtitle,
+            color = TextGray,
+            fontSize = 13.sp
+        )
+    }
+}
+
+@Composable
+fun SettingsRow(
+    icon: ImageVector,
+    title: String,
+    badgeCount: Int = 0
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { /* Acción */ }
+            .padding(horizontal = 16.dp, vertical = 16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = title,
+            tint = Color.White,
+            modifier = Modifier.size(20.dp)
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        Text(
+            text = title,
+            color = Color.White,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.weight(1f)
+        )
+
+        // Lógica para mostrar la burbuja de notificación (Badge rojo)
+        if (badgeCount > 0) {
+            Box(
+                modifier = Modifier
+                    .size(20.dp)
+                    .clip(CircleShape)
+                    .background(Color(0xFFE94D4D)), // Rojo tipo iOS/Revolut
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = badgeCount.toString(),
+                    color = Color.White,
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
     }
 }

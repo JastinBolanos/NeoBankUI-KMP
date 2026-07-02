@@ -146,7 +146,8 @@ fun HomeScreen(
             modifier = Modifier.align(Alignment.CenterEnd)
         ) {
             MenuPanel(
-                onClose = { isMenuOpen = false }
+                onClose = { isMenuOpen = false },
+                onNavigateToProfile = onNavigateToProfile
             )
         }
     }
