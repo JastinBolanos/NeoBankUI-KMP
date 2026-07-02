@@ -1,0 +1,26 @@
+PROPRIETARY AND RESTRICTED USE LICENSE
+
+Copyright (c) 2026. Todos los derechos reservados.
+Propietario del Software y de la Propiedad Intelectual: [Tu Nombre Completo o Alias]
+Contacto Oficial: [Tu Correo Electrónico]
+
+Por la presente, se otorga permiso a cualquier persona que obtenga una copia de este software y sus archivos de documentación asociados (el "Software"), para utilizar el código fuente única y exclusivamente con fines de ESTUDIO, APRENDIZAJE, INVESTIGACIÓN PROPIA o EVALUACIÓN TÉCNICA/ACADÉMICA.
+
+QUEDA ESTRICTAMENTE PROHIBIDO:
+
+1. REPLICACIÓN Y PLAGIO DE COMPOSICIÓN VISUAL: Realizar una bifurcación (fork) o copia de este repositorio, modificar menos del cincuenta por ciento (50%) de la base del código fuente o de la estructura visual de la interfaz de usuario (UI/UX) —lo cual incluye la disposición de cajas, layouts, combinaciones específicas de fondos, gradientes y la paleta de colores implementada— y republicarlo en plataformas públicas bajo autoría propia o de terceros.
+2. USO COMERCIAL NO AUTORIZADO: Utilizar, copiar, modificar, fusionar, publicar, distribuir o sublicenciar este Software o cualquiera de sus diseños de componentes visuales con fines comerciales, de lucro o dentro de aplicaciones en producción sin el consentimiento previo por escrito del Propietario.
+3. PROTECCIÓN EXCLUSIVA DEL LOGOTIPO: Utilizar el logotipo oficial del proyecto o cualquier recurso gráfico original de identidad visual en proyectos ajenos sin previa consulta y acuerdo formal. 
+
+ACLARACIÓN SOBRE EL NOMBRE DE LA APLICACIÓN:
+Se declara de forma explícita que el nombre comercial utilizado en este proyecto tiene un carácter meramente demostrativo, educativo y de marcador de posición (placeholder). El Propietario no reclama derechos exclusivos ni propiedad intelectual sobre dicho nombre y, por tanto, no impone restricciones sobre su uso. No obstante, el Propietario no otorga ninguna autorización de uso de marca a terceros, siendo responsabilidad exclusiva de estos verificar que su uso no infrinja derechos de marca existentes de otros titulares. La protección de esta licencia se concentra estrictamente en el diseño de la UI, la lógica del código y el logotipo.
+
+CONDICIONES DE USO COMERCIAL Y COMPENSACIÓN:
+Cualquier entidad, empresa o desarrollador independiente que desee utilizar, adaptar, modificar o explotar comercialmente la interfaz de usuario (UI), el diseño de sus componentes o la lógica de este Software, deberá comunicarse obligatoriamente con el Propietario a través del Contacto Oficial. 
+
+Las partes podrán acordar una Licencia Comercial a cambio de una COMPENSACIÓN ECONÓMICA justa. El otorgamiento de una licencia comercial a terceros bajo ninguna circunstancia obligará al Propietario a retirar, ocultar o eliminar este repositorio del ámbito público.
+
+EXCEPCIONES Y RECURSOS DE TERCEROS:
+Se declara abiertamente que ciertos elementos gráficos integrados en el carrusel de promociones (tales como iconos y renders 3D de alta resolución externos) han sido obtenidos legítimamente de recursos comunitarios libres de Figma. Dichos elementos se incluyen bajo carácter meramente ilustrativo dentro de este portafolio, permaneciendo protegida por esta licencia la arquitectura del código en Kotlin/Compose Multiplatform y el diseño estructural e industrial de las cajas y pantallas de la app.
+
+EL SOFTWARE SE PROPORCIONA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O IMPLÍCITA. EN NINGÚN CASO EL PROPIETARIO SERÁ RESPONSABLE DE NINGUNA RECLAMACIÓN, DAÑO U OTRA RESPONSABILIDAD QUE SURJA DEL USO DE ESTE SOFTWARE.
