@@ -35,6 +35,7 @@ private fun NavTab.toScreen(): Screen = when (this) {
 fun App() {
     MaterialTheme {
         var currentScreen by remember { mutableStateOf(Screen.Welcome) }
+        var totalBalance by remember { mutableStateOf(50000.00) }
 
         val onTabSelected: (NavTab) -> Unit = { tab ->
             currentScreen = tab.toScreen()
@@ -47,6 +48,7 @@ fun App() {
 
             Screen.Home -> {
                 HomeScreen(
+                    balance = totalBalance,
                     onNavigateToCards     = { currentScreen = Screen.Cards },
                     onNavigateToSendMoney = { currentScreen = Screen.SendMoney },
                     onNavigateToHistory   = { currentScreen = Screen.History },
@@ -77,7 +79,14 @@ fun App() {
             }
 
             Screen.SendMoney -> {
-                SendMoneyScreen(onBackClick = { currentScreen = Screen.Home })
+                SendMoneyScreen(
+                    currentBalance = totalBalance,
+                    onSendMoney = { amountToSend ->
+                        totalBalance -= amountToSend
+                        currentScreen = Screen.Home
+                    },
+                    onBackClick = { currentScreen = Screen.Home }
+                )
             }
 
             Screen.Profile -> {

@@ -33,6 +33,8 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun SendMoneyScreen(
+    currentBalance: Double,
+    onSendMoney: (Double) -> Unit,
     onBackClick: () -> Unit = {}
 ) {
     var amount by remember { mutableStateOf("0") }
@@ -106,7 +108,7 @@ fun SendMoneyScreen(
             // --- SELECTOR DE CUENTA ---
             AccountSelector(
                 accountName = "Main",
-                balance = "$100,500.25"
+                balance = "$${currentBalance}"
             )
 
             Spacer(modifier = Modifier.height(48.dp))
@@ -123,7 +125,14 @@ fun SendMoneyScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Surface(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable {
+                            val amountToSend = amount.toDoubleOrNull() ?: 0.0
+                            if (amountToSend > 0.0 && amountToSend <= currentBalance) {
+                                onSendMoney(amountToSend)
+                            }
+                        },
                     shape = RoundedCornerShape(28.dp),
                     color = Color.White.copy(alpha = 0.92f)
                 ) {

@@ -46,6 +46,7 @@ import com.neobank.app.menu.presentation.MenuPanel
 
 @Composable
 fun HomeScreen(
+    balance: Double,
     onNavigateToCards: () -> Unit = {},
     onNavigateToSendMoney: () -> Unit = {},
     onNavigateToHistory: () -> Unit = {},
@@ -53,9 +54,10 @@ fun HomeScreen(
     selectedTab: NavTab = NavTab.Home,
     onTabSelected: (NavTab) -> Unit = {}
 ) {
-    // 1. ESTADO PARA CONTROLAR EL MENÚ LATERAL
     var isMenuOpen by remember { mutableStateOf(false) }
+
     Box(modifier = Modifier.fillMaxSize()) {
+
         // EL FONDO
         Image(
             painter = painterResource(Res.drawable.bg_neobank),
@@ -79,7 +81,7 @@ fun HomeScreen(
 
                 Spacer(modifier = Modifier.height(40.dp))
 
-                BalanceSection()
+                BalanceSection(balance = balance)
 
                 Spacer(modifier = Modifier.height(40.dp))
 
@@ -215,14 +217,23 @@ private fun TopBarSection(modifier: Modifier = Modifier) {
     }
 }
 
+fun Double.toFormattedCurrency(): String {
+    val parts = this.toString().split(".")
+    val integerPart = parts[0]
+    val decimalPart = if (parts.size > 1) parts[1].padEnd(2, '0').take(2) else "00"
+    val formattedInteger = integerPart.reversed().chunked(3).joinToString(",").reversed()
+    return "$formattedInteger.$decimalPart"
+}
+
+// 2. SECCIÓN DE BALANCE
 @Composable
-private fun BalanceSection() {
+private fun BalanceSection(balance: Double) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "$2,340.00",
+            text = "$${balance.toFormattedCurrency()}",
             color = Color.White,
             fontSize = 48.sp,
             fontWeight = FontWeight.ExtraBold,
