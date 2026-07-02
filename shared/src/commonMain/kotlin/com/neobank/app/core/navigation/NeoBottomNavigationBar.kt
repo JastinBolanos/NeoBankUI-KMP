@@ -37,11 +37,17 @@ enum class NavTab {
 @Composable
 fun NeoBottomNavigationBar(
     selectedTab: NavTab,
+    isDarkMode: Boolean = false,
     onTabSelected: (NavTab) -> Unit
 ) {
+    // --- LÓGICA DE COLORES DINÁMICOS ---
+    val backgroundColor = if (isDarkMode) Color.Black else Color.White
+    val activeColor = Color(0xFF3F1D6B)
+    val inactiveColor = if (isDarkMode) Color(0xFF8E8E93) else Color(0xFFA8A8A8)
+
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = Color.White,
+        color = backgroundColor,
         shadowElevation = 16.dp
     ) {
         Row(
@@ -53,7 +59,7 @@ fun NeoBottomNavigationBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             // 1. Icono Casa
-            val homeColor = if (selectedTab == NavTab.Home) Color(0xFF3F1D6B) else Color(0xFFA8A8A8)
+            val homeColor = if (selectedTab == NavTab.Home) activeColor else inactiveColor
             Box(
                 modifier = Modifier
                     .size(44.dp)
@@ -70,7 +76,7 @@ fun NeoBottomNavigationBar(
             }
 
             // 2. Icono Historial
-            val historyColor = if(selectedTab == NavTab.History) Color(0xFF3F1D6B) else Color(0xFFA8A8A8)
+            val historyColor = if(selectedTab == NavTab.History) activeColor else inactiveColor
             Box(
                 modifier = Modifier.size(44.dp).clip(CircleShape).clickable { onTabSelected(NavTab.History) },
                 contentAlignment = Alignment.Center
@@ -84,7 +90,7 @@ fun NeoBottomNavigationBar(
             }
 
             // 3. Icono Tarjeta
-            val cardsColor = if (selectedTab == NavTab.Cards) Color(0xFF3F1D6B) else Color(0xFFA8A8A8)
+            val cardsColor = if (selectedTab == NavTab.Cards) activeColor else inactiveColor
             Box(
                 modifier = Modifier
                     .size(44.dp)
@@ -105,7 +111,7 @@ fun NeoBottomNavigationBar(
                 modifier = Modifier
                     .size(32.dp)
                     .clip(CircleShape)
-                    .background(if (selectedTab == NavTab.Profile) Color(0xFF3F1D6B) else Color(0xFF2F80ED))
+                    .background(if (selectedTab == NavTab.Profile) activeColor else Color(0xFF2F80ED))
                     .clickable { onTabSelected(NavTab.Profile) },
                 contentAlignment = Alignment.Center
             ) {

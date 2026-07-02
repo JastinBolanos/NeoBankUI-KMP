@@ -28,10 +28,9 @@ import neobankui.shared.generated.resources.Res
 import neobankui.shared.generated.resources.bg_profile
 import org.jetbrains.compose.resources.painterResource
 
-// --- COLORES BASE PARA EL ESTILO DARK MODE ---
-val DarkBackground = Color.Black // Como solicitaste, negro puro por ahora
-val CardBackground = Color(0xFF28282A) // Gris oscuro elegante para las tarjetas
-val TextGray = Color(0xFFA0A0A5) // Gris para subtítulos
+val DarkBackground = Color.Black
+val CardBackground = Color(0xFF28282A)
+val TextGray = Color(0xFFA0A0A5)
 
 @Suppress("UNUSED_PARAMETER")
 @Composable
@@ -51,7 +50,7 @@ fun ProfileScreen(
         Image(
             painter = painterResource(Res.drawable.bg_profile),
             contentDescription = "Fondo de perfil",
-            contentScale = ContentScale.Crop, // Para que llene toda la pantalla
+            contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
 
@@ -62,7 +61,7 @@ fun ProfileScreen(
                 .systemBarsPadding()
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp)
-                .padding(bottom = 100.dp) // Espacio para la barra de navegación inferior
+                .padding(bottom = 100.dp)
         ) {
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -92,7 +91,7 @@ fun ProfileScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Star, // Ícono de diamante/estrella
+                        imageVector = Icons.Default.Star,
                         contentDescription = "Upgrade",
                         tint = Color.White,
                         modifier = Modifier.size(14.dp)
@@ -114,7 +113,7 @@ fun ProfileScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Foto de perfil circular (Placeholder gris por ahora)
+                // Foto de perfil circular
                 Box(
                     modifier = Modifier
                         .size(80.dp)
@@ -134,7 +133,7 @@ fun ProfileScreen(
 
                 // Nombre
                 Text(
-                    text = "Saurabh Kumar", // Mantenemos la consistencia de tu app
+                    text = "Saurabh Kumar",
                     color = Color.White,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
@@ -151,7 +150,7 @@ fun ProfileScreen(
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Icon(
-                        imageVector = Icons.Default.Share, // Placeholder para el ícono de QR
+                        imageVector = Icons.Default.Share,
                         contentDescription = "QR Code",
                         tint = TextGray,
                         modifier = Modifier.size(16.dp)
@@ -201,7 +200,7 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // 5. BLOQUE DE AJUSTES 2 (Completado)
+            // 5. BLOQUE DE AJUSTES 2
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -230,7 +229,7 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // 7. FOOTER DE VERSIÓN (Centrado al final)
+            // 7. FOOTER DE VERSIÓN
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -242,7 +241,6 @@ fun ProfileScreen(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    // Cambié "Revolut" por "Neobank" para mantener la inmersión de tu portafolio
                     text = "Neobank Technologies Peru SAC",
                     color = TextGray,
                     fontSize = 12.sp
@@ -250,10 +248,11 @@ fun ProfileScreen(
             }
         }
 
-        // --- BARRA DE NAVEGACIÓN INFERIOR (No se toca, flota arriba del contenido) ---
+        // --- BARRA DE NAVEGACIÓN INFERIOR ---
         Box(modifier = Modifier.align(Alignment.BottomCenter)) {
             NeoBottomNavigationBar(
                 selectedTab = selectedTab,
+                isDarkMode = true,
                 onTabSelected = onTabSelected
             )
         }
@@ -326,13 +325,12 @@ fun SettingsRow(
             modifier = Modifier.weight(1f)
         )
 
-        // Lógica para mostrar la burbuja de notificación (Badge rojo)
         if (badgeCount > 0) {
             Box(
                 modifier = Modifier
                     .size(20.dp)
                     .clip(CircleShape)
-                    .background(Color(0xFFE94D4D)), // Rojo tipo iOS/Revolut
+                    .background(Color(0xFFE94D4D)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
