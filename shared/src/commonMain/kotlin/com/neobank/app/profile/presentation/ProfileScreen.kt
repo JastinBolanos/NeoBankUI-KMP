@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.neobank.app.core.navigation.NavTab
 import com.neobank.app.core.navigation.NeoBottomNavigationBar
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.ui.layout.ContentScale
 import neobankui.shared.generated.resources.Res
 import neobankui.shared.generated.resources.bg_profile
@@ -168,7 +169,7 @@ fun ProfileScreen(
                 // Tarjeta 1: Premium
                 ActionCard(
                     modifier = Modifier.weight(1f),
-                    icon = Icons.Default.List,
+                    iconContent = { StackedCardsIcon() },
                     title = "Premium",
                     subtitle = "Your plan"
                 )
@@ -176,7 +177,14 @@ fun ProfileScreen(
                 // Tarjeta 2: Referrals
                 ActionCard(
                     modifier = Modifier.weight(1f),
-                    icon = Icons.Default.Person,
+                    iconContent = {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = "Referrals",
+                            tint = Color.White,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    },
                     title = "Referrals",
                     subtitle = "Invite & earn rewards"
                 )
@@ -264,7 +272,7 @@ fun ProfileScreen(
 @Composable
 fun ActionCard(
     modifier: Modifier = Modifier,
-    icon: ImageVector,
+    iconContent: @Composable () -> Unit,
     title: String,
     subtitle: String
 ) {
@@ -275,12 +283,7 @@ fun ActionCard(
             .clickable { /* Acción */ }
             .padding(16.dp)
     ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = title,
-            tint = Color.White,
-            modifier = Modifier.size(24.dp)
-        )
+        iconContent()
         Spacer(modifier = Modifier.height(32.dp))
         Text(
             text = title,
@@ -341,5 +344,29 @@ fun SettingsRow(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun StackedCardsIcon() {
+    Box(modifier = Modifier.size(28.dp, 24.dp)) {
+        // Tarjeta trasera
+        Box(
+            modifier = Modifier
+                .offset(x = 0.dp, y = 0.dp)
+                .size(22.dp, 16.dp)
+                .clip(RoundedCornerShape(3.dp))
+                .background(Color.White.copy(alpha = 0.15f))
+                .border(0.5.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(3.dp))
+        )
+        // Tarjeta delantera
+        Box(
+            modifier = Modifier
+                .offset(x = 6.dp, y = 8.dp)
+                .size(22.dp, 16.dp)
+                .clip(RoundedCornerShape(3.dp))
+                .background(Color.White.copy(alpha = 0.35f))
+                .border(0.5.dp, Color.White.copy(alpha = 0.3f), RoundedCornerShape(3.dp))
+        )
     }
 }
