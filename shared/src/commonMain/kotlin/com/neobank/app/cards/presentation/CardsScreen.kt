@@ -56,7 +56,7 @@ fun CardsScreen(
         val cards = remember {
             listOf(
                 mapOf(
-                    "holder" to "Augustine Campbell",
+                    "holder" to "Saurabh Kumar",
                     "number" to "5764 9968 6789 1289",
                     "masked" to "**** **** **** 1289",
                     "expiry" to "09 / 25",
@@ -64,7 +64,7 @@ fun CardsScreen(
                     "balance" to "$5 750,20"
                 ),
                 mapOf(
-                    "holder" to "Augustine Campbell",
+                    "holder" to "Saurabh Kumar",
                     "number" to "5764 9968 6789 1388",
                     "masked" to "**** **** **** 1388",
                     "expiry" to "11 / 26",
@@ -72,7 +72,7 @@ fun CardsScreen(
                     "balance" to "$10 985,84"
                 ),
                 mapOf(
-                    "holder" to "Augustine Campbell",
+                    "holder" to "Saurabh Kumar",
                     "number" to "5764 9968 6789 4923",
                     "masked" to "**** **** **** 4923",
                     "expiry" to "01 / 27",

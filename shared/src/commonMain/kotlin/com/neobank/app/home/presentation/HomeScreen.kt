@@ -163,7 +163,7 @@ private fun TopBarSection(modifier: Modifier = Modifier) {
     ) {
         Column {
             Text(
-                text = "Hi John Willian",
+                text = "Hi Saurabh Kumar",
                 color = Color.White.copy(alpha = 0.7f),
                 fontSize = 14.sp
             )
