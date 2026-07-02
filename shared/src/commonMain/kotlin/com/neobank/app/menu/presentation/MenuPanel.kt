@@ -115,10 +115,11 @@ fun MenuPanel(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .clip(RoundedCornerShape(12.dp))
                         .clickable {
                             if(option.title == "Go out") onClose()
                         }
-                        .padding(vertical = 14.dp),
+                        .padding(horizontal = 16.dp, vertical = 14.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(

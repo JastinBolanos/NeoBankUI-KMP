@@ -145,7 +145,7 @@ fun ProfileScreen(
                 // Username y QR
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "@ntan97",
+                        text = "@kumar10",
                         color = TextGray,
                         fontSize = 15.sp
                     )
@@ -217,9 +217,8 @@ fun ProfileScreen(
             ) {
                 SettingsRow(icon = Icons.Default.Lock, title = "Security")
                 SettingsRow(icon = Icons.Default.Notifications, title = "Notification settings")
-                // --- NUEVAS OPCIONES DE LA IMAGEN ---
-                SettingsRow(icon = Icons.Default.Brush, title = "Appearance") // Ícono nativo más cercano a diseño
-                SettingsRow(icon = Icons.Default.Star, title = "New features") // Ícono nativo para novedades
+                SettingsRow(icon = Icons.Default.Brush, title = "Appearance")
+                SettingsRow(icon = Icons.Default.Star, title = "New features")
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -267,7 +266,7 @@ fun ProfileScreen(
     }
 }
 
-// --- COMPONENTES REUTILIZABLES PARA ESTA PANTALLA ---
+// --- COMPONENTES REUTILIZABLES ---
 
 @Composable
 fun ActionCard(
