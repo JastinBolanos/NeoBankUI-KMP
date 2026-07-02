@@ -1,5 +1,10 @@
 package com.neobank.app.home.presentation
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,6 +38,11 @@ import androidx.compose.material3.Icon
 import com.neobank.app.core.navigation.NavTab
 import com.neobank.app.core.navigation.NeoBottomNavigationBar
 import neobankui.shared.generated.resources.ic_scanner
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.neobank.app.menu.presentation.MenuPanel
 
 @Composable
 fun HomeScreen(
@@ -43,8 +53,10 @@ fun HomeScreen(
     selectedTab: NavTab = NavTab.Home,
     onTabSelected: (NavTab) -> Unit = {}
 ) {
+    // 1. ESTADO PARA CONTROLAR EL MENÚ LATERAL
+    var isMenuOpen by remember { mutableStateOf(false) }
     Box(modifier = Modifier.fillMaxSize()) {
-        // 1. EL FONDO
+        // EL FONDO
         Image(
             painter = painterResource(Res.drawable.bg_neobank),
             contentDescription = "Fondo",
@@ -52,7 +64,7 @@ fun HomeScreen(
             modifier = Modifier.fillMaxSize()
         )
 
-        // 2. EL CONTENIDO PRINCIPAL
+        // EL CONTENIDO PRINCIPAL
         Column(modifier = Modifier.fillMaxSize()) {
 
             // --- MITAD SUPERIOR ---
@@ -74,7 +86,8 @@ fun HomeScreen(
                 QuickActionsSection(
                     modifier = Modifier.padding(horizontal = 24.dp),
                     onCardsClick = onNavigateToCards,
-                    onTransferClick = onNavigateToSendMoney
+                    onTransferClick = onNavigateToSendMoney,
+                    onMoreClick = { isMenuOpen = true }
                 )
 
                 Spacer(modifier = Modifier.height(32.dp))
@@ -94,7 +107,7 @@ fun HomeScreen(
             }
         }
 
-        // 3. LA BARRA DE NAVEGACIÓN INFERIOR (Flotando por encima)
+        // LA BARRA DE NAVEGACIÓN INFERIOR (Flotando por encima)
         Box(modifier = Modifier.align(Alignment.BottomCenter)) {
             NeoBottomNavigationBar(
                 selectedTab = NavTab.Home,
@@ -107,6 +120,33 @@ fun HomeScreen(
                         NavTab.Transfer -> { /* Solo se usa desde el botón superior */ }
                     }
                 }
+            )
+        }
+        // --- ANIMACIONES DEL MENÚ LATERAL ---
+
+        // 3. Capa oscura de fondo (Dimmer)
+        AnimatedVisibility(
+            visible = isMenuOpen,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.5f))
+                    .clickable { isMenuOpen = false }
+            )
+        }
+
+        // 4. Panel Deslizable
+        AnimatedVisibility(
+            visible = isMenuOpen,
+            enter = slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }),
+            exit = slideOutHorizontally(targetOffsetX = { fullWidth -> fullWidth }),
+            modifier = Modifier.align(Alignment.CenterEnd)
+        ) {
+            MenuPanel(
+                onClose = { isMenuOpen = false }
             )
         }
     }
@@ -200,7 +240,8 @@ private fun BalanceSection() {
 private fun QuickActionsSection(
     modifier: Modifier = Modifier,
     onCardsClick: () -> Unit,
-    onTransferClick: () -> Unit
+    onTransferClick: () -> Unit,
+    onMoreClick: () -> Unit
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -227,7 +268,7 @@ private fun QuickActionsSection(
         ActionItemPainter(
             painter = painterResource(Res.drawable.ic_more),
             label = "More",
-            onClick = { /* Lógica futura */ }
+            onClick = onMoreClick
         )
     }
 }
