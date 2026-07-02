@@ -65,7 +65,7 @@ private fun KeypadButton(
 ) {
     Box(
         modifier = modifier
-            .height(53.dp) // Alto exacto del diseño
+            .height(53.dp)
             .clip(RoundedCornerShape(14.dp))
             .background(
                 color = Color.White.copy(alpha = 0.08f),
@@ -92,6 +92,7 @@ private fun KeypadButtonPlain(
     Box(
         modifier = modifier
             .height(53.dp)
+            .clip(RoundedCornerShape(14.dp))
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
@@ -113,6 +114,7 @@ private fun KeypadButtonDeletePlain(
     Box(
         modifier = modifier
             .height(53.dp)
+            .clip(RoundedCornerShape(14.dp))
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
