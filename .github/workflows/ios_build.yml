@@ -1,0 +1,28 @@
+name: iOS Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Compilar Framework de Kotlin (Gradle)
+        run: ./gradlew :shared:embedAndSignAppleFrameworkForXcode
+
+      - name: Compilar App de iOS
+        run: |
+          cd iosApp
+          xcodebuild build -scheme iosApp -destination 'platform=iOS Simulator,name=iPhone 16'
