@@ -20,7 +20,9 @@ jobs:
           distribution: 'temurin'
 
       - name: Compilar Framework de Kotlin (Gradle)
-        run: ./gradlew :shared:embedAndSignAppleFrameworkForXcode
+        run: |
+          chmod +x gradlew
+          ./gradlew :shared:embedAndSignAppleFrameworkForXcode
 
       - name: Compilar App de iOS
         run: |
