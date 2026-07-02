@@ -127,6 +127,7 @@ fun SendMoneyScreen(
                 Surface(
                     modifier = Modifier
                         .weight(1f)
+                        .clip(RoundedCornerShape(28.dp))
                         .clickable {
                             val amountToSend = amount.toDoubleOrNull() ?: 0.0
                             if (amountToSend > 0.0 && amountToSend <= currentBalance) {
