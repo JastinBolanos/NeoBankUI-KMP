@@ -107,7 +107,7 @@ fun HomeScreen(
             }
         }
 
-        // LA BARRA DE NAVEGACIÓN INFERIOR (Flotando por encima)
+        // LA BARRA DE NAVEGACIÓN INFERIOR
         Box(modifier = Modifier.align(Alignment.BottomCenter)) {
             NeoBottomNavigationBar(
                 selectedTab = NavTab.Home,
@@ -115,8 +115,8 @@ fun HomeScreen(
                     when (tab) {
                         NavTab.Cards -> onNavigateToCards()
                         NavTab.History -> onNavigateToHistory()
+                        NavTab.Profile -> onNavigateToProfile()
                         NavTab.Home -> { /* Ya estamos aquí */ }
-                        NavTab.Profile -> { /* Lógica futura */ }
                         NavTab.Transfer -> { /* Solo se usa desde el botón superior */ }
                     }
                 }
