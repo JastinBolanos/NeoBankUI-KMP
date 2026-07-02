@@ -1,6 +1,9 @@
 package com.neobank.app.home.presentation
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -9,6 +12,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -35,6 +40,7 @@ import neobankui.shared.generated.resources.ic_visa
 import neobankui.shared.generated.resources.ic_claro
 import org.jetbrains.compose.resources.painterResource
 import androidx.compose.material3.Icon
+import androidx.compose.runtime.LaunchedEffect
 import com.neobank.app.core.navigation.NavTab
 import com.neobank.app.core.navigation.NeoBottomNavigationBar
 import neobankui.shared.generated.resources.ic_scanner
@@ -43,6 +49,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.neobank.app.menu.presentation.MenuPanel
+import kotlinx.coroutines.delay
 
 @Composable
 fun HomeScreen(
@@ -325,20 +332,109 @@ private fun ActionItemPainter(
     }
 }
 
+// =========================================================================
+// Carrusel Infinito
+// =========================================================================
 @Composable
 private fun PromoCardsSection() {
-    androidx.compose.foundation.lazy.LazyRow(
-        contentPadding = PaddingValues(horizontal = 24.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.fillMaxWidth()
+    val actualPageCount = 5
+    val initialPage = (Int.MAX_VALUE / 2) - ((Int.MAX_VALUE / 2) % actualPageCount)
+    val pagerState = rememberPagerState(
+        initialPage = initialPage,
+        pageCount = { Int.MAX_VALUE }
+    )
+
+    // AUTO-SCROLL
+    androidx.compose.runtime.LaunchedEffect(pagerState.settledPage) {
+        delay(3000)
+        pagerState.animateScrollToPage(
+            page = pagerState.currentPage + 1,
+            animationSpec = tween(
+                durationMillis = 800,
+                easing = androidx.compose.animation.core.FastOutSlowInEasing
+            )
+        )
+    }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        items(3) {
+        // El carrusel de tarjetas
+        HorizontalPager(
+            state = pagerState,
+            contentPadding = PaddingValues(horizontal = 24.dp),
+            pageSpacing = 16.dp,
+            modifier = Modifier.fillMaxWidth()
+        ) { page ->
+
+            val actualPage = page % actualPageCount
+
             Box(
                 modifier = Modifier
-                    .width(260.dp)
+                    .fillMaxWidth()
                     .height(110.dp)
                     .clip(RoundedCornerShape(24.dp))
                     .background(Color.White.copy(alpha = 0.8f))
+            )
+        }
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        // Los puntos indicadores
+        val currentActualPage = pagerState.currentPage % actualPageCount
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            repeat(actualPageCount) { index ->
+                LoadingDot(isActive = index == currentActualPage)
+            }
+        }
+    }
+}
+
+@Composable
+private fun LoadingDot(isActive: Boolean) {
+    val animatedWidth by androidx.compose.animation.core.animateDpAsState(
+        targetValue = if (isActive) 32.dp else 6.dp,
+        animationSpec = tween(
+            durationMillis = 300,
+            easing = androidx.compose.animation.core.FastOutSlowInEasing
+        ),
+        label = "dotWidthAnimation"
+    )
+
+    val progress = remember { Animatable(0f) }
+
+    LaunchedEffect(isActive) {
+        if (isActive) {
+            progress.snapTo(0f)
+            progress.animateTo(
+                targetValue = 1f,
+                animationSpec = tween(durationMillis = 3000, easing = LinearEasing)
+            )
+        } else {
+            progress.snapTo(0f)
+        }
+    }
+
+    // Fondo gris del punto o pastilla
+    Box(
+        modifier = Modifier
+            .height(6.dp)
+            .width(animatedWidth)
+            .clip(CircleShape)
+            .background(Color.White.copy(alpha = 0.3f))
+    ) {
+        if (isActive && progress.value > 0f) {
+            Box(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth(progress.value)
+                    .clip(CircleShape)
+                    .background(Color.White)
             )
         }
     }
