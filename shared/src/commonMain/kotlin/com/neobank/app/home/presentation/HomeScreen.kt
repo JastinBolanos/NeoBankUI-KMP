@@ -12,8 +12,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -49,7 +47,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.neobank.app.menu.presentation.MenuPanel
-import kotlinx.coroutines.delay
+import neobankui.shared.generated.resources.bg_credit_banner
+import neobankui.shared.generated.resources.bg_iphone_banner
+import neobankui.shared.generated.resources.bg_metal_banner
+import neobankui.shared.generated.resources.bg_travel_banner
+import neobankui.shared.generated.resources.img_card_metal
+import neobankui.shared.generated.resources.img_credit_lock
+import neobankui.shared.generated.resources.img_invest_coins
+import neobankui.shared.generated.resources.img_iphone_titanium
+import neobankui.shared.generated.resources.img_travel_miles
+import org.jetbrains.compose.resources.DrawableResource
+
+data class PromoBanner(
+    val title: String,
+    val subtitle: String,
+    val backgroundColor: Color,
+    val imageRes: DrawableResource? = null
+)
 
 @Composable
 fun HomeScreen(
@@ -331,22 +345,55 @@ private fun ActionItemPainter(
         )
     }
 }
-
 // =========================================================================
-// Carrusel Infinito
+// SECCIÓN: CARRUSEL INFINITO CON BANNERS REALES E IMÁGENES 3D
 // =========================================================================
 @Composable
 private fun PromoCardsSection() {
-    val actualPageCount = 5
+    // 1. 5 BANNERS
+    val banners = listOf(
+        PromoBanner(
+            title = "Upgrade to Metal",
+            subtitle = "Pide tu tarjeta NeoBank Metal y obtén 5% de cashback.",
+            backgroundColor = Color(0xFF181A20),
+            imageRes = Res.drawable.img_card_metal
+        ),
+        PromoBanner(
+            title = "iPhone 15 Pro Titanium",
+            subtitle = "0% de interés y 24 cuotas con tu tarjeta NeoBank.",
+            backgroundColor = Color(0xFF232529),
+            imageRes = Res.drawable.img_iphone_titanium
+        ),
+        PromoBanner(
+            title = "El mundo te espera",
+            subtitle = "Doble acumulación de millas y acceso al Salón VIP.",
+            backgroundColor = Color(0xFF6A11CB),
+            imageRes = Res.drawable.img_travel_miles
+        ),
+        PromoBanner(
+            title = "Haz crecer tu dinero",
+            subtitle = "Invierte en las top 500 empresas de USA desde $10.",
+            backgroundColor = Color(0xFF15171E),
+            imageRes = Res.drawable.img_invest_coins
+        ),
+        PromoBanner(
+            title = "Línea de Crédito Aprobada",
+            subtitle = "Tienes $15,000 disponibles. Desembolso inmediato.",
+            backgroundColor = Color(0xFFFF9580),
+            imageRes = Res.drawable.img_credit_lock
+        ),
+    )
+
+    val actualPageCount = banners.size
     val initialPage = (Int.MAX_VALUE / 2) - ((Int.MAX_VALUE / 2) % actualPageCount)
-    val pagerState = rememberPagerState(
+    val pagerState = androidx.compose.foundation.pager.rememberPagerState(
         initialPage = initialPage,
         pageCount = { Int.MAX_VALUE }
     )
 
     // AUTO-SCROLL
     androidx.compose.runtime.LaunchedEffect(pagerState.settledPage) {
-        delay(3000)
+        kotlinx.coroutines.delay(3000)
         pagerState.animateScrollToPage(
             page = pagerState.currentPage + 1,
             animationSpec = tween(
@@ -361,7 +408,7 @@ private fun PromoCardsSection() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // El carrusel de tarjetas
-        HorizontalPager(
+        androidx.compose.foundation.pager.HorizontalPager(
             state = pagerState,
             contentPadding = PaddingValues(horizontal = 24.dp),
             pageSpacing = 16.dp,
@@ -369,14 +416,102 @@ private fun PromoCardsSection() {
         ) { page ->
 
             val actualPage = page % actualPageCount
+            val currentBanner = banners[actualPage]
 
+            // DISEÑO DEL BANNER
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(110.dp)
                     .clip(RoundedCornerShape(24.dp))
-                    .background(Color.White.copy(alpha = 0.8f))
-            )
+                    .background(currentBanner.backgroundColor)
+            ) {
+                // --------------------------------------------------------
+                // 1. FONDOS EXCLUSIVOS (iPhone, Crédito, Metal y Viajes)
+                // --------------------------------------------------------
+                if (currentBanner.title.contains("iPhone")) {
+                    Image(
+                        painter = painterResource(Res.drawable.bg_iphone_banner),
+                        contentDescription = "Fondo Premium iPhone",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                } else if (currentBanner.title.contains("Crédito")) {
+                    Image(
+                        painter = painterResource(Res.drawable.bg_credit_banner),
+                        contentDescription = "Fondo Premium Crédito",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                } else if (currentBanner.title.contains("Metal")) {
+                    Image(
+                        painter = painterResource(Res.drawable.bg_metal_banner),
+                        contentDescription = "Fondo Premium Metal",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                } else if (currentBanner.title.contains("espera")) {
+                    Image(
+                        painter = painterResource(Res.drawable.bg_travel_banner),
+                        contentDescription = "Fondo Premium Viajes",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+
+                // --------------------------------------------------------
+                // 2. EL FAMOSO CÍRCULO TRANSPARENTE
+                // --------------------------------------------------------
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .offset(x = 20.dp, y = (-20).dp)
+                        .size(80.dp)
+                        .clip(CircleShape)
+                        .background(Color.White.copy(alpha = 0.05f))
+                )
+
+                // --------------------------------------------------------
+                // 3. Textos del Banner
+                // --------------------------------------------------------
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(start = 18.dp, top = 16.dp, bottom = 16.dp, end = if (currentBanner.imageRes != null) 110.dp else 18.dp),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = currentBanner.title,
+                        color = Color.White,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = currentBanner.subtitle,
+                        color = Color.White.copy(alpha = 0.85f),
+                        fontSize = 13.sp,
+                        lineHeight = 18.sp,
+                        maxLines = 2,
+                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                    )
+                }
+
+                // --------------------------------------------------------
+                // 4. EL RENDER 3D
+                // --------------------------------------------------------
+                if (currentBanner.imageRes != null) {
+                    Image(
+                        painter = painterResource(currentBanner.imageRes),
+                        contentDescription = "Ilustración 3D",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd)
+                            .padding(end = 12.dp)
+                            .size(90.dp)
+                    )
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(14.dp))
