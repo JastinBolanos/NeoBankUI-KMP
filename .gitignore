@@ -1,19 +1,54 @@
-*.iml
-.kotlin
-.gradle
-**/build/
-xcuserdata
-!src/**/build/
+# ==========================================
+# 🛑 SEGURIDAD Y CLAVES (CRÍTICO)
+# ==========================================
 local.properties
-.idea
-.DS_Store
-captures
-.externalNativeBuild
-.cxx
+*.jks
+*.keystore
+key.properties
+google-services.json
+GoogleService-Info.plist
+secrets.properties
+
+# ==========================================
+# 🏗️ COMPILACIÓN KMP / ANDROID (BUILD)
+# ==========================================
+.gradle/
+build/
+*/build/
+**/build/
+.kotlin/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# ==========================================
+# 🍏 IOS / XCODE
+# ==========================================
+xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings
+DerivedData/
+
+# Mantener la estructura del proyecto Xcode pero ignorar archivos de usuario
 *.xcodeproj/*
 !*.xcodeproj/project.pbxproj
 !*.xcodeproj/xcshareddata/
 !*.xcodeproj/project.xcworkspace/
-!*.xcworkspace/contents.xcworkspacedata
-**/xcshareddata/WorkspaceSettings.xcsettings
-node_modules/
+
+# ==========================================
+# 💻 ENTORNOS DE DESARROLLO (IDE)
+# ==========================================
+.idea/
+*.iml
+*.iws
+.vscode/
+
+# ==========================================
+# 🍎 SISTEMAS OPERATIVOS
+# ==========================================
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
