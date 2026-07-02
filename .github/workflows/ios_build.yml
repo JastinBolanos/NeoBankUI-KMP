@@ -22,7 +22,9 @@ jobs:
       - name: Compilar Framework de Kotlin (Gradle)
         run: |
           chmod +x gradlew
-          ./gradlew :shared:embedAndSignAppleFrameworkForXcode
+          ./gradlew :shared:embedAndSignAppleFrameworkForXcode \
+          -Pkotlin.native.cocoapods.platform=ios_arm64 \
+          -Pkotlin.native.cocoapods.archs=arm64
 
       - name: Compilar App de iOS
         run: |
