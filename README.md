@@ -14,13 +14,13 @@
 
 ---
 
-## 💎 La Visión
+## La Visión
 
 Un prototipo de interfaz financiera ultra-premium construido con **Kotlin Multiplatform (KMP)** y **Compose Multiplatform**. Diseñado para ofrecer una experiencia nativa de alta gama tanto en Android como en iOS desde un único código base.
 
 **AuraNova** va más allá de la UI tradicional. Establece un **"foso visual"** competitivo mediante una estética inmersiva y un flujo de usuario sin fricción (como el *portal diario* biométrico), demostrando que la complejidad visual no tiene por qué sacrificar la fluidez del rendimiento.
 
-## ⚙️ Stack y Excelencia Técnica
+## Stack y Excelencia Técnica
 
 El proyecto está estructurado para escalar, priorizando la separación de responsabilidades, la testabilidad y la eficiencia en el renderizado multiplataforma.
 
@@ -33,7 +33,7 @@ El proyecto está estructurado para escalar, priorizando la separación de respo
 
 ---
 
-## 📸 Case Study: Diseño de Interfaz (UI/UX)
+## Case Study: Diseño de Interfaz (UI/UX)
 
 La arquitectura de diseño de AuraNova se centra en la reducción de la carga cognitiva mediante jerarquías visuales claras, apoyadas por un uso extensivo de *Glassmorphism* (desenfoques en tiempo real) y una paleta de gradientes inmersiva.
 
@@ -76,14 +76,16 @@ Pantallas enfocadas en la legibilidad de datos financieros. Se utilizan contened
 * **Menú Perfil:** Uso de navegación lateral (*Drawer/Modal*) con un desenfoque progresivo sobre la pantalla principal, manteniendo el contexto de la aplicación.
 
 <p align="center">
-  <img src="docs/screen_send_money.jpg" width="300" alt="Transferencias"/>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="docs/screen_menu_profile.jpg" width="300" alt="Menú Perfil"/>
+  <img src="docs/screen_send_money.jpg" width="250" alt="Transferencias"/>
+  &nbsp;&nbsp;&nbsp;
+  <img src="docs/screen_menu_profile.jpg" width="250" alt="Menú Perfil"/>
+  &nbsp;&nbsp;&nbsp;
+  <img src="docs/screen_settings.jpg" width="250" alt="Configuración de Perfil"/>
 </p>
 
 ---
 
-## 🚀 Cómo ejecutar el proyecto
+## Cómo ejecutar el proyecto
 
 ### Prerrequisitos
 * **Android:** Android Studio Ladybug (o superior) con el plugin de Kotlin Multiplatform.
@@ -92,4 +94,21 @@ Pantallas enfocadas en la legibilidad de datos financieros. Se utilizan contened
 ### Instrucciones
 1. Clona este repositorio:
    ```bash
-   git clone [https://github.com/](https://github.com/)[TU_USUARIO]/NeoBankUI-KMP.git
+   git clone (https://github.com/JastinBolanos/NeoBankUI-KMP.git)
+
+2. **Para Android:** Abre el proyecto en Android Studio, selecciona la configuración `composeApp` y presiona *Run*.
+3. **Para iOS:**
+   * Abre la carpeta `iosApp` en Xcode.
+   * Espera a que la indexación de *Swift* y *Assets* termine.
+   * Selecciona un simulador (ej. iPhone 16/17) y presiona `Cmd + R`. Xcode delegará automáticamente la compilación del framework de Kotlin a Gradle.
+
+---
+
+## Licencia y Propiedad Intelectual
+
+Este repositorio está protegido bajo una **Licencia Propietaria de Uso Restringido**.
+
+* El código fuente se expone estrictamente con fines de **estudio, aprendizaje y evaluación técnica**.
+* **Queda estrictamente prohibido** el plagio de la estructura visual (disposición de cajas, gradientes por código, paletas de colores y layouts), así como su uso comercial no autorizado o republicación parcial en plataformas de terceros.
+* Para consultar los términos legales completos y las condiciones comerciales, lea el archivo [LICENSE](./LICENSE).
+* Para información sobre la atribución de recursos gráficos de terceros (renders 3D obtenidos legítimamente de la comunidad de Figma), consulte la declaración [ASSETS_LICENSE](./ASSETS_LICENSE.md).
