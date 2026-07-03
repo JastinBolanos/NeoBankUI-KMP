@@ -6,8 +6,8 @@ Actualmente, solo la versión principal recibe actualizaciones de seguridad.
 
 | Versión | Soportada          |
 | ------- | ------------------ |
-| 1.0.x   | :white_check_mark: |
-| < 1.0   | :x:                |
+| 1.0.x   | SI                 |
+| < 1.0   | NO                |
 
 ## Reportar una Vulnerabilidad
 
