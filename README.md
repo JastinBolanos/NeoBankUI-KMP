@@ -95,7 +95,8 @@ Pantallas enfocadas en la legibilidad de datos financieros. Se utilizan contened
 ### Instrucciones
 1. Clona este repositorio:
    ```bash
-   git clone (https://github.com/JastinBolanos/NeoBankUI-KMP.git)
+   git clone [https://github.com/JastinBolanos/NeoBankUI-KMP.git](https://github.com/JastinBolanos/NeoBankUI-KMP.git)
+   cd NeoBankUI-KMP
 
 2. **Para Android:** Abre el proyecto en Android Studio, selecciona la configuración `composeApp` y presiona *Run*.
 3. **Para iOS:**
