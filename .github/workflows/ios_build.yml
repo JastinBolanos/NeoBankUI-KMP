@@ -22,10 +22,8 @@ jobs:
       - name: Dar permisos a Gradle
         run: chmod +x gradlew
 
-      - name: Compilar App de iOS (Xcode + Gradle)
-        run: |
-          cd iosApp
-          xcodebuild build -scheme iosApp -destination 'platform=iOS Simulator,name=iPhone 17'
+      - name: Forzar Xcode 16.2 (Versión Estable KMP)
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
 
       - name: Compilar App de iOS
         run: |
