@@ -43,7 +43,7 @@ La arquitectura de diseño de AuraNova se centra en la reducción de la carga co
 El flujo de usuario comienza con una pantalla de autenticación diseñada sin fricciones. Se emplea un desenfoque dinámico sobre las tarjetas subyacentes, creando un efecto de profundidad de campo (Z-Index) que guía el foco hacia el sensor biométrico.
 
 <p align="center">
-  <img src="docs/screen_biometric.jpg" width="300" alt="Pantalla de inicio biométrico"/>
+  <img src="docs/screen_biometric.png" width="300" alt="Pantalla de inicio biométrico"/>
 </p>
 
 ---
@@ -52,10 +52,11 @@ El flujo de usuario comienza con una pantalla de autenticación diseñada sin fr
 El núcleo de la aplicación. Se implementó un `HorizontalPager` avanzado que permite una navegación cíclica entre diferentes ofertas financieras. Cada banner utiliza renderizado de capas (sombras y desenfoques) para lograr texturas metálicas y de cristal sobre un fondo de gradiente adaptativo.
 
 <p align="center">
-  <img src="docs/screen_home_banner1.jpg" width="220" alt="Banner Mundo"/>
-  <img src="docs/screen_home_banner2.jpg" width="220" alt="Banner Crédito"/>
-  <img src="docs/screen_home_banner3.jpg" width="220" alt="Banner Inversiones"/>
-  <img src="docs/screen_home_banner4.jpg" width="220" alt="Banner Metal"/>
+  <img src="docs/screen_home_banner1.png" width="220" alt="Banner Mundo"/>
+  <img src="docs/screen_home_banner2.png" width="220" alt="Banner Crédito"/>
+  <img src="docs/screen_home_banner3.png" width="220" alt="Banner Inversiones"/>
+  <img src="docs/screen_home_banner4.png" width="220" alt="Banner Metal"/>
+  <img src="docs/screen_home_banner5.png" width="220" alt="Banner Tecnología"/>
 </p>
 
 ---
@@ -64,9 +65,9 @@ El núcleo de la aplicación. Se implementó un `HorizontalPager` avanzado que p
 Pantallas enfocadas en la legibilidad de datos financieros. Se utilizan contenedores con bordes redondeados y opacidad reducida (*Surface Glassmorphism*) para mantener la inmersión del gradiente de fondo sin sacrificar el contraste del texto (accesibilidad).
 
 <p align="center">
-  <img src="docs/screen_cards.jpg" width="300" alt="Detalle de Tarjetas"/>
+  <img src="docs/screen_cards.png" width="300" alt="Detalle de Tarjetas"/>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="docs/screen_history.jpg" width="300" alt="Historial de Transacciones"/>
+  <img src="docs/screen_history.png" width="300" alt="Historial de Transacciones"/>
 </p>
 
 ---
@@ -76,11 +77,11 @@ Pantallas enfocadas en la legibilidad de datos financieros. Se utilizan contened
 * **Menú Perfil:** Uso de navegación lateral (*Drawer/Modal*) con un desenfoque progresivo sobre la pantalla principal, manteniendo el contexto de la aplicación.
 
 <p align="center">
-  <img src="docs/screen_send_money.jpg" width="250" alt="Transferencias"/>
+  <img src="docs/screen_send_money.png" width="250" alt="Transferencias"/>
   &nbsp;&nbsp;&nbsp;
-  <img src="docs/screen_menu_profile.jpg" width="250" alt="Menú Perfil"/>
+  <img src="docs/screen_menu_profile.png" width="250" alt="Menú Perfil"/>
   &nbsp;&nbsp;&nbsp;
-  <img src="docs/screen_settings.jpg" width="250" alt="Configuración de Perfil"/>
+  <img src="docs/screen_profile.png" width="250" alt="Configuración de Perfil"/>
 </p>
 
 ---
