@@ -25,7 +25,7 @@ jobs:
       - name: Compilar App de iOS (Xcode + Gradle)
         run: |
           cd iosApp
-          xcodebuild build -scheme iosApp -destination 'platform=iOS Simulator,name=iPhone 16'
+          xcodebuild build -scheme iosApp -destination 'platform=iOS Simulator,name=iPhone 17'
 
       - name: Compilar App de iOS
         run: |
