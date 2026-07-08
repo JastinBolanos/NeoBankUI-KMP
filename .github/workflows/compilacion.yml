@@ -27,4 +27,4 @@ jobs:
         run: chmod +x gradlew
 
       - name: Compilar Proyecto KMP (Android e iOS)
-        run: ./gradlew build --no-daemon
+        run: ./gradlew build --no-daemon 
