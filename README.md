@@ -106,7 +106,7 @@ Screens focused on the readability of financial data. Containers with rounded co
 
 ---
 
-## License and Intellectual Property
+## ⚖️ License and Intellectual Property
 
 This repository is protected under a **Proprietary Restricted-Use License**.
 
