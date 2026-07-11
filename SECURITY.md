@@ -1,18 +1,18 @@
-# Política de Seguridad (Security Policy)
+# Security Policy
 
-## Versiones Soportadas
+## Supported Versions
 
-Actualmente, solo la versión principal recibe actualizaciones de seguridad.
+Currently, only the main version receives security updates.
 
-| Versión | Soportada          |
+| Version | Supported          |
 | ------- | ------------------ |
-| 1.0.x   | SI                 |
-| < 1.0   | NO                |
+| 1.0.x   | YES                |
+| < 1.0   | NO                 |
 
-## Reportar una Vulnerabilidad
+## Reporting a Vulnerability
 
-Valoramos enormemente el trabajo de la comunidad de seguridad. Si descubres una vulnerabilidad en AuraNova / NeoBankUI, por favor **no la reportes creando un Issue público**.
+We highly value the work of the security community. If you discover a vulnerability in AuraNova / NeoBankUI, please **DO NOT report it by creating a public Issue**.
 
-En su lugar, envía un correo electrónico directamente a: **jastinbolanos.dev [arroba] gmail [punto] com**
+Instead, please send an email directly to: **jastinbolanos.dev [at] gmail [dot] com**
 
-Proporciona detalles sobre la vulnerabilidad, los pasos para reproducirla y cualquier posible mitigación. Responderemos en un plazo máximo de 48 horas para coordinar la solución antes de cualquier divulgación pública.
+Please provide details about the vulnerability, steps to reproduce it, and any possible mitigations. We will respond within a maximum of 48 hours to coordinate a patch before any public disclosure.
