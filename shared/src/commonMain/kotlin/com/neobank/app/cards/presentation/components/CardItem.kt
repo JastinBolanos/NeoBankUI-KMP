@@ -44,7 +44,7 @@ fun CardItem(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
 
-            // --- GRUPO 1 (TOP): Título y Balance ---
+            // --- GROUP 1 (TOP): Title and Balance ---
             Column {
                 Text(
                     text = "Current Balance",
@@ -70,7 +70,7 @@ fun CardItem(
                 )
             }
 
-            // --- GRUPO 2 (MIDDLE): Número de Tarjeta ---
+            // --- GROUP 2 (MIDDLE): Card Number ---
             Text(
                 text = cardNumber.replace(" ", "  "),
                 color = Color.White,
@@ -85,13 +85,13 @@ fun CardItem(
                 )
             )
 
-            // --- GRUPO 3 (BOTTOM): Fecha y Logo ---
+            // --- GROUP 3 (BOTTOM): Date and Logo ---
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Fecha
+                // Expiry Date
                 Text(
                     text = expiryDate,
                     color = Color.White,
@@ -99,7 +99,7 @@ fun CardItem(
                     letterSpacing = 2.sp
                 )
 
-                // Logo Mastercard
+                // Mastercard Logo
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {

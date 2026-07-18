@@ -40,7 +40,7 @@ fun NeoBottomNavigationBar(
     isDarkMode: Boolean = false,
     onTabSelected: (NavTab) -> Unit
 ) {
-    // --- LÓGICA DE COLORES DINÁMICOS ---
+    // --- DYNAMIC COLOR LOGIC ---
     val backgroundColor = if (isDarkMode) Color.Black else Color.White
     val activeColor = Color(0xFF3F1D6B)
     val inactiveColor = if (isDarkMode) Color(0xFF8E8E93) else Color(0xFFA8A8A8)
@@ -58,7 +58,7 @@ fun NeoBottomNavigationBar(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // 1. Icono Casa
+            // 1. Home Icon
             val homeColor = if (selectedTab == NavTab.Home) activeColor else inactiveColor
             Box(
                 modifier = Modifier
@@ -75,7 +75,7 @@ fun NeoBottomNavigationBar(
                 )
             }
 
-            // 2. Icono Historial
+            // 2. History Icon
             val historyColor = if(selectedTab == NavTab.History) activeColor else inactiveColor
             Box(
                 modifier = Modifier.size(44.dp).clip(CircleShape).clickable { onTabSelected(NavTab.History) },
@@ -89,7 +89,7 @@ fun NeoBottomNavigationBar(
                 )
             }
 
-            // 3. Icono Tarjeta
+            // 3. Cards Icon
             val cardsColor = if (selectedTab == NavTab.Cards) activeColor else inactiveColor
             Box(
                 modifier = Modifier
@@ -106,7 +106,7 @@ fun NeoBottomNavigationBar(
                 )
             }
 
-            // 4. Avatar
+            // 4. Profile Avatar
             Box(
                 modifier = Modifier
                     .size(32.dp)

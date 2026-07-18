@@ -120,7 +120,7 @@ private fun KeypadButtonDeletePlain(
     ) {
         Icon(
             painter = icon,
-            contentDescription = "Borrar",
+            contentDescription = "Delete",
             tint = Color.White.copy(alpha = 0.85f),
             modifier = Modifier.size(24.dp)
         )

@@ -47,15 +47,15 @@ fun ProfileScreen(
             .fillMaxSize()
             .background(DarkBackground)
     ) {
-        // --- 1. FONDO DEGRADADO ---
+        // --- 1. GRADIENT BACKGROUND ---
         Image(
             painter = painterResource(Res.drawable.bg_profile),
-            contentDescription = "Fondo de perfil",
+            contentDescription = "Profile background",
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
 
-        // --- CONTENIDO DESLIZABLE ---
+        // --- SCROLLABLE CONTENT ---
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -66,13 +66,13 @@ fun ProfileScreen(
         ) {
             Spacer(modifier = Modifier.height(16.dp))
 
-            // 1. TOP BAR (Botón X y Botón Upgrade)
+            // 1. TOP BAR (Close Button and Upgrade Button)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Botón Cerrar (X)
+                // Close Button (X)
                 Icon(
                     imageVector = Icons.Default.Close,
                     contentDescription = "Close",
@@ -82,12 +82,12 @@ fun ProfileScreen(
                         .clickable { onNavigateToHome() }
                 )
 
-                // Botón Upgrade
+                // Upgrade Button
                 Row(
                     modifier = Modifier
                         .clip(RoundedCornerShape(20.dp))
                         .background(CardBackground)
-                        .clickable { /* Lógica Upgrade */ }
+                        .clickable { /* Upgrade logic */ }
                         .padding(horizontal = 12.dp, vertical = 6.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -109,12 +109,12 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // 2. SECCIÓN DE USUARIO (Foto, Nombre, Username)
+            // 2. USER SECTION (Photo, Name, Username)
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Foto de perfil circular
+                // Circular profile photo
                 Box(
                     modifier = Modifier
                         .size(80.dp)
@@ -132,7 +132,7 @@ fun ProfileScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Nombre
+                // Name
                 Text(
                     text = "Saurabh Kumar",
                     color = Color.White,
@@ -142,7 +142,7 @@ fun ProfileScreen(
 
                 Spacer(modifier = Modifier.height(4.dp))
 
-                // Username y QR
+                // Username and QR
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = "@kumar10",
@@ -161,12 +161,12 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // 3. TARJETAS DE ACCIÓN (Premium y Referrals)
+            // 3. ACTION CARDS (Premium and Referrals)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                // Tarjeta 1: Premium
+                // Card 1: Premium
                 ActionCard(
                     modifier = Modifier.weight(1f),
                     iconContent = { StackedCardsIcon() },
@@ -174,7 +174,7 @@ fun ProfileScreen(
                     subtitle = "Your plan"
                 )
 
-                // Tarjeta 2: Referrals
+                // Card 2: Referrals
                 ActionCard(
                     modifier = Modifier.weight(1f),
                     iconContent = {
@@ -192,7 +192,7 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // 4. BLOQUE DE AJUSTES 1
+            // 4. SETTINGS BLOCK 1
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -208,7 +208,7 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // 5. BLOQUE DE AJUSTES 2
+            // 5. SETTINGS BLOCK 2
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -223,7 +223,7 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // 6. BLOQUE DE AJUSTES 3 (About & Log out)
+            // 6. SETTINGS BLOCK 3 (About & Log out)
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -236,7 +236,7 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // 7. FOOTER DE VERSIÓN
+            // 7. VERSION FOOTER
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -255,7 +255,7 @@ fun ProfileScreen(
             }
         }
 
-        // --- BARRA DE NAVEGACIÓN INFERIOR ---
+        // --- BOTTOM NAVIGATION BAR ---
         Box(modifier = Modifier.align(Alignment.BottomCenter)) {
             NeoBottomNavigationBar(
                 selectedTab = selectedTab,
@@ -266,7 +266,7 @@ fun ProfileScreen(
     }
 }
 
-// --- COMPONENTES REUTILIZABLES ---
+// --- REUSABLE COMPONENTS ---
 
 @Composable
 fun ActionCard(
@@ -279,7 +279,7 @@ fun ActionCard(
         modifier = modifier
             .clip(RoundedCornerShape(20.dp))
             .background(CardBackground)
-            .clickable { /* Acción */ }
+            .clickable { /* Action */ }
             .padding(16.dp)
     ) {
         iconContent()
@@ -308,7 +308,7 @@ fun SettingsRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { /* Acción */ }
+            .clickable { /* Action */ }
             .padding(horizontal = 16.dp, vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -349,7 +349,7 @@ fun SettingsRow(
 @Composable
 fun StackedCardsIcon() {
     Box(modifier = Modifier.size(28.dp, 24.dp)) {
-        // Tarjeta trasera
+        // Back card
         Box(
             modifier = Modifier
                 .offset(x = 0.dp, y = 0.dp)
@@ -358,7 +358,7 @@ fun StackedCardsIcon() {
                 .background(Color.White.copy(alpha = 0.15f))
                 .border(0.5.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(3.dp))
         )
-        // Tarjeta delantera
+        // Front card
         Box(
             modifier = Modifier
                 .offset(x = 6.dp, y = 8.dp)

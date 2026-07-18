@@ -38,7 +38,7 @@ fun NoteField(modifier: Modifier = Modifier) {
     ) {
         Icon(
             painter = painterResource(Res.drawable.ic_dots_grid),
-            contentDescription = "Añadir nota",
+            contentDescription = "Add note",
             tint = Color.White.copy(alpha = 0.65f),
             modifier = Modifier.size(20.dp)
         )

@@ -45,10 +45,10 @@ fun CardsScreen(
     onTabSelected: (NavTab) -> Unit = {}
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        // FONDO
+        // BACKGROUND
         Image(
             painter = painterResource(Res.drawable.bg_neobank),
-            contentDescription = "Fondo",
+            contentDescription = "Background",
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
@@ -61,7 +61,7 @@ fun CardsScreen(
                     "masked" to "**** **** **** 1289",
                     "expiry" to "09 / 25",
                     "cvv" to "654",
-                    "balance" to "$5 750,20"
+                    "balance" to "$5,750.20"
                 ),
                 mapOf(
                     "holder" to "Saurabh Kumar",
@@ -69,7 +69,7 @@ fun CardsScreen(
                     "masked" to "**** **** **** 1388",
                     "expiry" to "11 / 26",
                     "cvv" to "721",
-                    "balance" to "$10 985,84"
+                    "balance" to "$10,985.84"
                 ),
                 mapOf(
                     "holder" to "Saurabh Kumar",
@@ -77,7 +77,7 @@ fun CardsScreen(
                     "masked" to "**** **** **** 4923",
                     "expiry" to "01 / 27",
                     "cvv" to "903",
-                    "balance" to "$2 340,00"
+                    "balance" to "$2,340.00"
                 )
             )
         }
@@ -101,7 +101,7 @@ fun CardsScreen(
                     modifier = Modifier.weight(1f)
                 )
 
-                // Icono ESCÁNER
+                // SCANNER Icon
                 Box(
                     modifier = Modifier
                         .size(44.dp)
@@ -112,7 +112,7 @@ fun CardsScreen(
                 ) {
                     Icon(
                         painter = painterResource(Res.drawable.ic_scanner),
-                        contentDescription = "Escanear tarjeta",
+                        contentDescription = "Scan card",
                         tint = Color.White,
                         modifier = Modifier.size(22.dp)
                     )
@@ -120,7 +120,7 @@ fun CardsScreen(
 
                 Spacer(modifier = Modifier.width(12.dp))
 
-                // Icono NOTIFICACIONES
+                // NOTIFICATIONS Icon
                 Box(
                     modifier = Modifier
                         .size(44.dp)
@@ -137,7 +137,7 @@ fun CardsScreen(
                 }
             }
 
-            // --- CARRUSEL ---
+            // --- CAROUSEL ---
             HorizontalPager(
                 state = pagerState,
                 contentPadding = PaddingValues(horizontal = 48.dp),
@@ -171,7 +171,7 @@ fun CardsScreen(
                 )
             }
 
-            // --- INDICADORES ---
+            // --- INDICATORS ---
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -193,7 +193,7 @@ fun CardsScreen(
             }
         }
 
-        // --- DETALLES DE TARJETA ---
+        // --- CARD DETAILS ---
         Surface(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
@@ -222,7 +222,7 @@ fun CardsScreen(
                     modifier = Modifier.padding(bottom = 18.dp)
                 )
 
-                // Titular
+                // Cardholder
                 Text(
                     text = "Cardholder Name",
                     color = Color(0xFF222222),
@@ -246,7 +246,7 @@ fun CardsScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Número de tarjeta
+                // Card Number
                 Text(
                     text = "Card Number",
                     color = Color(0xFF222222),
@@ -292,7 +292,7 @@ fun CardsScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Número de Cuenta
+                // Account Number
                 Text(
                     text = "Account Number",
                     color = Color(0xFF222222),
@@ -330,7 +330,7 @@ fun CardsScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Vencimiento + CVV
+                // Expiration + CVV
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -384,7 +384,7 @@ fun CardsScreen(
             }
         }
 
-        // --- NAVEGACIÓN INFERIOR ---
+        // --- BOTTOM NAVIGATION ---
         Box(modifier = Modifier.align(Alignment.BottomCenter)) {
             NeoBottomNavigationBar(
                 selectedTab = selectedTab,
@@ -392,9 +392,9 @@ fun CardsScreen(
                     when (tab) {
                         NavTab.Home     -> onNavigateToHome()
                         NavTab.History  -> onNavigateToHistory()
-                        NavTab.Cards    -> { /* ya estamos aquí */ }
+                        NavTab.Cards    -> { /* We are already here */ }
                         NavTab.Profile  -> onNavigateToProfile()
-                        NavTab.Transfer -> { /* sin uso actualmente */ }
+                        NavTab.Transfer -> { /* Currently unused */ }
                     }
                 }
             )

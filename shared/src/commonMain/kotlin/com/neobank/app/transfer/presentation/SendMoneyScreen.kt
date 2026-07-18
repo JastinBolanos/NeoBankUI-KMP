@@ -31,6 +31,19 @@ import neobankui.shared.generated.resources.ic_arrow_back_custom
 import neobankui.shared.generated.resources.ic_user_list
 import org.jetbrains.compose.resources.painterResource
 
+private fun formatCurrency(value: Double): String {
+    val isWholeNumber = value % 1.0 == 0.0
+    val integerPart = value.toLong().toString()
+    val formattedInteger = integerPart.reversed().chunked(3).joinToString(",").reversed()
+
+    return if (isWholeNumber) {
+        formattedInteger
+    } else {
+        val decimalPart = value.toString().substringAfter(".")
+        "$formattedInteger.$decimalPart"
+    }
+}
+
 @Composable
 fun SendMoneyScreen(
     currentBalance: Double,
@@ -38,11 +51,12 @@ fun SendMoneyScreen(
     onBackClick: () -> Unit = {}
 ) {
     var amount by remember { mutableStateOf("0") }
+    val maxLimit = 10000.0
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(Res.drawable.bg_neobank),
-            contentDescription = "Fondo",
+            contentDescription = "Background",
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
@@ -53,7 +67,7 @@ fun SendMoneyScreen(
                 .padding(horizontal = 24.dp, vertical = 66.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // --- ENCABEZADO ---
+            // --- HEADER ---
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -68,7 +82,7 @@ fun SendMoneyScreen(
                 ) {
                     Icon(
                         painter = painterResource(Res.drawable.ic_arrow_back_custom),
-                        contentDescription = "Volver",
+                        contentDescription = "Back",
                         tint = Color.White,
                         modifier = Modifier.size(18.dp)
                     )
@@ -88,7 +102,7 @@ fun SendMoneyScreen(
 
             Spacer(modifier = Modifier.height(48.dp))
 
-            // --- MONTO ---
+            // --- AMOUNT ---
             Text(
                 text = "$$amount",
                 color = Color.White,
@@ -105,20 +119,20 @@ fun SendMoneyScreen(
 
             Spacer(modifier = Modifier.height(36.dp))
 
-            // --- SELECTOR DE CUENTA ---
+            // --- ACCOUNT SELECTOR ---
             AccountSelector(
                 accountName = "Main",
-                balance = "$${currentBalance}"
+                balance = "$${formatCurrency(currentBalance)}"
             )
 
             Spacer(modifier = Modifier.height(48.dp))
 
-            // --- CAMPO DE NOTA ---
+            // --- NOTE FIELD ---
             NoteField()
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // --- BOTÓN ENVIAR + ÍCONO ---
+            // --- SEND BUTTON + ICON ---
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -130,7 +144,7 @@ fun SendMoneyScreen(
                         .clip(RoundedCornerShape(28.dp))
                         .clickable {
                             val amountToSend = amount.toDoubleOrNull() ?: 0.0
-                            if (amountToSend > 0.0 && amountToSend <= currentBalance) {
+                            if (amountToSend > 0.0 && amountToSend <= currentBalance && amountToSend <= maxLimit) {
                                 onSendMoney(amountToSend)
                             }
                         },
@@ -151,7 +165,7 @@ fun SendMoneyScreen(
 
                 Icon(
                     painter = painterResource(Res.drawable.ic_user_list),
-                    contentDescription = "Seleccionar contacto",
+                    contentDescription = "Select contact",
                     tint = Color.Unspecified,
                     modifier = Modifier.size(36.dp)
                 )
@@ -159,11 +173,13 @@ fun SendMoneyScreen(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            // --- TECLADO NUMÉRICO ---
+            // --- KEYPAD ---
             Keypad(
                 onNumberClick = { number ->
-                    if (amount == "0") amount = number
-                    else amount += number
+                    val newAmount = if (amount == "0") number else amount + number
+                    if ((newAmount.toDoubleOrNull() ?: 0.0) <= maxLimit) {
+                        amount = newAmount
+                    }
                 },
                 onDotClick = {
                     if (!amount.contains(".")) amount += "."

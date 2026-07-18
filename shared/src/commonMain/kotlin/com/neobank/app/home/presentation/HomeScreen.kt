@@ -24,6 +24,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.jetbrains.compose.resources.painterResource
+import androidx.compose.material3.Icon
+import androidx.compose.runtime.LaunchedEffect
+import com.neobank.app.core.navigation.NavTab
+import com.neobank.app.core.navigation.NeoBottomNavigationBar
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.neobank.app.menu.presentation.MenuPanel
 import neobankui.shared.generated.resources.Res
 import neobankui.shared.generated.resources.bg_neobank
 import neobankui.shared.generated.resources.ic_more
@@ -36,17 +46,7 @@ import neobankui.shared.generated.resources.ic_youtube
 import neobankui.shared.generated.resources.ic_facebook
 import neobankui.shared.generated.resources.ic_visa
 import neobankui.shared.generated.resources.ic_claro
-import org.jetbrains.compose.resources.painterResource
-import androidx.compose.material3.Icon
-import androidx.compose.runtime.LaunchedEffect
-import com.neobank.app.core.navigation.NavTab
-import com.neobank.app.core.navigation.NeoBottomNavigationBar
 import neobankui.shared.generated.resources.ic_scanner
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import com.neobank.app.menu.presentation.MenuPanel
 import neobankui.shared.generated.resources.bg_credit_banner
 import neobankui.shared.generated.resources.bg_iphone_banner
 import neobankui.shared.generated.resources.bg_metal_banner
@@ -79,18 +79,18 @@ fun HomeScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-        // EL FONDO
+        // BACKGROUND
         Image(
             painter = painterResource(Res.drawable.bg_neobank),
-            contentDescription = "Fondo",
+            contentDescription = "Background",
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
 
-        // EL CONTENIDO PRINCIPAL
+        // MAIN CONTENT
         Column(modifier = Modifier.fillMaxSize()) {
 
-            // --- MITAD SUPERIOR ---
+            // --- TOP HALF ---
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -118,7 +118,7 @@ fun HomeScreen(
                 PromoCardsSection()
             }
 
-            // --- MITAD INFERIOR ---
+            // --- BOTTOM HALF ---
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -130,7 +130,7 @@ fun HomeScreen(
             }
         }
 
-        // LA BARRA DE NAVEGACIÓN INFERIOR
+        // BOTTOM NAVIGATION BAR
         Box(modifier = Modifier.align(Alignment.BottomCenter)) {
             NeoBottomNavigationBar(
                 selectedTab = NavTab.Home,
@@ -139,15 +139,16 @@ fun HomeScreen(
                         NavTab.Cards -> onNavigateToCards()
                         NavTab.History -> onNavigateToHistory()
                         NavTab.Profile -> onNavigateToProfile()
-                        NavTab.Home -> { /* Ya estamos aquí */ }
-                        NavTab.Transfer -> { /* Solo se usa desde el botón superior */ }
+                        NavTab.Home -> { /* We are already here */ }
+                        NavTab.Transfer -> { /* Only used from the top button */ }
                     }
                 }
             )
         }
-        // --- ANIMACIONES DEL MENÚ LATERAL ---
 
-        // 3. Capa oscura de fondo (Dimmer)
+        // --- SIDE MENU ANIMATIONS ---
+
+        // 3. Dark background layer (Dimmer)
         AnimatedVisibility(
             visible = isMenuOpen,
             enter = fadeIn(),
@@ -161,7 +162,7 @@ fun HomeScreen(
             )
         }
 
-        // 4. Panel Deslizable
+        // 4. Sliding Panel
         AnimatedVisibility(
             visible = isMenuOpen,
             enter = slideInHorizontally(initialOffsetX = { fullWidth -> fullWidth }),
@@ -177,7 +178,7 @@ fun HomeScreen(
 }
 
 
-// --- SUB-COMPONENTES ---
+// --- SUB-COMPONENTS ---
 @Composable
 private fun TopBarSection(modifier: Modifier = Modifier) {
     Row(
@@ -203,7 +204,7 @@ private fun TopBarSection(modifier: Modifier = Modifier) {
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Icono ESCÁNER
+            // SCANNER Icon
             Box(
                 modifier = Modifier
                     .size(44.dp)
@@ -213,13 +214,13 @@ private fun TopBarSection(modifier: Modifier = Modifier) {
             ) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_scanner),
-                    contentDescription = "Escanear código",
+                    contentDescription = "Scan code",
                     tint = Color.White,
                     modifier = Modifier.size(22.dp)
                 )
             }
 
-            // Icono NOTIFICACIONES
+            // NOTIFICATIONS Icon
             Box(
                 modifier = Modifier
                     .size(44.dp)
@@ -246,7 +247,7 @@ fun Double.toFormattedCurrency(): String {
     return "$formattedInteger.$decimalPart"
 }
 
-// 2. SECCIÓN DE BALANCE
+// 2. BALANCE SECTION
 @Composable
 private fun BalanceSection(balance: Double) {
     Column(
@@ -295,7 +296,7 @@ private fun QuickActionsSection(
         ActionItemPainter(
             painter = painterResource(Res.drawable.ic_bonuses),
             label = "My bonuses",
-            onClick = { /* Lógica futura */ }
+            onClick = { /* Future logic */ }
         )
 
         ActionItemPainter(
@@ -346,7 +347,7 @@ private fun ActionItemPainter(
     }
 }
 // =========================================================================
-// SECCIÓN: CARRUSEL INFINITO CON BANNERS REALES E IMÁGENES 3D
+// SECTION: INFINITE CAROUSEL WITH REAL BANNERS AND 3D IMAGES
 // =========================================================================
 @Composable
 private fun PromoCardsSection() {
@@ -354,31 +355,31 @@ private fun PromoCardsSection() {
     val banners = listOf(
         PromoBanner(
             title = "Upgrade to Metal",
-            subtitle = "Pide tu tarjeta NeoBank Metal y obtén 5% de cashback.",
+            subtitle = "Request your NeoBank Metal card and get 5% cashback.",
             backgroundColor = Color(0xFF181A20),
             imageRes = Res.drawable.img_card_metal
         ),
         PromoBanner(
             title = "iPhone 15 Pro Titanium",
-            subtitle = "0% de interés y 24 cuotas con tu tarjeta NeoBank.",
+            subtitle = "0% interest and 24 installments with your NeoBank card.",
             backgroundColor = Color(0xFF232529),
             imageRes = Res.drawable.img_iphone_titanium
         ),
         PromoBanner(
-            title = "El mundo te espera",
-            subtitle = "Doble acumulación de millas y acceso al Salón VIP.",
+            title = "The world awaits you",
+            subtitle = "Earn double miles and get VIP Lounge access.",
             backgroundColor = Color(0xFF6A11CB),
             imageRes = Res.drawable.img_travel_miles
         ),
         PromoBanner(
-            title = "Haz crecer tu dinero",
-            subtitle = "Invierte en las top 500 empresas de USA desde $10.",
+            title = "Make your money grow",
+            subtitle = "Invest in the top 500 US companies starting from $10.",
             backgroundColor = Color(0xFF15171E),
             imageRes = Res.drawable.img_invest_coins
         ),
         PromoBanner(
-            title = "Línea de Crédito Aprobada",
-            subtitle = "Tienes $15,000 disponibles. Desembolso inmediato.",
+            title = "Credit Line Approved",
+            subtitle = "You have $15,000 available. Instant disbursement.",
             backgroundColor = Color(0xFFFF9580),
             imageRes = Res.drawable.img_credit_lock
         ),
@@ -407,7 +408,7 @@ private fun PromoCardsSection() {
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // El carrusel de tarjetas
+        // The card carousel
         androidx.compose.foundation.pager.HorizontalPager(
             state = pagerState,
             contentPadding = PaddingValues(horizontal = 24.dp),
@@ -418,7 +419,7 @@ private fun PromoCardsSection() {
             val actualPage = page % actualPageCount
             val currentBanner = banners[actualPage]
 
-            // DISEÑO DEL BANNER
+            // BANNER DESIGN
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -427,40 +428,40 @@ private fun PromoCardsSection() {
                     .background(currentBanner.backgroundColor)
             ) {
                 // --------------------------------------------------------
-                // 1. FONDOS EXCLUSIVOS (iPhone, Crédito, Metal y Viajes)
+                // 1. EXCLUSIVE BACKGROUNDS (iPhone, Credit, Metal, and Travel)
                 // --------------------------------------------------------
                 if (currentBanner.title.contains("iPhone")) {
                     Image(
                         painter = painterResource(Res.drawable.bg_iphone_banner),
-                        contentDescription = "Fondo Premium iPhone",
+                        contentDescription = "Premium iPhone Background",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
-                } else if (currentBanner.title.contains("Crédito")) {
+                } else if (currentBanner.title.contains("Credit")) {
                     Image(
                         painter = painterResource(Res.drawable.bg_credit_banner),
-                        contentDescription = "Fondo Premium Crédito",
+                        contentDescription = "Premium Credit Background",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
                 } else if (currentBanner.title.contains("Metal")) {
                     Image(
                         painter = painterResource(Res.drawable.bg_metal_banner),
-                        contentDescription = "Fondo Premium Metal",
+                        contentDescription = "Premium Metal Background",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
-                } else if (currentBanner.title.contains("espera")) {
+                } else if (currentBanner.title.contains("awaits")) {
                     Image(
                         painter = painterResource(Res.drawable.bg_travel_banner),
-                        contentDescription = "Fondo Premium Viajes",
+                        contentDescription = "Premium Travel Background",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
                 }
 
                 // --------------------------------------------------------
-                // 2. EL FAMOSO CÍRCULO TRANSPARENTE
+                // 2. THE FAMOUS TRANSPARENT CIRCLE
                 // --------------------------------------------------------
                 Box(
                     modifier = Modifier
@@ -472,7 +473,7 @@ private fun PromoCardsSection() {
                 )
 
                 // --------------------------------------------------------
-                // 3. Textos del Banner
+                // 3. Banner Texts
                 // --------------------------------------------------------
                 Column(
                     modifier = Modifier
@@ -498,12 +499,12 @@ private fun PromoCardsSection() {
                 }
 
                 // --------------------------------------------------------
-                // 4. EL RENDER 3D
+                // 4. THE 3D RENDER
                 // --------------------------------------------------------
                 if (currentBanner.imageRes != null) {
                     Image(
                         painter = painterResource(currentBanner.imageRes),
-                        contentDescription = "Ilustración 3D",
+                        contentDescription = "3D Illustration",
                         contentScale = ContentScale.Fit,
                         modifier = Modifier
                             .align(Alignment.CenterEnd)
@@ -516,7 +517,7 @@ private fun PromoCardsSection() {
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        // Los puntos indicadores
+        // The indicator dots
         val currentActualPage = pagerState.currentPage % actualPageCount
 
         Row(
@@ -555,7 +556,7 @@ private fun LoadingDot(isActive: Boolean) {
         }
     }
 
-    // Fondo gris del punto o pastilla
+    // Gray background of the dot or pill
     Box(
         modifier = Modifier
             .height(6.dp)
@@ -660,7 +661,7 @@ private fun TransactionItem(
             .padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // 1. EL CONTENEDOR
+        // 1. THE CONTAINER
         Box(
             modifier = Modifier
                 .size(48.dp)
@@ -668,7 +669,7 @@ private fun TransactionItem(
                 .background(Color.White),
             contentAlignment = Alignment.Center
         ) {
-            // 2. EL LOGO
+            // 2. THE LOGO
             Image(
                 painter = painter,
                 contentDescription = title,
@@ -679,7 +680,7 @@ private fun TransactionItem(
 
         Spacer(modifier = Modifier.width(16.dp))
 
-        // Textos del centro
+        // Center texts
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
@@ -697,7 +698,7 @@ private fun TransactionItem(
             )
         }
 
-        // Monto a la derecha
+        // Amount on the right
         Text(
             text = amount,
             color = Color(0xFF1A1A1A),

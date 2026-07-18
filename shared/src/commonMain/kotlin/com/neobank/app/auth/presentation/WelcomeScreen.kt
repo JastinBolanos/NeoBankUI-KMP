@@ -3,7 +3,9 @@ package com.neobank.app.auth.presentation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,18 +18,33 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.gestures.detectTapGestures
+import kotlinx.coroutines.delay
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.graphics.graphicsLayer
+import kotlinx.coroutines.launch
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.material3.Icon
-import androidx.compose.ui.input.pointer.pointerInput
 import com.neobank.app.auth.presentation.components.GlassCard
+import kotlinx.coroutines.withTimeoutOrNull
 import neobankui.shared.generated.resources.Res
 import neobankui.shared.generated.resources.bg_neobank
 import neobankui.shared.generated.resources.ic_fingerprint
@@ -38,7 +55,7 @@ fun WelcomeScreen(onNavigateToHome: () -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(Res.drawable.bg_neobank),
-            contentDescription = "Fondo Premium NeoBank",
+            contentDescription = "Premium NeoBank Background",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
@@ -48,7 +65,7 @@ fun WelcomeScreen(onNavigateToHome: () -> Unit) {
                 .fillMaxSize()
                 .padding(24.dp)
         ) {
-            // --- TÍTULO SUPERIOR (Logo de la marca) ---
+            // --- TOP TITLE (Brand Logo) ---
             Text(
                 text = "AuraNova",
                 color = Color.White,
@@ -60,13 +77,13 @@ fun WelcomeScreen(onNavigateToHome: () -> Unit) {
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            // --- ZONA DE TARJETAS ---
+            // --- CARD ZONE ---
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(350.dp)
             ) {
-                // Tarjeta 1: Current Balance (Atrás)
+                // Card 1: Current Balance (Back)
                 GlassCard(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
@@ -79,7 +96,7 @@ fun WelcomeScreen(onNavigateToHome: () -> Unit) {
                         modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.SpaceBetween
                     ) {
-                        // Parte Superior: Saldo
+                        // Top Part: Balance
                         Column {
                             Text(
                                 text = "Current Balance",
@@ -88,7 +105,7 @@ fun WelcomeScreen(onNavigateToHome: () -> Unit) {
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                text = "$10 985,84",
+                                text = "$10,985.84",
                                 color = Color.White,
                                 fontSize = 32.sp,
                                 fontWeight = FontWeight.Bold
@@ -113,7 +130,7 @@ fun WelcomeScreen(onNavigateToHome: () -> Unit) {
                     }
                 }
 
-                // Tarjeta 2: SBI Card (Frente)
+                // Card 2: SBI Card (Front)
                 GlassCard(
                     modifier = Modifier
                         .align(Alignment.BottomStart)
@@ -133,7 +150,7 @@ fun WelcomeScreen(onNavigateToHome: () -> Unit) {
                             fontWeight = FontWeight.Medium
                         )
 
-                        // Fila Inferior: Números, Nombre y Logo
+                        // Bottom Row: Numbers, Name, and Logo
                         Column {
                             Text(
                                 text = "4521  7896  5412  3698",
@@ -169,7 +186,7 @@ fun WelcomeScreen(onNavigateToHome: () -> Unit) {
             }
             Spacer(modifier = Modifier.weight(1f))
 
-            // --- TEXTOS INFERIORES (El Saludo) ---
+            // --- BOTTOM TEXTS (Greeting) ---
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -179,8 +196,8 @@ fun WelcomeScreen(onNavigateToHome: () -> Unit) {
                     text = "Welcome back,",
                     color = Color.White.copy(alpha = 0.7f),
                     fontSize = 28.sp,
-                    fontFamily = androidx.compose.ui.text.font.FontFamily.Serif,
-                    fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                    fontFamily = FontFamily.Serif,
+                    fontStyle = FontStyle.Italic
                 )
                 Text(
                     text = "Saurabh Kumar",
@@ -192,14 +209,17 @@ fun WelcomeScreen(onNavigateToHome: () -> Unit) {
             }
             Spacer(modifier = Modifier.height(40.dp))
 
-            // --- GATILLO BIOMÉTRICO ---
+            // --- BIOMETRIC TRIGGER ---
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 80.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // El Anillo del Escáner
+                val scanProgress = remember { Animatable(0f) }
+                val coroutineScope = rememberCoroutineScope()
+
+                // Scanner Ring
                 Box(
                     modifier = Modifier
                         .size(88.dp)
@@ -209,25 +229,77 @@ fun WelcomeScreen(onNavigateToHome: () -> Unit) {
                         )
                         .border(
                             width = 2.dp,
-                            brush = androidx.compose.ui.graphics.Brush.linearGradient(
+                            brush = Brush.linearGradient(
                                 colors = listOf(Color(0xFF40B143), Color(0xFF493B94))
                             ),
                             shape = androidx.compose.foundation.shape.CircleShape
                         )
                         .pointerInput(Unit) {
                             detectTapGestures(
-                                onLongPress = {
-                                    onNavigateToHome()
+                                onPress = {
+                                    val animJob = coroutineScope.launch {
+                                        scanProgress.animateTo(
+                                            targetValue = 1f,
+                                            animationSpec = tween(
+                                                durationMillis = 500,
+                                                easing = LinearEasing
+                                            )
+                                        )
+                                    }
+
+                                    val timerJob = coroutineScope.launch {
+                                        delay(500L)
+                                        onNavigateToHome()
+                                    }
+                                    tryAwaitRelease()
+                                    timerJob.cancel()
+                                    animJob.cancel()
+
+                                    coroutineScope.launch {
+                                        scanProgress.animateTo(
+                                            targetValue = 0f,
+                                            animationSpec = tween(
+                                                durationMillis = 300,
+                                                easing = FastOutSlowInEasing
+                                            )
+                                        )
+                                    }
                                 }
                             )
                         },
                     contentAlignment = Alignment.Center
                 ) {
+
+                    // --- EFFECT 1: Expanding Aura (Scanner Glow) ---
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .graphicsLayer {
+                                scaleX = 1f + (scanProgress.value * 0.8f)
+                                scaleY = 1f + (scanProgress.value * 0.8f)
+                                alpha = if (scanProgress.value > 0f) 0.35f * (1f - scanProgress.value) else 0f
+                            }
+                            .background(Color(0xFF40B143), androidx.compose.foundation.shape.CircleShape)
+                    )
+
+                    // --- EFFECT 2 and 3: Color Transition and Shrink Effect ---
+                    val iconTint = lerp(
+                        start = Color.White,
+                        stop = Color(0xFF40B143),
+                        fraction = scanProgress.value
+                    )
+
                     Icon(
                         painter = painterResource(Res.drawable.ic_fingerprint),
-                        contentDescription = "Desbloquear con huella",
-                        tint = Color.White,
-                        modifier = Modifier.size(50.dp)
+                        contentDescription = "Unlock with fingerprint",
+                        tint = iconTint,
+                        modifier = Modifier
+                            .size(50.dp)
+                            .graphicsLayer {
+                                val scale = 1f - (scanProgress.value * 0.15f)
+                                scaleX = scale
+                                scaleY = scale
+                            }
                     )
                 }
 
@@ -253,14 +325,14 @@ fun MastercardLogo() {
             .height(28.dp),
         contentAlignment = Alignment.Center
     ) {
-        // Círculo Rojo (Izquierda)
+        // Red Circle (Left)
         Box(
             modifier = Modifier
                 .align(Alignment.CenterStart)
                 .size(28.dp)
                 .background(Color(0xFFEB001B), shape = androidx.compose.foundation.shape.CircleShape)
         )
-        // Círculo Amarillo/Naranja (Derecha)
+        // Yellow/Orange Circle (Right)
         Box(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
