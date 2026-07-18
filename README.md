@@ -1,8 +1,8 @@
 <div align="center">
   <img src="docs/auranova_logo.png" alt="AuraNova Logo" width="120"/>
 
-  <h1>NeoBank UI</h1>
-  <h3>AuraNova</h3>
+  <h1>NeoBank UI KMP | Enterprise-Grade Fintech Architecture</h1>
+  <h3>AuraNova Showcase</h3>
 
   <p><strong>Redefining the financial experience: high-end design and flawless performance.</strong></p>
 
@@ -10,6 +10,12 @@
 [![Compose Multiplatform](https://img.shields.io/badge/Compose-Multiplatform-purple.svg?style=for-the-badge&logo=android)](https://www.jetbrains.com/lp/compose-multiplatform/)
 [![iOS Compatible](https://img.shields.io/badge/iOS-18.2%2B-black.svg?style=for-the-badge&logo=apple)]()
 [![CI/CD](https://img.shields.io/badge/Build-Passing-brightgreen.svg?style=for-the-badge&logo=githubactions)]()
+
+<p align="center">
+  <a href="https://github.com/JastinBolanos/NeoBankUI-KMP/releases/download/v1.0.0/NeoBankUI.apk">
+    <img src="https://img.shields.io/badge/Descargar-APK%20Android-green?style=for-the-badge&logo=android&logoColor=white" alt="Descargar APK">
+  </a>
+</p>
 </div>
 
 ---
