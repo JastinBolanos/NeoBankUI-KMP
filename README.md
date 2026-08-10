@@ -12,7 +12,7 @@
 [![CI/CD](https://img.shields.io/badge/Build-Passing-brightgreen.svg?style=for-the-badge&logo=githubactions)]()
 
 <p align="center">
-  <a href="https://github.com/JastinBolanos/NeoBankUI-KMP/releases/download/v1.0.0/NeoBankUI.apk">
+  <a href="https://github.com/JastinBolanos/NeoBankUI-KMP/releases/download/v1.1.0/NeoBankUI.apk">
     <img src="https://img.shields.io/badge/Descargar-APK%20Android-green?style=for-the-badge&logo=android&logoColor=white" alt="Descargar APK">
   </a>
 </p>
@@ -36,63 +36,73 @@ The project is structured for scalability, prioritizing separation of concerns, 
 * **Performance:** Extreme asset optimization (smart rasterization) to ensure 60fps+ transitions, with explicit support for **120Hz ProMotion on iOS** (`CADisableMinimumFrameDurationOnPhone`).
 * **Infinite Carousel:** Advanced technical implementation using `HorizontalPager`, managing continuous, seamless scrolling state.
 * **Automated CI/CD:** GitHub Actions workflow for continuous validation and remote compilation of the iOS scheme via `xcodebuild` on macOS virtual machines.
+* **Native Multiplatform Navigation:** Custom intelligent back-stack management utilizing the `expect/actual` pattern to flawlessly intercept Android hardware back presses (`KmpBackHandler`) without breaking iOS gesture flows.
+* **Granular Security UX:** Dynamic, state-driven privacy masking for sensitive financial data (Total Balance, CCV, Card Numbers) featuring auto-hide triggers upon user scrolling.
+* **Smart Interactions:** Native-feeling gesture detection (`detectHorizontalDragGestures`) for swipe-to-dismiss side menus, coupled with staggered entrance animations (Fade-in + Slide-up) to eliminate UI jarring.
 
 ---
 ### <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcHp0bDAxNXk1bG56OHp6MHU5NWp3aG95Zm9ndzNjNmh2amxpNTZmNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/F0VCptrJteVWDeLBHD/giphy.gif" width="70" align="absmiddle" /> Live Demo: NeoBank KMP in Action
 > ** Observe every detail:** appreciate the fluidity of the native animations, the *glassmorphism* effects, the infinite carousel, and the visual consistency across screens. This video showcases the complete experience of NeoBank KMP, a high-end financial prototype developed entirely using Kotlin Multiplatform and Compose Multiplatform.
 
-https://github.com/user-attachments/assets/8558eeec-9b24-4bd3-b19b-6e6b1576c563
+https://github.com/user-attachments/assets/a09c2770-8fb7-442e-836d-fa7cbc82ac0f
 
 ---
 
-## Case Study: UI/UX Design
+## Case Study: UI/UX Design & Multiplatform Engineering
 
-AuraNova design architecture focuses on reducing cognitive load through clear visual hierarchies, supported by extensive use of *Glassmorphism* (real-time blurring) and an immersive gradient palette.
+AuraNova is not just a visual showcase; it is a masterclass in frontend engineering using **Kotlin Multiplatform (KMP) and Compose**. What makes this frontend truly fascinating is its obsession with native fluidity, deep UX psychology, and architectural robustness.
 
-> **Technical Note:** All views rendered below are 100% native code (Compose Multiplatform), without the use of WebViews or hybrid frameworks. The fluidity of the native animations is best experienced when compiling the project on a physical device.
+Every interaction has been meticulously crafted: from the **"breathing" pulse animations** on the home screen and **staggered slide-up transitions**, to a fully custom **Intelligent Back-Stack Navigation** that perfectly intercepts hardware buttons across platforms. We've pushed the boundaries of *Glassmorphism* (real-time blurring) while maintaining strict accessibility standards and granular data privacy (dynamic UI masking).
 
-### 1. Biometric Access Portal
-The user journey begins with a friction-free authentication screen. A dynamic blur is applied to the underlying cards, creating a depth-of-field effect (Z-index) that draws focus toward the biometric sensor.
+> **Technical Note:** All views rendered below are 100% native code (Compose Multiplatform), without the use of WebViews or hybrid frameworks. The fluidity of the native animations and the seamless multiplatform back-navigation are best experienced when compiling the project on a physical device.
+
+---
+
+### 1. Biometric Access & Contextual Navigation
+The user journey begins with a friction-free authentication screen utilizing Z-index depth blurring. Once inside, global navigation is handled by a custom `KmpBackHandler` stack and an interactive side menu that can be dismissed with fluid, native swipe-to-right gestures, revealing the blurred dashboard behind it.
 
 <p align="center">
   <img src="docs/screen_biometric.png" width="300" alt="Pantalla de inicio biométrico"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="docs/screen_menu_profile.png" width="300" alt="Menú Perfil Deslizable"/>
 </p>
 
 ---
 
 ### 2. Main Dashboard & Infinite Promotional Carousel
-The core of the application. An advanced `HorizontalPager` was implemented, enabling cyclical navigation between various financial offers. Each banner utilizes layer rendering (shadows and blurs) to achieve metallic and glass-like textures set against an adaptive gradient background.
+The core of the application features an advanced `HorizontalPager`, enabling cyclical auto-scrolling navigation between various financial offers. Each banner utilizes layer rendering (shadows and blurs) to achieve metallic, glass, and titanium textures set against an adaptive gradient background.
 
 <p align="center">
-  <img src="docs/screen_home_banner1.png" width="220" alt="Banner Mundo"/>
-  <img src="docs/screen_home_banner2.png" width="220" alt="Banner Crédito"/>
-  <img src="docs/screen_home_banner3.png" width="220" alt="Banner Inversiones"/>
-  <img src="docs/screen_home_banner4.png" width="220" alt="Banner Metal"/>
-  <img src="docs/screen_home_banner5.png" width="220" alt="Banner Tecnología"/>
+  <img src="docs/screen_home_banner1.png" width="250" alt="Banner Mundo"/>
+  &nbsp;&nbsp;
+  <img src="docs/screen_home_banner2.png" width="250" alt="Banner Crédito"/>
+  &nbsp;&nbsp;
+  <img src="docs/screen_home_banner3.png" width="250" alt="Banner Inversiones"/>
 </p>
 
 ---
 
-### 3. Card Management and Transaction History
-Screens focused on the readability of financial data. Containers with rounded corners and reduced opacity (*Surface Glassmorphism*) are used to maintain the immersion of the background gradient without sacrificing text contrast (accessibility).
+### 3. Granular Privacy, History & Smart Transfers
+Financial data readability and security are paramount. The UI features dynamic "eye" toggles to mask sensitive data, which auto-hide upon swiping. Transfers boast an interactive *Glassmorphism* recipient pill with rotating arrows, and a "Smart Send Button" that only illuminates when valid input is detected via the custom Compose Numpad.
 
 <p align="center">
-  <img src="docs/screen_cards.png" width="300" alt="Detalle de Tarjetas"/>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="docs/screen_history.png" width="300" alt="Historial de Transacciones"/>
+  <img src="docs/screen_cards.png" width="250" alt="Detalle de Tarjetas y Privacidad"/>
+  &nbsp;&nbsp;
+  <img src="docs/screen_history.png" width="250" alt="Historial de Transacciones"/>
+  &nbsp;&nbsp;
+  <img src="docs/screen_send_money.png" width="250" alt="Transferencias Inteligentes"/>
 </p>
 
 ---
 
-### 4. Transfers and Profile Navigation
-* **Send Money:** Implementation of a custom numeric keypad (Custom Numpad) in Compose, ensuring the design aligns with the overall Design System and bypassing the limitations of operating system keyboards.
-* **Profile Menu:** Use of side navigation (Drawer/Modal) with a progressive blur effect over the main screen, maintaining the application context.
+### 4. Premium Offers & Profile Personalization
+The experience is rounded out by highly personalized spaces. The profile section features perfect circular cropping (`ContentScale.Crop`) for real user avatars, backed by an infinite energy pulse animation. The premium banners continue the immersive aesthetic with deep dark themes and glowing accents.
 
 <p align="center">
-  <img src="docs/screen_send_money.png" width="250" alt="Transferencias"/>
-  &nbsp;&nbsp;&nbsp;
-  <img src="docs/screen_menu_profile.png" width="250" alt="Menú Perfil"/>
-  &nbsp;&nbsp;&nbsp;
+  <img src="docs/screen_home_banner4.png" width="250" alt="Banner Metal"/>
+  &nbsp;&nbsp;
+  <img src="docs/screen_home_banner5.png" width="250" alt="Banner Tecnología"/>
+  &nbsp;&nbsp;
   <img src="docs/screen_profile.png" width="250" alt="Configuración de Perfil"/>
 </p>
 

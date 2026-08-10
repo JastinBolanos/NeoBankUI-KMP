@@ -71,12 +71,6 @@ fun SendMoneyScreen(
                 .blur(radius = 25.dp)
         )
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.35f))
-        )
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -238,7 +232,7 @@ fun SendMoneyScreen(
                     Text(
                         text = "$$amount",
                         color = Color.White,
-                        fontSize = 64.sp,
+                        fontSize = 54.sp,
                         fontWeight = FontWeight.SemiBold
                     )
 
