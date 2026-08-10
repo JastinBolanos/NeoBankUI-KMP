@@ -90,7 +90,7 @@ Financial data readability and security are paramount. The UI features dynamic "
   &nbsp;&nbsp;
   <img src="docs/screen_history.png" width="250" alt="Historial de Transacciones"/>
   &nbsp;&nbsp;
-  <img src="docs/screen_send_money.png" width="250" alt="Transferencias Inteligentes"/>
+  <img src="docs/screen_seend_money.png" width="250" alt="Transferencias Inteligentes"/>
 </p>
 
 ---
