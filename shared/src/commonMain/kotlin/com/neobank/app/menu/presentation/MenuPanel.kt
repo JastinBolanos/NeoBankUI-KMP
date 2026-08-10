@@ -2,6 +2,7 @@ package com.neobank.app.menu.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -24,8 +26,6 @@ import androidx.compose.ui.unit.sp
 import neobankui.shared.generated.resources.Res
 import neobankui.shared.generated.resources.bg_menu_panel
 import org.jetbrains.compose.resources.painterResource
-import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.layout.Arrangement
 
 data class MenuOption(
     val icon: ImageVector,
@@ -56,8 +56,15 @@ fun MenuPanel(
     Box(
         modifier = modifier
             .fillMaxHeight()
-            .fillMaxWidth(0.85f)
+            .fillMaxWidth(0.75f)
             .clip(RoundedCornerShape(topStart = 40.dp, bottomStart = 40.dp))
+            .pointerInput(Unit) {
+                detectHorizontalDragGestures { change, dragAmount ->
+                    if (dragAmount > 15) {
+                        onClose()
+                    }
+                }
+            }
     ) {
         // FONDO
         Image(
@@ -72,7 +79,7 @@ fun MenuPanel(
             modifier = Modifier
                 .fillMaxSize()
                 .systemBarsPadding()
-                .padding(top = 24.dp, start = 32.dp, end = 24.dp, bottom = 32.dp),
+                .padding(top = 24.dp, start = 20.dp, end = 12.dp, bottom = 32.dp),
             verticalArrangement = Arrangement.Center
         ) {
             item {

@@ -35,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.neobank.app.menu.presentation.MenuPanel
 import neobankui.shared.generated.resources.Res
+import neobankui.shared.generated.resources.background
 import neobankui.shared.generated.resources.bg_neobank
 import neobankui.shared.generated.resources.ic_more
 import neobankui.shared.generated.resources.ic_bonuses
@@ -56,7 +57,13 @@ import neobankui.shared.generated.resources.img_credit_lock
 import neobankui.shared.generated.resources.img_invest_coins
 import neobankui.shared.generated.resources.img_iphone_titanium
 import neobankui.shared.generated.resources.img_travel_miles
+import androidx.compose.foundation.border
 import org.jetbrains.compose.resources.DrawableResource
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.animation.core.*
+import androidx.compose.ui.graphics.graphicsLayer
 
 data class PromoBanner(
     val title: String,
@@ -79,7 +86,6 @@ fun HomeScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-        // BACKGROUND
         Image(
             painter = painterResource(Res.drawable.bg_neobank),
             contentDescription = "Background",
@@ -87,7 +93,6 @@ fun HomeScreen(
             modifier = Modifier.fillMaxSize()
         )
 
-        // MAIN CONTENT
         Column(modifier = Modifier.fillMaxSize()) {
 
             // --- TOP HALF ---
@@ -119,13 +124,19 @@ fun HomeScreen(
             }
 
             // --- BOTTOM HALF ---
-            Surface(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f),
-                color = Color(0xFFF8F9FA),
-                shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
+                    .weight(1f)
+                    .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
             ) {
+                Image(
+                    painter = painterResource(Res.drawable.background),
+                    contentDescription = "Transactions Background",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+
                 TransactionsSection(bottomPadding = 90.dp)
             }
         }
@@ -147,8 +158,6 @@ fun HomeScreen(
         }
 
         // --- SIDE MENU ANIMATIONS ---
-
-        // 3. Dark background layer (Dimmer)
         AnimatedVisibility(
             visible = isMenuOpen,
             enter = fadeIn(),
@@ -250,23 +259,41 @@ fun Double.toFormattedCurrency(): String {
 // 2. BALANCE SECTION
 @Composable
 private fun BalanceSection(balance: Double) {
+    var isBalanceVisible by remember { mutableStateOf(true) }
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "$${balance.toFormattedCurrency()}",
+            text = if (isBalanceVisible) "$${balance.toFormattedCurrency()}" else "$••••••",
             color = Color.White,
             fontSize = 48.sp,
             fontWeight = FontWeight.ExtraBold,
             letterSpacing = 1.sp
         )
-        Text(
-            text = "Total Balance",
-            color = Color.White.copy(alpha = 0.7f),
-            fontSize = 16.sp,
-            modifier = Modifier.padding(top = 8.dp)
-        )
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .clickable { isBalanceVisible = !isBalanceVisible }
+                .padding(horizontal = 8.dp, vertical = 4.dp)
+        ) {
+            Text(
+                text = "Total Balance",
+                color = Color.White.copy(alpha = 0.7f),
+                fontSize = 16.sp
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Icon(
+                imageVector = if (isBalanceVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                contentDescription = "Toggle Visibility",
+                tint = Color.White.copy(alpha = 0.7f),
+                modifier = Modifier.size(18.dp)
+            )
+        }
     }
 }
 
@@ -313,25 +340,64 @@ private fun ActionItemPainter(
     label: String,
     onClick: () -> Unit
 ) {
+    val infiniteTransition = rememberInfiniteTransition(label = "button_pulse")
+
+    val pulseScale by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 1.4f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(2500, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "pulse_scale"
+    )
+
+    val pulseAlpha by infiniteTransition.animateFloat(
+        initialValue = 0.35f,
+        targetValue = 0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(2500, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "pulse_alpha"
+    )
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .width(76.dp)
+        modifier = Modifier.width(76.dp)
     ) {
-        Box(
-            modifier = Modifier
-                .size(64.dp)
-                .clip(CircleShape)
-                .background(Color.White.copy(alpha = 0.1f))
-                .clickable { onClick() },
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                painter = painter,
-                contentDescription = label,
-                tint = Color.White,
-                modifier = Modifier.size(26.dp)
+        Box(contentAlignment = Alignment.Center) {
+
+            Box(
+                modifier = Modifier
+                    .size(64.dp)
+                    .graphicsLayer {
+                        scaleX = pulseScale
+                        scaleY = pulseScale
+                        alpha = pulseAlpha
+                    }
+                    .border(
+                        width = 3.dp,
+                        color = Color.White,
+                        shape = CircleShape
+                    )
             )
+
+            Box(
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(CircleShape)
+                    .background(Color.White.copy(alpha = 0.1f))
+                    .clickable { onClick() },
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painter,
+                    contentDescription = label,
+                    tint = Color.White,
+                    modifier = Modifier.size(26.dp)
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -346,12 +412,12 @@ private fun ActionItemPainter(
         )
     }
 }
+
 // =========================================================================
 // SECTION: INFINITE CAROUSEL WITH REAL BANNERS AND 3D IMAGES
 // =========================================================================
 @Composable
 private fun PromoCardsSection() {
-    // 1. 5 BANNERS
     val banners = listOf(
         PromoBanner(
             title = "Upgrade to Metal",
@@ -392,14 +458,13 @@ private fun PromoCardsSection() {
         pageCount = { Int.MAX_VALUE }
     )
 
-    // AUTO-SCROLL
     androidx.compose.runtime.LaunchedEffect(pagerState.settledPage) {
         kotlinx.coroutines.delay(3000)
         pagerState.animateScrollToPage(
             page = pagerState.currentPage + 1,
             animationSpec = tween(
                 durationMillis = 800,
-                easing = androidx.compose.animation.core.FastOutSlowInEasing
+                easing = FastOutSlowInEasing
             )
         )
     }
@@ -408,7 +473,6 @@ private fun PromoCardsSection() {
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // The card carousel
         androidx.compose.foundation.pager.HorizontalPager(
             state = pagerState,
             contentPadding = PaddingValues(horizontal = 24.dp),
@@ -517,9 +581,7 @@ private fun PromoCardsSection() {
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        // The indicator dots
         val currentActualPage = pagerState.currentPage % actualPageCount
-
         Row(
             horizontalArrangement = Arrangement.spacedBy(6.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -533,11 +595,11 @@ private fun PromoCardsSection() {
 
 @Composable
 private fun LoadingDot(isActive: Boolean) {
-    val animatedWidth by androidx.compose.animation.core.animateDpAsState(
+    val animatedWidth by animateDpAsState(
         targetValue = if (isActive) 32.dp else 6.dp,
         animationSpec = tween(
             durationMillis = 300,
-            easing = androidx.compose.animation.core.FastOutSlowInEasing
+            easing = FastOutSlowInEasing
         ),
         label = "dotWidthAnimation"
     )
@@ -556,7 +618,6 @@ private fun LoadingDot(isActive: Boolean) {
         }
     }
 
-    // Gray background of the dot or pill
     Box(
         modifier = Modifier
             .height(6.dp)
@@ -578,31 +639,52 @@ private fun LoadingDot(isActive: Boolean) {
 
 @Composable
 private fun TransactionsSection(bottomPadding: androidx.compose.ui.unit.Dp = 0.dp) {
+    var isTransactionsVisible by androidx.compose.runtime.remember { mutableStateOf(false) }
+
+    androidx.compose.runtime.LaunchedEffect(Unit) {
+        kotlinx.coroutines.delay(100)
+        isTransactionsVisible = true
+    }
+
+    val alphaAnim by animateFloatAsState(
+        targetValue = if (isTransactionsVisible) 1f else 0f,
+        animationSpec = tween(durationMillis = 600),
+        label = "fadeAnim"
+    )
+
+    val slideAnim by animateFloatAsState(
+        targetValue = if (isTransactionsVisible) 0f else 50f,
+        animationSpec = tween(
+            durationMillis = 600,
+            easing = FastOutSlowInEasing
+        ),
+        label = "slideAnim"
+    )
+
     androidx.compose.foundation.lazy.LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .graphicsLayer {
+                alpha = alphaAnim
+                translationY = slideAnim
+            },
         contentPadding = PaddingValues(
             start = 24.dp,
             end = 24.dp,
             top = 24.dp,
             bottom = bottomPadding
-        )
+        ),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         item {
             Text(
                 text = "TRANSACTIONS",
-                color = Color(0xFF243355),
+                color = Color.White.copy(alpha = 0.8f),
                 fontSize = 16.sp,
                 fontFamily = androidx.compose.ui.text.font.FontFamily.Serif,
-                letterSpacing = 2.sp
+                letterSpacing = 2.sp,
+                modifier = Modifier.padding(bottom = 6.dp)
             )
-            Spacer(modifier = Modifier.height(24.dp))
-            Text(
-                text = "October 24, 2023",
-                color = Color(0xFF1A1A1A),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = Modifier.height(16.dp))
         }
 
         item {
@@ -658,51 +740,46 @@ private fun TransactionItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 12.dp),
+            .clip(RoundedCornerShape(16.dp))
+            .background(Color.Black.copy(alpha = 0.35f))
+            .border(
+                width = 1.dp,
+                color = Color.White.copy(alpha = 0.15f),
+                shape = RoundedCornerShape(16.dp)
+            )
+            .padding(horizontal = 16.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // 1. THE CONTAINER
-        Box(
-            modifier = Modifier
-                .size(48.dp)
-                .clip(CircleShape)
-                .background(Color.White),
-            contentAlignment = Alignment.Center
-        ) {
-            // 2. THE LOGO
-            Image(
-                painter = painter,
-                contentDescription = title,
-                modifier = Modifier.fillMaxSize(0.65f),
-                contentScale = ContentScale.Fit
-            )
-        }
+        Image(
+            painter = painter,
+            contentDescription = title,
+            modifier = Modifier.size(28.dp),
+            contentScale = ContentScale.Fit
+        )
 
         Spacer(modifier = Modifier.width(16.dp))
 
-        // Center texts
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
-                color = Color(0xFF1A1A1A),
-                fontSize = 16.sp,
+                color = Color.White,
+                fontSize = 15.sp,
                 fontWeight = FontWeight.SemiBold
             )
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(2.dp))
             Text(
                 text = subtitle,
-                color = Color.Gray,
-                fontSize = 13.sp,
+                color = Color.White.copy(alpha = 0.7f),
+                fontSize = 12.sp,
                 maxLines = 1,
                 overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
             )
         }
 
-        // Amount on the right
         Text(
             text = amount,
-            color = Color(0xFF1A1A1A),
-            fontSize = 16.sp,
+            color = Color.White,
+            fontSize = 15.sp,
             fontWeight = FontWeight.Bold
         )
     }

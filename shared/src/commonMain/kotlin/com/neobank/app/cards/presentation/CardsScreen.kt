@@ -2,13 +2,13 @@ package com.neobank.app.cards.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -18,7 +18,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,6 +34,13 @@ import neobankui.shared.generated.resources.ic_scanner
 import neobankui.shared.generated.resources.ic_visa
 import org.jetbrains.compose.resources.painterResource
 import kotlin.math.absoluteValue
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.foundation.clickable
+import androidx.compose.runtime.mutableStateOf
 
 @Composable
 fun CardsScreen(
@@ -45,7 +51,6 @@ fun CardsScreen(
     onTabSelected: (NavTab) -> Unit = {}
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        // BACKGROUND
         Image(
             painter = painterResource(Res.drawable.bg_neobank),
             contentDescription = "Background",
@@ -194,189 +199,164 @@ fun CardsScreen(
         }
 
         // --- CARD DETAILS ---
-        Surface(
+        val currentCard = cards[pagerState.currentPage]
+        val scrollState = rememberScrollState()
+        var isCardNumberVisible by remember { mutableStateOf(false) }
+        var isCvvVisible by remember { mutableStateOf(false) }
+        var isVisible by androidx.compose.runtime.remember { mutableStateOf(false) }
+
+        androidx.compose.runtime.LaunchedEffect(pagerState.currentPage) {
+            isVisible = false
+            isCardNumberVisible = false
+            isCvvVisible = false
+            kotlinx.coroutines.delay(50)
+            isVisible = true
+        }
+
+        val alphaAnim by androidx.compose.animation.core.animateFloatAsState(
+            targetValue = if (isVisible) 1f else 0f,
+            animationSpec = androidx.compose.animation.core.tween(durationMillis = 400),
+            label = "fadeAnim"
+        )
+        val slideAnim by androidx.compose.animation.core.animateFloatAsState(
+            targetValue = if (isVisible) 0f else 30f,
+            animationSpec = androidx.compose.animation.core.tween(durationMillis = 400, easing = androidx.compose.animation.core.FastOutSlowInEasing),
+            label = "slideAnim"
+        )
+
+        Column(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
                 .fillMaxWidth()
-                .fillMaxHeight(0.58f)
-                .align(Alignment.BottomCenter),
-            color = Color(0xFFE8E9EB),
-            shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
+                .fillMaxHeight(0.60f)
+                .align(Alignment.BottomCenter)
+                .verticalScroll(scrollState)
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 120.dp, top = 8.dp)
+                .graphicsLayer {
+                    alpha = alphaAnim
+                    translationY = slideAnim
+                }
         ) {
-            val currentCard = cards[pagerState.currentPage]
-            val scrollState = rememberScrollState()
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(scrollState)
-                    .padding(horizontal = 24.dp, vertical = 20.dp)
-                    .padding(bottom = 90.dp)
-            ) {
-                Text(
-                    text = "CARD DETAILS",
-                    color = Color(0xFF1A1A1A),
-                    fontSize = 17.sp,
-                    fontFamily = FontFamily.Serif,
-                    letterSpacing = 1.2.sp,
-                    modifier = Modifier.padding(bottom = 18.dp)
-                )
-
-                // Cardholder
-                Text(
-                    text = "Cardholder Name",
-                    color = Color(0xFF222222),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(bottom = 6.dp)
-                )
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(Color(0xFFDCDDE0))
-                        .padding(horizontal = 12.dp, vertical = 12.dp)
-                ) {
+            @Composable
+            fun PremiumDetailBlock(title: String, content: @Composable () -> Unit) {
+                Column(modifier = Modifier.padding(bottom = 16.dp)) {
                     Text(
-                        text = currentCard["holder"]!!,
-                        color = Color(0xFF666666),
-                        fontSize = 15.sp
+                        text = title,
+                        color = Color.White.copy(alpha = 0.6f),
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.padding(bottom = 8.dp, start = 4.dp)
                     )
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Card Number
-                Text(
-                    text = "Card Number",
-                    color = Color(0xFF222222),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(bottom = 6.dp)
-                )
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(Color(0xFFDCDDE0))
-                        .padding(horizontal = 12.dp, vertical = 12.dp)
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Box(
-                            modifier = Modifier.width(34.dp).height(20.dp)
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(20.dp)
-                                    .align(Alignment.CenterStart)
-                                    .clip(CircleShape)
-                                    .background(Color(0xFFEB001B))
-                            )
-                            Box(
-                                modifier = Modifier
-                                    .size(20.dp)
-                                    .align(Alignment.CenterEnd)
-                                    .clip(CircleShape)
-                                    .background(Color(0xFFF79E1B).copy(alpha = 0.9f))
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(
-                            text = currentCard["number"]!!,
-                            color = Color(0xFF666666),
-                            fontSize = 15.sp,
-                            letterSpacing = 0.4.sp
-                        )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(Color.Black.copy(alpha = 0.35f))
+                            .border(1.dp, Color.White.copy(alpha = 0.15f), RoundedCornerShape(16.dp))
+                            .padding(horizontal = 18.dp, vertical = 16.dp)
+                    ) {
+                        content()
                     }
                 }
+            }
 
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Account Number
+            // 1. Cardholder
+            PremiumDetailBlock(title = "Cardholder Name") {
                 Text(
-                    text = "Account Number",
-                    color = Color(0xFF222222),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(bottom = 6.dp)
+                    text = currentCard["holder"]!!,
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium
                 )
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(Color(0xFFDCDDE0))
-                        .padding(horizontal = 12.dp, vertical = 12.dp)
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+            }
 
-                        Image(
-                            painter = painterResource(Res.drawable.ic_visa),
-                            contentDescription = "Visa Logo",
-                            contentScale = ContentScale.Fit,
-                            modifier = Modifier
-                                .width(40.dp)
-                                .height(21.dp)
-                        )
-
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(
-                            text = currentCard["account"] as? String ?: "0011-0815-0741312654",
-                            color = Color(0xFF666666),
-                            fontSize = 15.sp,
-                            letterSpacing = 0.2.sp
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Expiration + CVV
+            // 2. Card Number
+            PremiumDetailBlock(title = "Card Number") {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = "Expire Date",
-                            color = Color(0xFF222222),
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium,
-                            modifier = Modifier.padding(bottom = 6.dp)
-                        )
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clip(RoundedCornerShape(12.dp))
-                                .background(Color(0xFFDCDDE0))
-                                .padding(horizontal = 12.dp, vertical = 12.dp)
-                        ) {
-                            Text(
-                                text = currentCard["expiry"]!!,
-                                color = Color(0xFF666666),
-                                fontSize = 15.sp
-                            )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(modifier = Modifier.width(34.dp).height(20.dp)) {
+                            Box(modifier = Modifier.size(20.dp).align(Alignment.CenterStart).clip(CircleShape).background(Color(0xFFEB001B)))
+                            Box(modifier = Modifier.size(20.dp).align(Alignment.CenterEnd).clip(CircleShape).background(Color(0xFFF79E1B).copy(alpha = 0.9f)))
                         }
-                    }
-
-                    Column(modifier = Modifier.weight(1f)) {
+                        Spacer(modifier = Modifier.width(14.dp))
                         Text(
-                            text = "CVV / CVC",
-                            color = Color(0xFF222222),
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium,
-                            modifier = Modifier.padding(bottom = 6.dp)
+                            text = if (isCardNumberVisible) currentCard["number"]!! else currentCard["masked"]!!,
+                            color = Color.White,
+                            fontSize = 16.sp,
+                            letterSpacing = 1.sp
                         )
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clip(RoundedCornerShape(12.dp))
-                                .background(Color(0xFFDCDDE0))
-                                .padding(horizontal = 12.dp, vertical = 12.dp)
+                    }
+                    Icon(
+                        imageVector = if (isCardNumberVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                        contentDescription = "Toggle Number Visibility",
+                        tint = Color.White.copy(alpha = 0.6f),
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clip(CircleShape)
+                            .clickable { isCardNumberVisible = !isCardNumberVisible }
+                    )
+                }
+            }
+
+            // 3. Account Number
+            PremiumDetailBlock(title = "Account Number") {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Image(
+                        painter = painterResource(Res.drawable.ic_visa),
+                        contentDescription = "Visa Logo",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier.width(40.dp).height(21.dp)
+                    )
+                    Spacer(modifier = Modifier.width(14.dp))
+                    Text(
+                        text = currentCard["account"] as? String ?: "0011-0815-0741312654",
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        letterSpacing = 0.5.sp
+                    )
+                }
+            }
+
+            // 4. Expiration + CVV
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Box(modifier = Modifier.weight(1f)) {
+                    PremiumDetailBlock(title = "Expire Date") {
+                        Text(
+                            text = currentCard["expiry"]!!,
+                            color = Color.White,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
+                Box(modifier = Modifier.weight(1f)) {
+                    PremiumDetailBlock(title = "CVV / CVC") {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = currentCard["cvv"]!!,
-                                color = Color(0xFF666666),
-                                fontSize = 15.sp
+                                text = if (isCvvVisible) currentCard["cvv"]!! else "***",
+                                color = Color.White,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Medium
+                            )
+                            Icon(
+                                imageVector = if (isCvvVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                                contentDescription = "Toggle CVV Visibility",
+                                tint = Color.White.copy(alpha = 0.6f),
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .clip(CircleShape)
+                                    .clickable { isCvvVisible = !isCvvVisible }
                             )
                         }
                     }

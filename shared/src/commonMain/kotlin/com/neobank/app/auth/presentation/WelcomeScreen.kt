@@ -3,9 +3,6 @@ package com.neobank.app.auth.presentation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,7 +41,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.neobank.app.auth.presentation.components.GlassCard
-import kotlinx.coroutines.withTimeoutOrNull
 import neobankui.shared.generated.resources.Res
 import neobankui.shared.generated.resources.bg_neobank
 import neobankui.shared.generated.resources.ic_fingerprint
@@ -325,14 +321,12 @@ fun MastercardLogo() {
             .height(28.dp),
         contentAlignment = Alignment.Center
     ) {
-        // Red Circle (Left)
         Box(
             modifier = Modifier
                 .align(Alignment.CenterStart)
                 .size(28.dp)
                 .background(Color(0xFFEB001B), shape = androidx.compose.foundation.shape.CircleShape)
         )
-        // Yellow/Orange Circle (Right)
         Box(
             modifier = Modifier
                 .align(Alignment.CenterEnd)

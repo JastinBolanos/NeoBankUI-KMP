@@ -2,6 +2,7 @@ package com.neobank.app.transactions.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,12 +23,12 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -51,6 +52,8 @@ import neobankui.shared.generated.resources.ic_visa
 import neobankui.shared.generated.resources.ic_youtube
 import org.jetbrains.compose.resources.painterResource
 import kotlin.math.absoluteValue
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 data class TransactionUi(
     val id: Int,
@@ -89,16 +92,18 @@ fun TransactionHistoryScreen(
     val pagerState: PagerState = rememberPagerState(initialPage = 0, pageCount = { cardsData.size })
 
     Box(modifier = Modifier.fillMaxSize()) {
+
         Image(
             painter = painterResource(Res.drawable.bg_neobank),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .blur(radius = 25.dp)
         )
 
         Column(modifier = Modifier.fillMaxSize()) {
 
-            // HEADER
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -172,34 +177,56 @@ fun TransactionHistoryScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             // TRANSACCIONES
-            Surface(
+            var isTransactionsVisible by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
+
+            androidx.compose.runtime.LaunchedEffect(Unit) {
+                kotlinx.coroutines.delay(100)
+                isTransactionsVisible = true
+            }
+
+            val alphaAnim by androidx.compose.animation.core.animateFloatAsState(
+                targetValue = if (isTransactionsVisible) 1f else 0f,
+                animationSpec = androidx.compose.animation.core.tween(durationMillis = 600),
+                label = "fadeAnim"
+            )
+
+            val slideAnim by androidx.compose.animation.core.animateFloatAsState(
+                targetValue = if (isTransactionsVisible) 0f else 50f,
+                animationSpec = androidx.compose.animation.core.tween(
+                    durationMillis = 600,
+                    easing = androidx.compose.animation.core.FastOutSlowInEasing
+                ),
+                label = "slideAnim"
+            )
+
+            Column(
                 modifier = Modifier
-                    .padding(horizontal = 16.dp)
                     .fillMaxWidth()
-                    .weight(1f),
-                color = Color(0xFFE8E9EB),
-                shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
-            ) {
-                LazyColumn(
-                    contentPadding = PaddingValues(24.dp),
-                    verticalArrangement = Arrangement.spacedBy(18.dp)
-                ) {
-                    item {
-                        Text(
-                            text = "TRANSACTIONS",
-                            color = Color(0xFF243355),
-                            fontSize = 16.sp,
-                            fontFamily = FontFamily.Serif,
-                            letterSpacing = 2.sp
-                        )
-                        Spacer(modifier = Modifier.height(1.dp))
+                    .weight(1f)
+                    .padding(horizontal = 24.dp)
+                    .graphicsLayer {
+                        alpha = alphaAnim
+                        translationY = slideAnim
                     }
+            ) {
+                Text(
+                    text = "TRANSACTIONS",
+                    color = Color.White.copy(alpha = 0.85f),
+                    fontSize = 15.sp,
+                    fontFamily = FontFamily.Serif,
+                    letterSpacing = 1.5.sp,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+
+                LazyColumn(
+                    contentPadding = PaddingValues(bottom = 120.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
                     items(transactions) { TransactionRow(it) }
                 }
             }
         }
 
-        // NAV
         Box(modifier = Modifier.align(Alignment.BottomCenter)) {
             NeoBottomNavigationBar(
                 selectedTab = NavTab.History,
@@ -216,14 +243,14 @@ fun TransactionHistoryScreen(
     }
 }
 
-// ───────────────── SUBCOMPONENTES ─────────────────
 @Composable
 private fun CircleIcon(res: org.jetbrains.compose.resources.DrawableResource) {
     Box(
         modifier = Modifier
             .size(44.dp)
             .clip(CircleShape)
-            .background(Color.White.copy(alpha = 0.2f)),
+            .background(Color.White.copy(alpha = 0.2f))
+            .border(1.dp, Color.White.copy(alpha = 0.3f), CircleShape),
         contentAlignment = Alignment.Center
     ) {
         Icon(
@@ -238,43 +265,51 @@ private fun CircleIcon(res: org.jetbrains.compose.resources.DrawableResource) {
 @Composable
 private fun TransactionRow(item: TransactionUi) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(Color.Black.copy(alpha = 0.35f))
+            .border(1.dp, Color.White.copy(alpha = 0.15f), RoundedCornerShape(16.dp))
+            .padding(horizontal = 16.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
             modifier = Modifier
-                .size(48.dp)
+                .size(38.dp)
                 .clip(CircleShape)
-                .background(Color(0xFFEFEFF1)),
+                .background(Color.White),
             contentAlignment = Alignment.Center
         ) {
             Image(
                 painter = painterResource(item.icon),
                 contentDescription = item.name,
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier.size(22.dp),
                 contentScale = ContentScale.Fit
             )
         }
+
         Spacer(modifier = Modifier.width(14.dp))
+
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = item.name,
-                fontSize = 17.sp,
+                fontSize = 15.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF111111)
+                color = Color.White
             )
             Text(
                 text = item.description,
-                fontSize = 13.sp,
-                color = Color(0xFF7A7A7A),
+                fontSize = 12.sp,
+                color = Color.White.copy(alpha = 0.7f),
                 modifier = Modifier.padding(top = 2.dp)
             )
         }
+
         Text(
             text = item.amount,
-            fontSize = 17.sp,
+            fontSize = 15.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFF111111)
+            color = Color.White
         )
     }
 }

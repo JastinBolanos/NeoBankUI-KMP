@@ -37,6 +37,7 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
+            implementation("androidx.activity:activity-compose:1.8.2")
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)

@@ -3,6 +3,7 @@ package com.neobank.app.transfer.presentation.components
 import neobankui.shared.generated.resources.CinzelDecorative_Regular
 import neobankui.shared.generated.resources.ic_dots_grid
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -32,14 +33,15 @@ fun NoteField(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(24.dp))
-            .background(Color.White.copy(alpha = 0.12f))
+            .background(Color.Black.copy(alpha = 0.4f))
+            .border(1.dp, Color.White.copy(alpha = 0.2f), RoundedCornerShape(24.dp))
             .padding(horizontal = 20.dp, vertical = 18.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             painter = painterResource(Res.drawable.ic_dots_grid),
             contentDescription = "Add note",
-            tint = Color.White.copy(alpha = 0.65f),
+            tint = Color.White.copy(alpha = 0.85f),
             modifier = Modifier.size(20.dp)
         )
 
@@ -52,7 +54,7 @@ fun NoteField(modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.Normal,
                 fontSize = 15.63.sp,
                 letterSpacing = (-0.25).sp,
-                color = Color.White.copy(alpha = 0.65f)
+                color = Color.White.copy(alpha = 0.85f)
             )
         )
     }

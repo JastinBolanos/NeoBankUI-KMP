@@ -17,18 +17,18 @@ import androidx.compose.ui.unit.dp
 fun GlassCard(
     modifier: Modifier = Modifier,
     cornerRadius: Dp = 24.dp,
-    containerAlpha: Float = 0.1f,
+    containerAlpha: Float = 1f,
     content: @Composable () -> Unit
 ) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(cornerRadius))
-            .background(Color.White.copy(alpha = containerAlpha))
+            .background(Color.Black.copy(alpha = containerAlpha))
             .border(
                 width = 1.dp,
                 brush = Brush.linearGradient(
                     colors = listOf(
-                        Color.White.copy(alpha = 0.4f),
+                        Color.White.copy(alpha = 0.3f),
                         Color.White.copy(alpha = 0.05f)
                     )
                 ),

@@ -28,6 +28,14 @@ import androidx.compose.ui.layout.ContentScale
 import neobankui.shared.generated.resources.Res
 import neobankui.shared.generated.resources.bg_profile
 import org.jetbrains.compose.resources.painterResource
+import androidx.compose.animation.core.*
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.draw.drawBehind
+import neobankui.shared.generated.resources.img_profile
 
 val DarkBackground = Color.Black
 val CardBackground = Color(0xFF28282A)
@@ -47,7 +55,6 @@ fun ProfileScreen(
             .fillMaxSize()
             .background(DarkBackground)
     ) {
-        // --- 1. GRADIENT BACKGROUND ---
         Image(
             painter = painterResource(Res.drawable.bg_profile),
             contentDescription = "Profile background",
@@ -55,7 +62,43 @@ fun ProfileScreen(
             modifier = Modifier.fillMaxSize()
         )
 
-        // --- SCROLLABLE CONTENT ---
+        val infiniteTransition = rememberInfiniteTransition(label = "profile_animations")
+
+        val shimmerTranslateX by infiniteTransition.animateFloat(
+            initialValue = -100f,
+            targetValue = 500f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(2000, easing = LinearEasing),
+                repeatMode = RepeatMode.Restart
+            ),
+            label = "shimmer"
+        )
+        val shimmerBrush = Brush.linearGradient(
+            colors = listOf(CardBackground, Color(0xFF666666), CardBackground),
+            start = Offset(shimmerTranslateX, 0f),
+            end = Offset(shimmerTranslateX + 150f, 150f)
+        )
+
+        // Animación de Latido (Pulso) para el Avatar
+        val avatarPulse by infiniteTransition.animateFloat(
+            initialValue = 1f,
+            targetValue = 1.35f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(1500, easing = FastOutSlowInEasing),
+                repeatMode = RepeatMode.Restart
+            ),
+            label = "avatar_pulse"
+        )
+        val avatarAlpha by infiniteTransition.animateFloat(
+            initialValue = 0.6f,
+            targetValue = 0f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(1500, easing = FastOutSlowInEasing),
+                repeatMode = RepeatMode.Restart
+            ),
+            label = "avatar_alpha"
+        )
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -66,13 +109,11 @@ fun ProfileScreen(
         ) {
             Spacer(modifier = Modifier.height(16.dp))
 
-            // 1. TOP BAR (Close Button and Upgrade Button)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Close Button (X)
                 Icon(
                     imageVector = Icons.Default.Close,
                     contentDescription = "Close",
@@ -82,11 +123,10 @@ fun ProfileScreen(
                         .clickable { onNavigateToHome() }
                 )
 
-                // Upgrade Button
                 Row(
                     modifier = Modifier
                         .clip(RoundedCornerShape(20.dp))
-                        .background(CardBackground)
+                        .background(shimmerBrush)
                         .clickable { /* Upgrade logic */ }
                         .padding(horizontal = 12.dp, vertical = 6.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -109,30 +149,36 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // 2. USER SECTION (Photo, Name, Username)
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Circular profile photo
-                Box(
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clip(CircleShape)
-                        .background(Color.DarkGray),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Person,
-                        contentDescription = "Avatar",
-                        tint = Color.White,
-                        modifier = Modifier.size(40.dp)
+                Box(contentAlignment = Alignment.Center) {
+                    Box(
+                        modifier = Modifier
+                            .size(80.dp)
+                            .graphicsLayer {
+                                scaleX = avatarPulse
+                                scaleY = avatarPulse
+                                alpha = avatarAlpha
+                            }
+                            .clip(CircleShape)
+                            .background(Color.White)
+                    )
+
+                    Image(
+                        painter = painterResource(Res.drawable.img_profile),
+                        contentDescription = "Profile Photo",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(80.dp)
+                            .clip(CircleShape)
+                            .border(1.dp, Color.White.copy(alpha = 0.2f), CircleShape)
                     )
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Name
                 Text(
                     text = "Saurabh Kumar",
                     color = Color.White,
@@ -142,7 +188,6 @@ fun ProfileScreen(
 
                 Spacer(modifier = Modifier.height(4.dp))
 
-                // Username and QR
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = "@kumar10",
@@ -161,12 +206,10 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // 3. ACTION CARDS (Premium and Referrals)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                // Card 1: Premium
                 ActionCard(
                     modifier = Modifier.weight(1f),
                     iconContent = { StackedCardsIcon() },
@@ -174,7 +217,6 @@ fun ProfileScreen(
                     subtitle = "Your plan"
                 )
 
-                // Card 2: Referrals
                 ActionCard(
                     modifier = Modifier.weight(1f),
                     iconContent = {
@@ -266,8 +308,6 @@ fun ProfileScreen(
     }
 }
 
-// --- REUSABLE COMPONENTS ---
-
 @Composable
 fun ActionCard(
     modifier: Modifier = Modifier,
@@ -275,27 +315,61 @@ fun ActionCard(
     title: String,
     subtitle: String
 ) {
-    Column(
+    val infiniteTransition = rememberInfiniteTransition(label = "card_glow")
+    val rotation by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(4000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "rotation"
+    )
+
+    val premiumColors = listOf(
+        Color(0xFF6B11FF),
+        Color(0xFFB92B27),
+        Color(0xFF1565C0),
+        Color(0xFF6B11FF)
+    )
+
+    Box(
         modifier = modifier
             .clip(RoundedCornerShape(20.dp))
-            .background(CardBackground)
-            .clickable { /* Action */ }
-            .padding(16.dp)
+            .drawBehind {
+                rotate(rotation) {
+                    drawRect(
+                        brush = Brush.sweepGradient(premiumColors),
+                        topLeft = Offset(-size.width, -size.height),
+                        size = size * 3f
+                    )
+                }
+            }
+            .padding(1.5.dp)
     ) {
-        iconContent()
-        Spacer(modifier = Modifier.height(32.dp))
-        Text(
-            text = title,
-            color = Color.White,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold
-        )
-        Spacer(modifier = Modifier.height(2.dp))
-        Text(
-            text = subtitle,
-            color = TextGray,
-            fontSize = 13.sp
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(18.5.dp))
+                .background(CardBackground)
+                .clickable { /* Action */ }
+                .padding(16.dp)
+        ) {
+            iconContent()
+            Spacer(modifier = Modifier.height(32.dp))
+            Text(
+                text = title,
+                color = Color.White,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = subtitle,
+                color = TextGray,
+                fontSize = 13.sp
+            )
+        }
     }
 }
 
