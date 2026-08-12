@@ -44,66 +44,66 @@ The project is structured for scalability, prioritizing separation of concerns, 
 ### <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcHp0bDAxNXk1bG56OHp6MHU5NWp3aG95Zm9ndzNjNmh2amxpNTZmNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/F0VCptrJteVWDeLBHD/giphy.gif" width="70" align="absmiddle" /> Live Demo: NeoBank KMP in Action
 > ** Observe every detail:** appreciate the fluidity of the native animations, the *glassmorphism* effects, the infinite carousel, and the visual consistency across screens. This video showcases the complete experience of NeoBank KMP, a high-end financial prototype developed entirely using Kotlin Multiplatform and Compose Multiplatform.
 
-https://github.com/user-attachments/assets/a09c2770-8fb7-442e-836d-fa7cbc82ac0f
+https://github.com/user-attachments/assets/f5365b66-90d8-4dde-bfa4-d68650a14556
 
 ---
 
 ## Case Study: UI/UX Design & Multiplatform Engineering
 
-AuraNova is not just a visual showcase; it is a masterclass in frontend engineering using **Kotlin Multiplatform (KMP) and Compose**. What makes this frontend truly fascinating is its obsession with native fluidity, deep UX psychology, and architectural robustness.
+AuraNova is not just a visual showcase; it is a masterclass in frontend engineering using **Kotlin Multiplatform (KMP) and Compose**. What makes this frontend truly valuable is its obsession with native fluidity, deep UX psychology, and architectural robustness.
 
-Every interaction has been meticulously crafted: from the **"breathing" pulse animations** on the home screen and **staggered slide-up transitions**, to a fully custom **Intelligent Back-Stack Navigation** that perfectly intercepts hardware buttons across platforms. We've pushed the boundaries of *Glassmorphism* (real-time blurring) while maintaining strict accessibility standards and granular data privacy (dynamic UI masking).
+Every single pixel has been meticulously crafted to build user trust and elevate the financial experience. From the **"breathing" pulse animations** on the home screen to the **staggered slide-up transitions**, the app delivers a world-class, premium feel. We've pushed the boundaries of *Glassmorphism* (real-time blurring and translucent layering) while maintaining strict accessibility standards and granular data privacy.
 
 > **Technical Note:** All views rendered below are 100% native code (Compose Multiplatform), without the use of WebViews or hybrid frameworks. The fluidity of the native animations and the seamless multiplatform back-navigation are best experienced when compiling the project on a physical device.
 
 ---
 
 ### 1. Biometric Access & Contextual Navigation
-The user journey begins with a friction-free authentication screen utilizing Z-index depth blurring. Once inside, global navigation is handled by a custom `KmpBackHandler` stack and an interactive side menu that can be dismissed with fluid, native swipe-to-right gestures, revealing the blurred dashboard behind it.
+The user journey begins with a stunning, friction-free authentication screen. By utilizing Z-index depth blurring and sleek typography, the app immediately establishes a high-end, secure environment. Once inside, global navigation is handled by an interactive side menu featuring a warm, premium gradient that can be dismissed with fluid, native swipe gestures, revealing the beautifully blurred dashboard behind it.
 
 <p align="center">
-  <img src="docs/screen_biometric.png" width="300" alt="Pantalla de inicio biométrico"/>
+  <img src="docs/01_biometric_login.png" width="280" alt="Pantalla de inicio biométrico"/>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="docs/screen_menu_profile.png" width="300" alt="Menú Perfil Deslizable"/>
+  <img src="docs/02_profile_menu.png" width="280" alt="Menú Lateral de Navegación"/>
 </p>
 
 ---
 
 ### 2. Main Dashboard & Infinite Promotional Carousel
-The core of the application features an advanced `HorizontalPager`, enabling cyclical auto-scrolling navigation between various financial offers. Each banner utilizes layer rendering (shadows and blurs) to achieve metallic, glass, and titanium textures set against an adaptive gradient background.
+The core of the application is designed for maximum engagement. It features an advanced `HorizontalPager`, enabling cyclical auto-scrolling navigation between highly visual financial offers. Each banner utilizes complex layer rendering (soft shadows, light glows, and translucent overlays) to achieve realistic metallic and titanium textures set against an immersive, adaptive gradient background.
 
 <p align="center">
-  <img src="docs/screen_home_banner1.png" width="250" alt="Banner Mundo"/>
+  <img src="docs/03_home_titanium_banner.png" width="250" alt="Banner Titanium"/>
   &nbsp;&nbsp;
-  <img src="docs/screen_home_banner2.png" width="250" alt="Banner Crédito"/>
+  <img src="docs/04_home_credit_banner.png" width="250" alt="Banner Crédito"/>
   &nbsp;&nbsp;
-  <img src="docs/screen_home_banner3.png" width="250" alt="Banner Inversiones"/>
+  <img src="docs/05_home_invest_banner.png" width="250" alt="Banner Inversiones"/>
 </p>
 
 ---
 
 ### 3. Granular Privacy, History & Smart Transfers
-Financial data readability and security are paramount. The UI features dynamic "eye" toggles to mask sensitive data, which auto-hide upon swiping. Transfers boast an interactive *Glassmorphism* recipient pill with rotating arrows, and a "Smart Send Button" that only illuminates when valid input is detected via the custom Compose Numpad.
+Financial data readability and security are paramount. The UI features dynamic "eye" toggles to mask sensitive card data elegantly. The transaction history is presented on floating, semi-transparent sheets that seamlessly blend with the background. Transfers boast a sleek, perfectly balanced layout featuring a custom Compose Numpad and a "Smart Send Button" that elegantly illuminates only when valid input is detected.
 
 <p align="center">
-  <img src="docs/screen_cards.png" width="250" alt="Detalle de Tarjetas y Privacidad"/>
+  <img src="docs/06_cards_privacy.png" width="250" alt="Detalle de Tarjetas y Privacidad"/>
   &nbsp;&nbsp;
-  <img src="docs/screen_history.png" width="250" alt="Historial de Transacciones"/>
+  <img src="docs/07_transaction_history.png" width="250" alt="Historial de Transacciones"/>
   &nbsp;&nbsp;
-  <img src="docs/screen_seend_money.png" width="250" alt="Transferencias Inteligentes"/>
+  <img src="docs/08_send_money_transfer.png" width="250" alt="Transferencias Inteligentes"/>
 </p>
 
 ---
 
-### 4. Premium Offers & Profile Personalization
-The experience is rounded out by highly personalized spaces. The profile section features perfect circular cropping (`ContentScale.Crop`) for real user avatars, backed by an infinite energy pulse animation. The premium banners continue the immersive aesthetic with deep dark themes and glowing accents.
+### 4. Premium Offers & High-End Personalization
+The experience is rounded out by highly personalized spaces that make the user feel like a VIP client. The premium banners continue the immersive aesthetic with deep dark themes and glowing accents. Furthermore, the profile settings feature perfect circular cropping and sleek layout management, ensuring the interface never feels cluttered while maintaining the sophisticated aura of a next-generation NeoBank.
 
 <p align="center">
-  <img src="docs/screen_home_banner4.png" width="250" alt="Banner Metal"/>
+  <img src="docs/09_home_metal_banner.png" width="250" alt="Banner Metal"/>
   &nbsp;&nbsp;
-  <img src="docs/screen_home_banner5.png" width="250" alt="Banner Tecnología"/>
+  <img src="docs/10_home_travel_banner.png" width="250" alt="Banner Viajes"/>
   &nbsp;&nbsp;
-  <img src="docs/screen_profile.png" width="250" alt="Configuración de Perfil"/>
+  <img src="docs/11_profile_settings.png" width="250" alt="Configuración de Perfil"/>
 </p>
 
 ---
