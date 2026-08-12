@@ -12,7 +12,7 @@
 [![CI/CD](https://img.shields.io/badge/Build-Passing-brightgreen.svg?style=for-the-badge&logo=githubactions)]()
 
 <p align="center">
-  <a href="https://github.com/JastinBolanos/NeoBankUI-KMP/releases/download/v1.1.0/NeoBankUI.apk">
+  <a href="https://github.com/JastinBolanos/NeoBankUI-KMP/releases/download/v1.2.0/NeoBankUI.apk">
     <img src="https://img.shields.io/badge/Descargar-APK%20Android-green?style=for-the-badge&logo=android&logoColor=white" alt="Descargar APK">
   </a>
 </p>
