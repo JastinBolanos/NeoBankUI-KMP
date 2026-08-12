@@ -1,5 +1,7 @@
 package com.neobank.app.transfer.presentation
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -7,6 +9,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -20,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -32,12 +37,6 @@ import neobankui.shared.generated.resources.bg_neobank
 import neobankui.shared.generated.resources.ic_arrow_back_custom
 import neobankui.shared.generated.resources.ic_user_list
 import org.jetbrains.compose.resources.painterResource
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.animation.core.animateFloatAsState
 
 private fun formatCurrency(value: Double): String {
     val isWholeNumber = value % 1.0 == 0.0
@@ -75,15 +74,19 @@ fun SendMoneyScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .statusBarsPadding()
-                .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 16.dp)
+                .padding(horizontal = 24.dp, vertical = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            // ==========================================
+            // 1. TOP BAR
+            // ==========================================
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
                     modifier = Modifier
-                        .size(45.dp)
+                        .size(40.dp)
                         .clip(CircleShape)
                         .background(Color.Black.copy(alpha = 0.35f))
                         .border(1.dp, Color.White.copy(alpha = 0.3f), CircleShape)
@@ -95,7 +98,7 @@ fun SendMoneyScreen(
                         contentDescription = "Back",
                         tint = Color.White,
                         modifier = Modifier
-                            .size(18.dp)
+                            .size(16.dp)
                             .offset(x = (-1).dp, y = 0.dp)
                     )
                 }
@@ -103,15 +106,18 @@ fun SendMoneyScreen(
                 Text(
                     text = "Send Money",
                     color = Color.White,
-                    fontSize = 24.sp,
+                    fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f),
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center
                 )
 
-                Spacer(modifier = Modifier.size(44.dp))
+                Spacer(modifier = Modifier.size(40.dp))
             }
 
+            // ==========================================
+            // CONTENEDOR CENTRAL
+            // ==========================================
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -119,6 +125,8 @@ fun SendMoneyScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
+
+                // --- 2. CONTACTO, MONTO, CUENTA ---
                 val contacts = remember {
                     listOf(
                         Pair("Sarah Miller", Color(0xFF6B11FF)),
@@ -143,7 +151,7 @@ fun SendMoneyScreen(
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(28.dp)
+                                .size(24.dp)
                                 .clip(CircleShape)
                                 .background(selectedContact.second),
                             contentAlignment = Alignment.Center
@@ -151,31 +159,28 @@ fun SendMoneyScreen(
                             Text(
                                 text = selectedContact.first.take(1),
                                 color = Color.White,
-                                fontSize = 14.sp,
+                                fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         }
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(text = "To: ", color = Color.White.copy(alpha = 0.6f), fontSize = 14.sp)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "To: ", color = Color.White.copy(alpha = 0.6f), fontSize = 13.sp)
 
                         Text(
                             text = selectedContact.first,
                             color = Color.White,
-                            fontSize = 15.sp,
+                            fontSize = 14.sp,
                             fontWeight = FontWeight.SemiBold
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
 
-                        val rotationAngle by animateFloatAsState(
-                            targetValue = if (expandedMenu) 90f else 270f,
-                            label = "arrowRotation"
-                        )
+                        val rotationAngle by animateFloatAsState(targetValue = if (expandedMenu) 90f else 270f, label = "arrowRotation")
                         Icon(
                             painter = painterResource(Res.drawable.ic_arrow_back_custom),
                             contentDescription = "Change",
                             tint = Color.White.copy(alpha = 0.6f),
                             modifier = Modifier
-                                .size(12.dp)
+                                .size(10.dp)
                                 .graphicsLayer { rotationZ = rotationAngle }
                         )
                     }
@@ -183,41 +188,20 @@ fun SendMoneyScreen(
                     DropdownMenu(
                         expanded = expandedMenu,
                         onDismissRequest = { expandedMenu = false },
-                        modifier = Modifier
-                            .background(Color(0xFF1E1E1E).copy(alpha = 0.95f))
-                            .border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(12.dp)),
-                        shape = RoundedCornerShape(12.dp)
+                        modifier = Modifier.background(Color(0xFF1E1E1E).copy(alpha = 0.95f)).border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(12.dp))
                     ) {
                         contacts.forEach { contact ->
                             DropdownMenuItem(
                                 text = {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
-                                        Box(
-                                            modifier = Modifier
-                                                .size(24.dp)
-                                                .clip(CircleShape)
-                                                .background(contact.second),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Text(
-                                                text = contact.first.take(1),
-                                                color = Color.White,
-                                                fontSize = 12.sp,
-                                                fontWeight = FontWeight.Bold
-                                            )
+                                        Box(modifier = Modifier.size(22.dp).clip(CircleShape).background(contact.second), contentAlignment = Alignment.Center) {
+                                            Text(text = contact.first.take(1), color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold)
                                         }
-                                        Spacer(modifier = Modifier.width(12.dp))
-                                        Text(
-                                            text = contact.first,
-                                            color = Color.White,
-                                            fontSize = 14.sp
-                                        )
+                                        Spacer(modifier = Modifier.width(10.dp))
+                                        Text(text = contact.first, color = Color.White, fontSize = 14.sp)
                                     }
                                 },
-                                onClick = {
-                                    selectedContact = contact
-                                    expandedMenu = false
-                                }
+                                onClick = { selectedContact = contact; expandedMenu = false }
                             )
                         }
                     }
@@ -225,24 +209,18 @@ fun SendMoneyScreen(
 
                 Spacer(modifier = Modifier.height(28.dp))
 
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = "$$amount",
-                        color = Color.White,
-                        fontSize = 54.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-
-                    Text(
-                        text = "no fees",
-                        color = Color.White.copy(alpha = 0.8f),
-                        fontSize = 14.sp,
-                        modifier = Modifier.padding(top = 4.dp)
-                    )
-                }
+                Text(
+                    text = "$$amount",
+                    color = Color.White,
+                    fontSize = 46.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Text(
+                    text = "no fees",
+                    color = Color.White.copy(alpha = 0.8f),
+                    fontSize = 13.sp,
+                    modifier = Modifier.padding(top = 2.dp)
+                )
 
                 Spacer(modifier = Modifier.height(32.dp))
 
@@ -251,61 +229,52 @@ fun SendMoneyScreen(
                     balance = "$${formatCurrency(currentBalance)}"
                 )
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(40.dp))
 
+                // --- 3. CONTROLES INFERIORES ---
                 NoteField()
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 val isAmountValid = amount != "0"
-
-                val buttonColor by animateColorAsState(
-                    targetValue = if (isAmountValid) Color.White else Color.White.copy(alpha = 0.15f),
-                    animationSpec = tween(300),
-                    label = "buttonColor"
-                )
-                val textColor by animateColorAsState(
-                    targetValue = if (isAmountValid) Color(0xFF1A1A1A) else Color.White.copy(alpha = 0.4f),
-                    animationSpec = tween(300),
-                    label = "textColor"
-                )
+                val buttonColor by animateColorAsState(targetValue = if (isAmountValid) Color.White else Color.White.copy(alpha = 0.15f), label = "buttonColor")
+                val textColor by animateColorAsState(targetValue = if (isAmountValid) Color(0xFF1A1A1A) else Color.White.copy(alpha = 0.4f), label = "textColor")
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Surface(
                         modifier = Modifier
                             .weight(1f)
-                            .clip(RoundedCornerShape(28.dp))
+                            .height(52.dp)
+                            .clip(RoundedCornerShape(26.dp))
                             .clickable(enabled = isAmountValid) {
                                 val amountToSend = amount.toDoubleOrNull() ?: 0.0
                                 if (amountToSend > 0.0 && amountToSend <= currentBalance && amountToSend <= maxLimit) {
                                     onSendMoney(amountToSend)
                                 }
                             },
-                        shape = RoundedCornerShape(28.dp),
+                        shape = RoundedCornerShape(26.dp),
                         color = buttonColor
                     ) {
-                        Text(
-                            text = "Send",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = textColor,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 16.dp),
-                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                        )
+                        Box(contentAlignment = Alignment.Center) {
+                            Text(
+                                text = "Send",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = textColor
+                            )
+                        }
                     }
 
                     Box(
                         modifier = Modifier
-                            .size(56.dp)
-                            .clip(RoundedCornerShape(20.dp))
+                            .size(52.dp)
+                            .clip(RoundedCornerShape(16.dp))
                             .background(Color.Black.copy(alpha = 0.35f))
-                            .border(1.dp, Color.White.copy(alpha = 0.3f), RoundedCornerShape(20.dp))
+                            .border(1.dp, Color.White.copy(alpha = 0.3f), RoundedCornerShape(16.dp))
                             .clickable { /* Acción para contactos */ },
                         contentAlignment = Alignment.Center
                     ) {
@@ -313,12 +282,12 @@ fun SendMoneyScreen(
                             painter = painterResource(Res.drawable.ic_user_list),
                             contentDescription = "Select contact",
                             tint = Color.White,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(22.dp)
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 Keypad(
                     onNumberClick = { number ->

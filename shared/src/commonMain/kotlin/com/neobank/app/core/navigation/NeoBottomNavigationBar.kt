@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -64,7 +65,7 @@ fun NeoBottomNavigationBar(
         initialValue = 0f,
         targetValue = 360f,
         animationSpec = infiniteRepeatable(
-            animation = tween(3000, easing = LinearEasing), // 3 segundos por vuelta
+            animation = tween(3000, easing = LinearEasing),
             repeatMode = RepeatMode.Restart
         ),
         label = "rotation"
@@ -94,12 +95,12 @@ fun NeoBottomNavigationBar(
         modifier = Modifier
             .fillMaxWidth()
             .navigationBarsPadding()
-            .padding(horizontal = 24.dp, vertical = 24.dp)
+            .padding(horizontal = 24.dp, vertical = 16.dp)
             .graphicsLayer {
                 scaleX = pulse
                 scaleY = pulse
             }
-            .clip(RoundedCornerShape(34.dp))
+            .clip(RoundedCornerShape(50))
             .drawBehind {
                 rotate(rotation) {
                     drawRect(
@@ -114,13 +115,13 @@ fun NeoBottomNavigationBar(
         Surface(
             modifier = Modifier.fillMaxWidth(),
             color = backgroundColor,
-            shape = RoundedCornerShape(31.dp),
+            shape = RoundedCornerShape(50),
             shadowElevation = 16.dp
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 12.dp, horizontal = 24.dp),
+                    .padding(vertical = 8.dp, horizontal = 20.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -128,7 +129,7 @@ fun NeoBottomNavigationBar(
                 val homeColor = if (selectedTab == NavTab.Home) activeColor else inactiveColor
                 Box(
                     modifier = Modifier
-                        .size(44.dp)
+                        .size(40.dp)
                         .clip(CircleShape)
                         .clickable { onTabSelected(NavTab.Home) },
                     contentAlignment = Alignment.Center
@@ -137,7 +138,7 @@ fun NeoBottomNavigationBar(
                         painter = painterResource(Res.drawable.ic_nav_home),
                         contentDescription = "Home",
                         tint = homeColor,
-                        modifier = Modifier.size(26.dp)
+                        modifier = Modifier.size(24.dp)
                     )
                 }
 
@@ -145,7 +146,7 @@ fun NeoBottomNavigationBar(
                 val historyColor = if(selectedTab == NavTab.History) activeColor else inactiveColor
                 Box(
                     modifier = Modifier
-                        .size(44.dp)
+                        .size(40.dp)
                         .clip(CircleShape)
                         .clickable { onTabSelected(NavTab.History) },
                     contentAlignment = Alignment.Center
@@ -154,15 +155,32 @@ fun NeoBottomNavigationBar(
                         painter = painterResource(Res.drawable.ic_history),
                         contentDescription = "History",
                         tint = historyColor,
-                        modifier = Modifier.size(26.dp)
+                        modifier = Modifier.size(24.dp)
                     )
                 }
 
-                // 3. Cards Icon
+                // 3. Botón de Transferencia (Medio - Oscuro y Destacado)
+                Box(
+                    modifier = Modifier
+                        .size(46.dp)
+                        .clip(CircleShape)
+                        .background(Color(0xFF1E1E1E))
+                        .clickable { onTabSelected(NavTab.Transfer) },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.SwapHoriz,
+                        contentDescription = "Transfer",
+                        tint = Color.White,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+
+                // 4. Cards Icon
                 val cardsColor = if (selectedTab == NavTab.Cards) activeColor else inactiveColor
                 Box(
                     modifier = Modifier
-                        .size(44.dp)
+                        .size(40.dp)
                         .clip(CircleShape)
                         .clickable { onTabSelected(NavTab.Cards) },
                     contentAlignment = Alignment.Center
@@ -171,11 +189,11 @@ fun NeoBottomNavigationBar(
                         painter = painterResource(Res.drawable.ic_cards),
                         contentDescription = "Cards",
                         tint = cardsColor,
-                        modifier = Modifier.size(28.dp)
+                        modifier = Modifier.size(24.dp)
                     )
                 }
 
-                // 4. Profile Avatar
+                // 5. Profile Avatar
                 Box(
                     modifier = Modifier
                         .size(32.dp)

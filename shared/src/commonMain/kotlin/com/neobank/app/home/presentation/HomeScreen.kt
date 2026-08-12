@@ -99,27 +99,20 @@ fun HomeScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1.45f)
+                    .weight(1.28f)
             ) {
                 Spacer(modifier = Modifier.height(64.dp))
-
                 TopBarSection(modifier = Modifier.padding(horizontal = 24.dp))
-
-                Spacer(modifier = Modifier.height(40.dp))
-
+                Spacer(modifier = Modifier.height(32.dp))
                 BalanceSection(balance = balance)
-
-                Spacer(modifier = Modifier.height(40.dp))
-
+                Spacer(modifier = Modifier.height(32.dp))
                 QuickActionsSection(
                     modifier = Modifier.padding(horizontal = 24.dp),
                     onCardsClick = onNavigateToCards,
                     onTransferClick = onNavigateToSendMoney,
                     onMoreClick = { isMenuOpen = true }
                 )
-
-                Spacer(modifier = Modifier.height(32.dp))
-
+                Spacer(modifier = Modifier.height(28.dp))
                 PromoCardsSection()
             }
 
@@ -127,6 +120,7 @@ fun HomeScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 14.dp)
                     .weight(1f)
                     .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
             ) {
@@ -151,7 +145,7 @@ fun HomeScreen(
                         NavTab.History -> onNavigateToHistory()
                         NavTab.Profile -> onNavigateToProfile()
                         NavTab.Home -> { /* We are already here */ }
-                        NavTab.Transfer -> { /* Only used from the top button */ }
+                        NavTab.Transfer -> onNavigateToSendMoney()
                     }
                 }
             )
@@ -268,7 +262,7 @@ private fun BalanceSection(balance: Double) {
         Text(
             text = if (isBalanceVisible) "$${balance.toFormattedCurrency()}" else "$••••••",
             color = Color.White,
-            fontSize = 48.sp,
+            fontSize = 38.sp,
             fontWeight = FontWeight.ExtraBold,
             letterSpacing = 1.sp
         )
@@ -284,14 +278,14 @@ private fun BalanceSection(balance: Double) {
             Text(
                 text = "Total Balance",
                 color = Color.White.copy(alpha = 0.7f),
-                fontSize = 16.sp
+                fontSize = 14.sp
             )
             Spacer(modifier = Modifier.width(8.dp))
             Icon(
                 imageVector = if (isBalanceVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
                 contentDescription = "Toggle Visibility",
                 tint = Color.White.copy(alpha = 0.7f),
-                modifier = Modifier.size(18.dp)
+                modifier = Modifier.size(16.dp)
             )
         }
     }
@@ -364,20 +358,20 @@ private fun ActionItemPainter(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.width(76.dp)
+        modifier = Modifier.width(68.dp)
     ) {
         Box(contentAlignment = Alignment.Center) {
 
             Box(
                 modifier = Modifier
-                    .size(64.dp)
+                    .size(56.dp)
                     .graphicsLayer {
                         scaleX = pulseScale
                         scaleY = pulseScale
                         alpha = pulseAlpha
                     }
                     .border(
-                        width = 3.dp,
+                        width = 2.dp,
                         color = Color.White,
                         shape = CircleShape
                     )
@@ -385,7 +379,7 @@ private fun ActionItemPainter(
 
             Box(
                 modifier = Modifier
-                    .size(64.dp)
+                    .size(56.dp)
                     .clip(CircleShape)
                     .background(Color.White.copy(alpha = 0.1f))
                     .clickable { onClick() },
@@ -395,19 +389,19 @@ private fun ActionItemPainter(
                     painter = painter,
                     contentDescription = label,
                     tint = Color.White,
-                    modifier = Modifier.size(26.dp)
+                    modifier = Modifier.size(22.dp)
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Text(
             text = label,
             color = Color.White,
-            fontSize = 12.sp,
+            fontSize = 11.sp,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-            lineHeight = 16.sp,
+            lineHeight = 14.sp,
             fontWeight = FontWeight.Medium
         )
     }
@@ -487,8 +481,8 @@ private fun PromoCardsSection() {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(110.dp)
-                    .clip(RoundedCornerShape(24.dp))
+                    .height(100.dp)
+                    .clip(RoundedCornerShape(20.dp))
                     .background(currentBanner.backgroundColor)
             ) {
                 // --------------------------------------------------------
@@ -542,21 +536,21 @@ private fun PromoCardsSection() {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(start = 18.dp, top = 16.dp, bottom = 16.dp, end = if (currentBanner.imageRes != null) 110.dp else 18.dp),
+                        .padding(start = 16.dp, top = 14.dp, bottom = 14.dp, end = if (currentBanner.imageRes != null) 90.dp else 16.dp),
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
                         text = currentBanner.title,
                         color = Color.White,
-                        fontSize = 17.sp,
+                        fontSize = 15.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = currentBanner.subtitle,
                         color = Color.White.copy(alpha = 0.85f),
-                        fontSize = 13.sp,
-                        lineHeight = 18.sp,
+                        fontSize = 12.sp,
+                        lineHeight = 16.sp,
                         maxLines = 2,
                         overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
                     )
@@ -573,7 +567,7 @@ private fun PromoCardsSection() {
                         modifier = Modifier
                             .align(Alignment.CenterEnd)
                             .padding(end = 12.dp)
-                            .size(90.dp)
+                            .size(80.dp)
                     )
                 }
             }
@@ -669,9 +663,9 @@ private fun TransactionsSection(bottomPadding: androidx.compose.ui.unit.Dp = 0.d
                 translationY = slideAnim
             },
         contentPadding = PaddingValues(
-            start = 24.dp,
-            end = 24.dp,
-            top = 24.dp,
+            start = 14.dp,
+            end = 14.dp,
+            top = 20.dp,
             bottom = bottomPadding
         ),
         verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -680,7 +674,7 @@ private fun TransactionsSection(bottomPadding: androidx.compose.ui.unit.Dp = 0.d
             Text(
                 text = "TRANSACTIONS",
                 color = Color.White.copy(alpha = 0.8f),
-                fontSize = 16.sp,
+                fontSize = 14.sp,
                 fontFamily = androidx.compose.ui.text.font.FontFamily.Serif,
                 letterSpacing = 2.sp,
                 modifier = Modifier.padding(bottom = 6.dp)
@@ -747,30 +741,30 @@ private fun TransactionItem(
                 color = Color.White.copy(alpha = 0.15f),
                 shape = RoundedCornerShape(16.dp)
             )
-            .padding(horizontal = 16.dp, vertical = 10.dp),
+            .padding(horizontal = 14.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             painter = painter,
             contentDescription = title,
-            modifier = Modifier.size(28.dp),
+            modifier = Modifier.size(24.dp),
             contentScale = ContentScale.Fit
         )
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(14.dp))
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
                 color = Color.White,
-                fontSize = 15.sp,
+                fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
                 text = subtitle,
                 color = Color.White.copy(alpha = 0.7f),
-                fontSize = 12.sp,
+                fontSize = 11.sp,
                 maxLines = 1,
                 overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
             )
@@ -779,7 +773,7 @@ private fun TransactionItem(
         Text(
             text = amount,
             color = Color.White,
-            fontSize = 15.sp,
+            fontSize = 14.sp,
             fontWeight = FontWeight.Bold
         )
     }
