@@ -22,7 +22,7 @@
 
 ## The Vision
 
-An ultra-premium financial interface prototype built with **Kotlin Multiplatform (KMP)** and **Compose Multiplatform**. Designed to deliver a high-end native experience on both Android and iOS from a single codebase.
+An ultra-premium financial interface prototype built with **Kotlin Multiplatform (KMP)** and **Compose Multiplatform**. Designed to deliver a high-end native Android experience today, powered by a shared visual architecture that is structurally prepared to scale seamlessly to iOS.
 
 **AuraNova** goes beyond traditional UI. It establishes a competitive **"visual moat"** through immersive aesthetics and a frictionless user flow (such as the biometric *daily portal*), demonstrating that visual complexity need not come at the expense of performance fluidity.
 
@@ -33,16 +33,16 @@ The project is structured for scalability, prioritizing separation of concerns, 
 * **Core & UI Framework:** Kotlin Multiplatform + Compose Multiplatform, sharing 100% of the visual logic.
 * **Architecture:** Clean Architecture (*Feature-driven*) with rigorous state management (*State Hoisting*).
 * **UI/UX Design:** *Dark Mode* interface featuring complex *Glassmorphism* elements, layered components, and custom typography.
-* **Performance:** Extreme asset optimization (smart rasterization) to ensure 60fps+ transitions, with explicit support for **120Hz ProMotion on iOS** (`CADisableMinimumFrameDurationOnPhone`).
+* **Performance:** Extreme asset optimization (smart rasterization) to ensure fluid 60fps+ native transitions in Android, with explicit architectural readiness for **120Hz ProMotion on iOS** (`CADisableMinimumFrameDurationOnPhone`).
 * **Infinite Carousel:** Advanced technical implementation using `HorizontalPager`, managing continuous, seamless scrolling state.
 * **Automated CI/CD:** GitHub Actions workflow for continuous validation and remote compilation of the iOS scheme via `xcodebuild` on macOS virtual machines.
-* **Native Multiplatform Navigation:** Custom intelligent back-stack management utilizing the `expect/actual` pattern to flawlessly intercept Android hardware back presses (`KmpBackHandler`) without breaking iOS gesture flows.
+* **Native Multiplatform Navigation:** Custom intelligent back-stack management utilizing the `expect/actual` pattern to flawlessly intercept Android hardware back presses (`KmpBackHandler`) without breaking future iOS gesture flows.
 * **Granular Security UX:** Dynamic, state-driven privacy masking for sensitive financial data (Total Balance, CCV, Card Numbers) featuring auto-hide triggers upon user scrolling.
 * **Smart Interactions:** Native-feeling gesture detection (`detectHorizontalDragGestures`) for swipe-to-dismiss side menus, coupled with staggered entrance animations (Fade-in + Slide-up) to eliminate UI jarring.
 
 ---
 ### <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcHp0bDAxNXk1bG56OHp6MHU5NWp3aG95Zm9ndzNjNmh2amxpNTZmNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/F0VCptrJteVWDeLBHD/giphy.gif" width="70" align="absmiddle" /> Live Demo: NeoBank KMP in Action
-> ** Observe every detail:** appreciate the fluidity of the native animations, the *glassmorphism* effects, the infinite carousel, and the visual consistency across screens. This video showcases the complete experience of NeoBank KMP, a high-end financial prototype developed entirely using Kotlin Multiplatform and Compose Multiplatform.
+> ** Observe every detail:** appreciate the fluidity of the native animations, the *glassmorphism* effects, the infinite carousel, and the visual consistency across screens. This video showcases the complete experience of NeoBank KMP, a high-end financial prototype driven by a powerful shared visual engine.
 
 https://github.com/user-attachments/assets/f5365b66-90d8-4dde-bfa4-d68650a14556
 
