@@ -22,7 +22,8 @@
 
 ## The Vision
 
-An ultra-premium financial interface prototype built with **Kotlin Multiplatform (KMP)** and **Compose Multiplatform**. Designed to deliver a high-end native Android experience today, powered by a shared visual architecture that is structurally prepared to scale seamlessly to iOS.
+An advanced financial interface prototype built with **Kotlin Multiplatform (KMP)** and **Compose Multiplatform**. Designed to deliver a high-end native Android experience today, powered by a shared visual architecture that is structurally prepared to scale seamlessly to iOS.
+
 
 **AuraNova** goes beyond traditional UI. It establishes a competitive **"visual moat"** through immersive aesthetics and a frictionless user flow (such as the biometric *daily portal*), demonstrating that visual complexity need not come at the expense of performance fluidity.
 
